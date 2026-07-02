@@ -1,0 +1,460 @@
+{
+  "common": {
+    "brand": "OO Travel",
+    "tagline": "Votre voyage, du premier pas à la destination",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "download": "Télécharger",
+    "upload": "Téléverser",
+    "view": "Voir",
+    "search": "Rechercher",
+    "send": "Envoyer",
+    "next": "Suivant",
+    "back": "Retour",
+    "submit": "Envoyer",
+    "loading": "Chargement...",
+    "all": "Tous",
+    "actions": "Actions",
+    "whatsapp": "WhatsApp",
+    "talkOnWhatsapp": "Discuter sur WhatsApp",
+    "optional": "facultatif"
+  },
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "portal": "Espace client",
+    "requestQuote": "Demander un devis",
+    "faq": "FAQ",
+    "blog": "Journal"
+  },
+  "blog": {
+    "title": "Le journal OO Travel",
+    "subtitle": "Guides de visa et d'installation, notes de destinations, et logistique pratique de voyage — issus de vrais dossiers, pas de listes recyclées.",
+    "emptyState": "Nouveaux articles bientôt disponibles.",
+    "backToBlog": "Retour au journal",
+    "readingTime": "{n} min de lecture",
+    "categories": {
+      "visa": "Visa & Installation",
+      "destinations": "Destinations",
+      "logistics": "Logistique de Voyage",
+      "business": "Voyage d'Affaires"
+    }
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "subtitle": "Tout ce qu'il faut savoir avant de voyager avec OO Travel.",
+    "q1": "Quels services propose OO Travel ?",
+    "a1": "Vols, hôtels, circuits, visas, croisières, voyages d'affaires, installation légale et location de voiture avec chauffeur — organisés de bout en bout, au même endroit.",
+    "q2": "Dans quelles langues puis-je être accompagné ?",
+    "a2": "Omar vous accompagne personnellement en portugais, anglais, français et arabe — sans intermédiaire ni centre d'appels.",
+    "q3": "Aidez-vous avec les visas et l'installation légale à l'étranger ?",
+    "a3": "Oui. Nous préparons et guidons les demandes de visa et les démarches d'installation légale, en même temps que vos vols et votre hébergement.",
+    "q4": "Comment puis-je payer ?",
+    "a4": "Vous recevez une facture claire et détaillée et payez en toute sécurité par PIX via Mercado Pago avant toute confirmation.",
+    "q5": "En combien de temps aurai-je une réponse ?",
+    "a5": "Écrivez à Omar sur WhatsApp pour une réponse rapide et personnelle — généralement le jour même, souvent en quelques heures.",
+    "q6": "OO Travel est-elle une agence agréée ?",
+    "a6": "Oui. OO Travel opère en tant que MEI enregistré à São Paulo (CNPJ 63.588.045/0001-49, CNAE 7911-2/00 — agences de voyages)."
+  },
+  "home": {
+    "eyebrow": "L'agent de voyages indépendant nº 1 de São Paulo",
+    "h1Line1": "Le monde, organisé",
+    "h1Line2": "exactement pour vous.",
+    "subheadline": "Vols, hôtels, visas, croisières et installation légale — pris en charge de bout en bout par un expert agréé, en 4 langues.",
+    "ctaPrimary": "Obtenir mon devis gratuit",
+    "ctaSecondary": "Contacter Omar sur WhatsApp",
+    "ctaMicrocopy": "Devis gratuit · Sans engagement.",
+    "ctaPortalLink": "Déjà client ? Se connecter.",
+    "trust1": "Agréé MEI",
+    "trust2": "CNPJ 63.588.045/0001-49",
+    "trust3": "PT · EN · FR · AR",
+    "interestHeading": "Un agent. Toutes les destinations.",
+    "interest1Title": "Portée mondiale",
+    "interest1Desc": "Des vols vers plus de 50 pays, toutes les grandes alliances.",
+    "interest1Stat": "+50 destinations servies",
+    "interest2Title": "Experts en visas et documents",
+    "interest2Desc": "Préparation complète des documents, sans stress.",
+    "interest2Stat": "Support documentaire complet",
+    "interest3Title": "Toujours disponible",
+    "interest3Desc": "Omar répond personnellement, à toute heure, dans votre langue.",
+    "interest3Stat": "Réponses 24/7",
+    "desireHeading": "Chaque voyage, entièrement couvert.",
+    "requestThis": "Demander ceci",
+    "actionHeading": "Prêt à voyager sans stress ?",
+    "actionSubtext": "Dites à Omar où vous voulez aller. Il s'occupe de tout le reste.",
+    "orMessage": "Ou écrivez directement",
+    "form": {
+      "name": "Nom",
+      "email": "E-mail",
+      "whatsapp": "Numéro WhatsApp",
+      "service": "Service",
+      "servicePlaceholder": "Choisissez un service",
+      "destination": "Destination et dates",
+      "destinationPh": "ex. Dubaï, 10–17 septembre",
+      "message": "Message",
+      "messagePh": "Parlez-nous un peu de votre voyage...",
+      "submit": "Envoyer ma demande à Omar",
+      "sent": "Demande envoyée ! Omar vous répondra bientôt.",
+      "privacyNote": "Vos données restent privées. Jamais de spam."
+    },
+    "stats": {
+      "destinations": "Destinations servies",
+      "trips": "Voyages organisés",
+      "languages": "Langues parlées",
+      "support": "Assistance personnelle",
+      "caption": "Une décennie de voyages sans frontières, gérée personnellement."
+    },
+    "testimonials": {
+      "heading": "Apprécié par des voyageurs du monde entier",
+      "t1Quote": "Omar a organisé notre vol et notre hôtel à Dubaï en un temps record. Un service impeccable du début à la fin.",
+      "t1Name": "Mariana Costa",
+      "t1Trip": "Vol + hôtel · Dubaï",
+      "t1Flag": "🇧🇷",
+      "t2Quote": "Il a géré tout mon visa et mon installation légale au Brésil. Professionnel, patient et toujours disponible.",
+      "t2Name": "Ahmed Al-Mansoori",
+      "t2Trip": "Visa + installation légale · Brésil",
+      "t2Flag": "🇦🇪",
+      "t3Quote": "Une croisière méditerranéenne parfaite, planifiée dans les moindres détails. Je le recommande sans hésiter.",
+      "t3Name": "Camille Laurent",
+      "t3Trip": "Croisière de luxe · Méditerranée",
+      "t3Flag": "🇫🇷"
+    },
+    "gallery": {
+      "eyebrow": "Voyages réels",
+      "heading": "Là où naissent les souvenirs",
+      "subtitle": "Des moments réels de voyages que nous avons conçus dans les dunes du Maroc et au-delà — campements de luxe dans le désert, balades à dos de chameau au lever du soleil et dîners sous les étoiles. Votre histoire pourrait être la prochaine.",
+      "cta": "Commencez votre voyage"
+    }
+  },
+  "services": {
+    "title": "Nos services",
+    "subtitle": "Vols, visas, hôtels et installation à l'étranger — organisés de bout en bout, pour les voyages de loisir et d'affaires.",
+    "requestQuote": "Demander un devis",
+    "items": {
+      "flight": {
+        "name": "Vols",
+        "desc": "Vols nationaux et internationaux aux meilleurs tarifs et compagnies."
+      },
+      "hotel": {
+        "name": "Hôtels",
+        "desc": "Hôtels et hébergements sélectionnés pour chaque profil et budget."
+      },
+      "tour": {
+        "name": "Forfaits et itinéraires",
+        "desc": "Itinéraires personnalisés et forfaits touristiques complets."
+      },
+      "visa": {
+        "name": "Assistance visa",
+        "desc": "Préparation et suivi des demandes de visa et des documents."
+      },
+      "cruise": {
+        "name": "Croisières et luxe",
+        "desc": "Croisières et expériences de voyage premium et sur mesure."
+      },
+      "corporate": {
+        "name": "Voyages d'affaires",
+        "desc": "Réservations d'équipe, visas d'affaires et conformité des dépenses."
+      },
+      "legal": {
+        "name": "Installation à destination",
+        "desc": "Documents et accompagnement pour s'installer dans le pays de destination."
+      },
+      "car_rental": {
+        "name": "Location de voiture avec chauffeur",
+        "desc": "Service de chauffeur privé à destination — transferts aéroport, visites de ville, excursions. Chauffeurs anglophones et arabophones disponibles."
+      }
+    }
+  },
+  "about": {
+    "title": "À propos d'Omar Oukhira",
+    "intro": "Agent de voyages indépendant à São Paulo, spécialisé dans l'accompagnement de clients du Brésil et des mondes arabe, francophone et anglophone.",
+    "bio": "Fort de plus d'une décennie d'expérience, Omar offre un service proche et personnalisé, accompagnant chaque client de la planification à l'arrivée — y compris les démarches de visa et l'installation légale à l'étranger.",
+    "credentialsTitle": "Références",
+    "credentialsMei": "MEI — 63.588.045 OMAR OUKHIRA",
+    "credentialsCnpj": "CNPJ 63.588.045/0001-49",
+    "credentialsCnae": "CNAE 7911-2/00 — Agences de voyages",
+    "languagesTitle": "Langues",
+    "languages": "Portugais, anglais, français et arabe",
+    "journey": {
+      "eyebrow": "En chiffres",
+      "heading": "Une décennie de voyages sans frontières",
+      "s1Label": "Ans d'expérience",
+      "s1Desc": "Chaque voyage organisé personnellement",
+      "s2Label": "Services, de bout en bout",
+      "s2Desc": "Du vol à l'installation légale",
+      "s3Label": "Satisfaction client",
+      "s3Desc": "Des clients qui recommandent Omar",
+      "s4Label": "Langues, un seul contact",
+      "s4Desc": "PT · EN · FR · AR — sans intermédiaire",
+      "cta": "Commencez votre voyage"
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Envoyez un message ou discutez directement sur WhatsApp.",
+    "name": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "message": "Message",
+    "send": "Envoyer le message",
+    "sent": "Message envoyé ! Nous reviendrons vers vous bientôt.",
+    "location": "São Paulo, Brésil"
+  },
+  "login": {
+    "title": "Accédez à votre espace",
+    "subtitle": "Connectez-vous avec votre e-mail et mot de passe ou recevez un lien magique.",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "magicLink": "Envoyer un lien magique",
+    "or": "ou",
+    "magicLinkSent": "Lien envoyé ! Vérifiez votre e-mail.",
+    "noAccount": "Pas encore de compte ? Contactez Omar pour créer votre accès."
+  },
+  "portal": {
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "bookings": "Réservations",
+      "documents": "Documents",
+      "messages": "Messages",
+      "invoices": "Factures",
+      "profile": "Profil",
+      "logout": "Déconnexion"
+    },
+    "dashboard": {
+      "title": "Tableau de bord",
+      "welcome": "Bonjour, {name}",
+      "subtitle": "Voici un résumé de vos voyages.",
+      "statBookings": "Réservations actives",
+      "statDocuments": "Documents en attente",
+      "statInvoices": "Factures ouvertes",
+      "statMessages": "Messages non lus",
+      "nextTripTitle": "Prochain voyage",
+      "nextTripNone": "Aucun voyage prévu",
+      "nextTripCta": "Planifier un voyage",
+      "daysToGo": "jours avant le départ",
+      "welcomeBack": "Bon retour",
+      "quickActions": "Actions rapides",
+      "newRequest": "Nouvelle demande",
+      "uploadDocs": "Téléverser des documents",
+      "payInvoice": "Payer une facture",
+      "recentBookings": "Réservations récentes",
+      "viewAll": "Tout voir"
+    },
+    "bookings": {
+      "title": "Mes réservations",
+      "subtitle": "Suivez le statut de chaque demande.",
+      "new": "Nouvelle demande",
+      "service": "Service",
+      "destination": "Destination",
+      "dates": "Dates",
+      "status": "Statut",
+      "amount": "Montant",
+      "itinerary": "Itinéraire (PDF)",
+      "empty": "Vous n'avez pas encore de réservations",
+      "emptyDesc": "Commencez par créer une nouvelle demande de voyage.",
+      "createFirst": "Créer la première demande"
+    },
+    "newBooking": {
+      "title": "Nouvelle demande",
+      "subtitle": "Dites à Omar ce dont vous avez besoin.",
+      "step": "Étape {current} sur {total}",
+      "step1": "Type de service",
+      "step2": "Détails du voyage",
+      "step3": "Documents et notes",
+      "chooseService": "Choisissez le service souhaité",
+      "destination": "Destination",
+      "destinationPh": "ex. Lisbonne, Portugal",
+      "travelDate": "Date de départ",
+      "returnDate": "Date de retour",
+      "notes": "Notes",
+      "notesPh": "Partagez les détails importants : nombre de voyageurs, préférences, etc.",
+      "attachments": "Pièces jointes (optionnel)",
+      "review": "Vérifier et envoyer",
+      "submitted": "Demande envoyée ! Omar vous contactera bientôt.",
+      "carDetails": "Détails de la location avec chauffeur",
+      "carPickup": "Lieu de prise en charge",
+      "carPickupPh": "ex. Aéroport de Dubaï (DXB)",
+      "carPickupDateTime": "Date et heure de prise en charge",
+      "carDropoff": "Lieu de restitution",
+      "carDropoffPh": "ex. Hôtel au centre-ville",
+      "carDays": "Nombre de jours",
+      "carVehicle": "Préférence de véhicule",
+      "carVehicleEconomy": "Économique",
+      "carVehicleBusiness": "Affaires",
+      "carVehicleLuxury": "Luxe",
+      "carVehicleVan": "Van",
+      "carSpecial": "Demandes spéciales",
+      "carSpecialPh": "Siège enfant, chauffeur parlant une langue précise, etc."
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Téléversez et suivez l'examen de vos documents.",
+      "dropzone": "Glissez les fichiers ici ou cliquez pour sélectionner",
+      "dropzoneHint": "PDF, JPG, PNG ou HEIC — jusqu'à 20 Mo par fichier",
+      "fileName": "Fichier",
+      "type": "Type",
+      "status": "Statut",
+      "uploadedAt": "Téléversé le",
+      "empty": "Aucun document téléversé",
+      "emptyDesc": "Téléversez votre passeport, justificatifs et photos pour accélérer votre dossier.",
+      "uploading": "Téléversement...",
+      "uploadSuccess": "Document soumis pour examen."
+    },
+    "messages": {
+      "title": "Messages",
+      "subtitle": "Discutez avec l'équipe d'Omar — portail et WhatsApp en un seul endroit.",
+      "placeholder": "Écrivez votre message...",
+      "aiBadge": "IA · réponse hors horaires",
+      "empty": "Aucun message pour l'instant",
+      "emptyDesc": "Démarrez une conversation avec l'équipe d'Omar.",
+      "you": "Vous",
+      "team": "Équipe d'Omar"
+    },
+    "invoices": {
+      "title": "Factures",
+      "subtitle": "Payez par PIX ou en plusieurs fois par carte.",
+      "number": "Facture",
+      "dueDate": "Échéance",
+      "total": "Total",
+      "status": "Statut",
+      "pay": "Payer",
+      "payPix": "Payer avec PIX",
+      "installments": "Payer en plusieurs fois",
+      "empty": "Aucune facture",
+      "emptyDesc": "Vos factures apparaîtront ici une fois émises.",
+      "pixTitle": "Paiement PIX",
+      "pixScan": "Scannez le QR code avec l'application de votre banque",
+      "pixCopy": "Copier le code PIX",
+      "pixCopied": "Code copié !",
+      "pixExpires": "Expire dans {time}",
+      "pixPaid": "Paiement confirmé ! Merci.",
+      "installmentsTitle": "Paiement par carte échelonné",
+      "installmentsDesc": "Jusqu'à 12x. Vous serez redirigé vers le paiement sécurisé.",
+      "lineItems": "Éléments"
+    },
+    "profile": {
+      "title": "Profil",
+      "subtitle": "Gérez vos informations et préférences.",
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "language": "Langue préférée",
+      "whatsapp": "WhatsApp lié",
+      "whatsappLink": "Lier WhatsApp",
+      "saved": "Profil mis à jour avec succès."
+    }
+  },
+  "admin": {
+    "nav": {
+      "overview": "Vue d'ensemble",
+      "clients": "Clients",
+      "bookings": "Réservations",
+      "documents": "Documents",
+      "messages": "Messages",
+      "invoices": "Factures",
+      "backToPortal": "Espace client"
+    },
+    "overview": {
+      "title": "Vue d'ensemble",
+      "subtitle": "Résumé opérationnel de l'agence.",
+      "clients": "Clients",
+      "pendingDocs": "Documents à examiner",
+      "unpaidInvoices": "Factures ouvertes",
+      "openMessages": "Messages en file",
+      "recentBookings": "Réservations récentes",
+      "reviewQueue": "File d'examen"
+    },
+    "clients": {
+      "title": "Clients",
+      "subtitle": "Gérez votre base de clients.",
+      "new": "Nouveau client",
+      "name": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "language": "Langue",
+      "bookings": "Réservations",
+      "empty": "Aucun client enregistré"
+    },
+    "bookings": {
+      "title": "Toutes les réservations",
+      "subtitle": "Gérez le statut de chaque réservation.",
+      "client": "Client",
+      "manage": "Gérer le statut"
+    },
+    "documents": {
+      "title": "Examen des documents",
+      "subtitle": "Approuvez ou rejetez les documents soumis.",
+      "client": "Client",
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "approved": "Document approuvé.",
+      "rejected": "Document rejeté.",
+      "queueEmpty": "Aucun document dans la file"
+    },
+    "messages": {
+      "title": "Messages",
+      "subtitle": "Toutes les conversations et l'assistant IA.",
+      "aiAgent": "Agent IA",
+      "aiOn": "IA activée",
+      "aiOff": "IA désactivée"
+    },
+    "invoices": {
+      "title": "Factures",
+      "subtitle": "Créez, envoyez et suivez les paiements.",
+      "create": "Créer une facture",
+      "client": "Client"
+    }
+  },
+  "status": {
+    "booking": {
+      "pending": "En attente",
+      "processing": "En traitement",
+      "confirmed": "Confirmée",
+      "cancelled": "Annulée"
+    },
+    "invoice": {
+      "unpaid": "Impayée",
+      "paid": "Payée",
+      "overdue": "En retard"
+    },
+    "review": {
+      "pending": "En attente",
+      "under_review": "En examen",
+      "approved": "Approuvé",
+      "rejected": "Rejeté"
+    }
+  },
+  "docType": {
+    "passport": "Passeport",
+    "residence": "Justificatif de domicile",
+    "bank_statement": "Relevé bancaire",
+    "photo_id": "Photo / pièce d'identité",
+    "other": "Autre"
+  },
+  "legal": {
+    "lastUpdated": "Dernière mise à jour",
+    "intlNotice": "Cette politique est disponible en portugais et en anglais. La version anglaise est affichée ici pour votre commodité ; en cas de divergence, la version portugaise prévaut."
+  },
+  "cookies": {
+    "bannerText": "Nous utilisons des cookies essentiels et, avec votre consentement, des cookies d'analyse et de publicité (Meta, Google, TikTok) pour améliorer votre expérience.",
+    "bannerLink": "En savoir plus",
+    "accept": "Tout accepter",
+    "reject": "Essentiels uniquement"
+  },
+  "footer": {
+    "servicesTitle": "Services",
+    "contactTitle": "Contact",
+    "legalTitle": "Mentions légales",
+    "privacy": "Politique de confidentialité",
+    "cookies": "Politique de cookies",
+    "terms": "Conditions d'utilisation",
+    "bookingTerms": "Réservation et remboursements",
+    "rights": "Tous droits réservés.",
+    "mei": "63.588.045 OMAR OUKHIRA — CNPJ 63.588.045/0001-49"
+  }
+}

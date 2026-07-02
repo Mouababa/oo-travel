@@ -1,0 +1,460 @@
+{
+  "common": {
+    "brand": "OO Travel",
+    "tagline": "Your journey, from first step to destination",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "download": "Download",
+    "upload": "Upload",
+    "view": "View",
+    "search": "Search",
+    "send": "Send",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "all": "All",
+    "actions": "Actions",
+    "whatsapp": "WhatsApp",
+    "talkOnWhatsapp": "Chat on WhatsApp",
+    "optional": "optional"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Sign in",
+    "portal": "Client portal",
+    "requestQuote": "Request a Quote",
+    "faq": "FAQ",
+    "blog": "Journal"
+  },
+  "blog": {
+    "title": "The OO Travel Journal",
+    "subtitle": "Visa and relocation guides, destination notes, and practical travel logistics — from real cases, not recycled listicles.",
+    "emptyState": "New posts coming soon.",
+    "backToBlog": "Back to the journal",
+    "readingTime": "{n} min read",
+    "categories": {
+      "visa": "Visa & Relocation",
+      "destinations": "Destinations",
+      "logistics": "Travel Logistics",
+      "business": "Business Travel"
+    }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "Everything you need to know before you travel with OO Travel.",
+    "q1": "What services does OO Travel offer?",
+    "a1": "Flights, hotels, tours, visas, cruises, corporate travel, legal relocation and chauffeured car rental — arranged end to end, all in one place.",
+    "q2": "Which languages can I be served in?",
+    "a2": "Omar assists you personally in Portuguese, English, French and Arabic — no intermediaries and no call centre.",
+    "q3": "Can you help with visas and legal relocation abroad?",
+    "a3": "Yes. We prepare and guide visa applications and legal settlement paperwork alongside your flights and accommodation.",
+    "q4": "How do I pay?",
+    "a4": "You receive a clear, itemised invoice and pay securely by PIX through Mercado Pago before anything is confirmed.",
+    "q5": "How quickly will I get a reply?",
+    "a5": "Message Omar on WhatsApp for a fast, personal response — usually the same day, and often within a couple of hours.",
+    "q6": "Is OO Travel a licensed agency?",
+    "a6": "Yes. OO Travel operates as a registered MEI in São Paulo (CNPJ 63.588.045/0001-49, CNAE 7911-2/00 — travel agencies)."
+  },
+  "home": {
+    "eyebrow": "São Paulo's #1 Independent Travel Agent",
+    "h1Line1": "The World, Arranged",
+    "h1Line2": "Exactly for You.",
+    "subheadline": "Flights, hotels, visas, cruises, and legal relocation — handled end to end by a licensed expert in 4 languages.",
+    "ctaPrimary": "Get my free quote",
+    "ctaSecondary": "WhatsApp Omar now",
+    "ctaMicrocopy": "Free quote · No obligation.",
+    "ctaPortalLink": "Already a client? Sign in.",
+    "trust1": "MEI licensed",
+    "trust2": "CNPJ 63.588.045/0001-49",
+    "trust3": "PT · EN · FR · AR",
+    "interestHeading": "One agent. Every destination.",
+    "interest1Title": "Global reach",
+    "interest1Desc": "Flights to 50+ countries, all major alliances.",
+    "interest1Stat": "50+ destinations served",
+    "interest2Title": "Visa & paperwork experts",
+    "interest2Desc": "End-to-end document prep, zero stress.",
+    "interest2Stat": "100% document support",
+    "interest3Title": "Always available",
+    "interest3Desc": "Omar replies personally, day or night, in your language.",
+    "interest3Stat": "24/7 replies",
+    "desireHeading": "Every journey, fully covered.",
+    "requestThis": "Request this",
+    "actionHeading": "Ready to travel without the stress?",
+    "actionSubtext": "Tell Omar where you want to go. He'll handle everything else.",
+    "orMessage": "Or message directly",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "whatsapp": "WhatsApp number",
+      "service": "Service",
+      "servicePlaceholder": "Select a service",
+      "destination": "Destination & travel dates",
+      "destinationPh": "e.g. Dubai, Sept 10–17",
+      "message": "Message",
+      "messagePh": "Tell us a little about your trip...",
+      "submit": "Send my request to Omar",
+      "sent": "Request sent! Omar will get back to you soon.",
+      "privacyNote": "Your data is private. No spam — ever."
+    },
+    "stats": {
+      "destinations": "Destinations served",
+      "trips": "Journeys arranged",
+      "languages": "Languages spoken",
+      "support": "Personal support",
+      "caption": "A decade of borderless travel, handled personally."
+    },
+    "testimonials": {
+      "heading": "Loved by travelers worldwide",
+      "t1Quote": "Omar arranged our flight and hotel to Dubai in record time. Flawless service from start to finish.",
+      "t1Name": "Mariana Costa",
+      "t1Trip": "Flight + hotel · Dubai",
+      "t1Flag": "🇧🇷",
+      "t2Quote": "He handled my entire visa and legal installation in Brazil. Professional, patient, and always available.",
+      "t2Name": "Ahmed Al-Mansoori",
+      "t2Trip": "Visa + legal installation · Brazil",
+      "t2Flag": "🇦🇪",
+      "t3Quote": "A perfect Mediterranean cruise, planned down to the smallest detail. I recommend him without hesitation.",
+      "t3Name": "Camille Laurent",
+      "t3Trip": "Luxury cruise · Mediterranean",
+      "t3Flag": "🇫🇷"
+    },
+    "gallery": {
+      "eyebrow": "Real journeys",
+      "heading": "Where memories are made",
+      "subtitle": "Real moments from journeys we've crafted across Morocco's dunes and beyond — luxury desert camps, sunrise camel treks, and tables shared under the stars. Your story could be next.",
+      "cta": "Start your journey"
+    }
+  },
+  "services": {
+    "title": "Our services",
+    "subtitle": "Flights, visas, hotels, and relocation — arranged end to end, for leisure and business travel.",
+    "requestQuote": "Request a quote",
+    "items": {
+      "flight": {
+        "name": "Flights",
+        "desc": "Domestic and international flights with the best fares and airlines."
+      },
+      "hotel": {
+        "name": "Hotels",
+        "desc": "Hand-picked hotels and stays for every profile and budget."
+      },
+      "tour": {
+        "name": "Packages & itineraries",
+        "desc": "Personalized itineraries and complete tour packages."
+      },
+      "visa": {
+        "name": "Visa assistance",
+        "desc": "Preparation and follow-up of visa applications and paperwork."
+      },
+      "cruise": {
+        "name": "Cruises & luxury",
+        "desc": "Cruises and premium, tailor-made travel experiences."
+      },
+      "corporate": {
+        "name": "Corporate travel",
+        "desc": "Team bookings, business visas and expense compliance."
+      },
+      "legal": {
+        "name": "Relocation paperwork",
+        "desc": "Documentation and support for settling in your destination country."
+      },
+      "car_rental": {
+        "name": "Car rental with driver",
+        "desc": "Private chauffeur service at your destination — airport transfers, city tours, day trips. English and Arabic-speaking drivers available."
+      }
+    }
+  },
+  "about": {
+    "title": "About Omar Oukhira",
+    "intro": "Independent travel agent in São Paulo, specialized in serving clients from Brazil and the Arab, Francophone and English-speaking worlds.",
+    "bio": "With over a decade in the industry, Omar offers close, personalized service, accompanying every client from planning to arrival — including visa processes and legal settlement abroad.",
+    "credentialsTitle": "Credentials",
+    "credentialsMei": "MEI — 63.588.045 OMAR OUKHIRA",
+    "credentialsCnpj": "CNPJ 63.588.045/0001-49",
+    "credentialsCnae": "CNAE 7911-2/00 — Travel agencies",
+    "languagesTitle": "Languages",
+    "languages": "Portuguese, English, French and Arabic",
+    "journey": {
+      "eyebrow": "By the numbers",
+      "heading": "A decade of borderless travel",
+      "s1Label": "Years of experience",
+      "s1Desc": "Personally arranging every journey",
+      "s2Label": "Services, end to end",
+      "s2Desc": "From flights to legal relocation",
+      "s3Label": "Client satisfaction",
+      "s3Desc": "Guests who recommend Omar",
+      "s4Label": "Languages, one contact",
+      "s4Desc": "PT · EN · FR · AR — no intermediaries",
+      "cta": "Start your journey"
+    }
+  },
+  "contact": {
+    "title": "Get in touch",
+    "subtitle": "Send a message or chat directly on WhatsApp.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "send": "Send message",
+    "sent": "Message sent! We'll get back to you soon.",
+    "location": "São Paulo, Brazil"
+  },
+  "login": {
+    "title": "Access your portal",
+    "subtitle": "Sign in with your email and password or get a magic link.",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "magicLink": "Send magic link",
+    "or": "or",
+    "magicLinkSent": "Link sent! Check your email.",
+    "noAccount": "No account yet? Contact Omar to set up your access."
+  },
+  "portal": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "bookings": "Bookings",
+      "documents": "Documents",
+      "messages": "Messages",
+      "invoices": "Invoices",
+      "profile": "Profile",
+      "logout": "Log out"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Hello, {name}",
+      "subtitle": "Here's a summary of your trips.",
+      "statBookings": "Active bookings",
+      "statDocuments": "Pending documents",
+      "statInvoices": "Open invoices",
+      "statMessages": "Unread messages",
+      "nextTripTitle": "Next trip",
+      "nextTripNone": "No trip scheduled",
+      "nextTripCta": "Plan a trip",
+      "daysToGo": "days to go",
+      "welcomeBack": "Welcome back",
+      "quickActions": "Quick actions",
+      "newRequest": "New request",
+      "uploadDocs": "Upload documents",
+      "payInvoice": "Pay invoice",
+      "recentBookings": "Recent bookings",
+      "viewAll": "View all"
+    },
+    "bookings": {
+      "title": "My bookings",
+      "subtitle": "Track the status of each request.",
+      "new": "New request",
+      "service": "Service",
+      "destination": "Destination",
+      "dates": "Dates",
+      "status": "Status",
+      "amount": "Amount",
+      "itinerary": "Itinerary (PDF)",
+      "empty": "You have no bookings yet",
+      "emptyDesc": "Start by creating a new travel request.",
+      "createFirst": "Create first request"
+    },
+    "newBooking": {
+      "title": "New request",
+      "subtitle": "Tell Omar what you need.",
+      "step": "Step {current} of {total}",
+      "step1": "Service type",
+      "step2": "Travel details",
+      "step3": "Documents & notes",
+      "chooseService": "Choose the service you need",
+      "destination": "Destination",
+      "destinationPh": "e.g. Lisbon, Portugal",
+      "travelDate": "Departure date",
+      "returnDate": "Return date",
+      "notes": "Notes",
+      "notesPh": "Share important details: number of travelers, preferences, etc.",
+      "attachments": "Attachments (optional)",
+      "review": "Review & submit",
+      "submitted": "Request submitted! Omar will be in touch soon.",
+      "carDetails": "Car rental with driver details",
+      "carPickup": "Pickup location",
+      "carPickupPh": "e.g. Dubai Airport (DXB)",
+      "carPickupDateTime": "Pickup date & time",
+      "carDropoff": "Drop-off location",
+      "carDropoffPh": "e.g. Downtown hotel",
+      "carDays": "Number of days",
+      "carVehicle": "Vehicle preference",
+      "carVehicleEconomy": "Economy",
+      "carVehicleBusiness": "Business",
+      "carVehicleLuxury": "Luxury",
+      "carVehicleVan": "Van",
+      "carSpecial": "Special requests",
+      "carSpecialPh": "Child seat, a specific-language driver, etc."
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Upload and track the review of your documents.",
+      "dropzone": "Drag files here or click to select",
+      "dropzoneHint": "PDF, JPG, PNG or HEIC — up to 20 MB per file",
+      "fileName": "File",
+      "type": "Type",
+      "status": "Status",
+      "uploadedAt": "Uploaded",
+      "empty": "No documents uploaded",
+      "emptyDesc": "Upload your passport, statements and photos to speed up your process.",
+      "uploading": "Uploading...",
+      "uploadSuccess": "Document submitted for review."
+    },
+    "messages": {
+      "title": "Messages",
+      "subtitle": "Chat with Omar's team — portal and WhatsApp in one place.",
+      "placeholder": "Write your message...",
+      "aiBadge": "AI · off-hours reply",
+      "empty": "No messages yet",
+      "emptyDesc": "Start a conversation with Omar's team.",
+      "you": "You",
+      "team": "Omar's team"
+    },
+    "invoices": {
+      "title": "Invoices",
+      "subtitle": "Pay via PIX or in installments by card.",
+      "number": "Invoice",
+      "dueDate": "Due date",
+      "total": "Total",
+      "status": "Status",
+      "pay": "Pay",
+      "payPix": "Pay with PIX",
+      "installments": "Pay in installments",
+      "empty": "No invoices",
+      "emptyDesc": "Your invoices will appear here once issued.",
+      "pixTitle": "PIX payment",
+      "pixScan": "Scan the QR code with your bank app",
+      "pixCopy": "Copy PIX code",
+      "pixCopied": "Code copied!",
+      "pixExpires": "Expires in {time}",
+      "pixPaid": "Payment confirmed! Thank you.",
+      "installmentsTitle": "Card installments",
+      "installmentsDesc": "Up to 12x. You'll be redirected to secure checkout.",
+      "lineItems": "Items"
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Manage your information and preferences.",
+      "fullName": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "language": "Preferred language",
+      "whatsapp": "Linked WhatsApp",
+      "whatsappLink": "Link WhatsApp",
+      "saved": "Profile updated successfully."
+    }
+  },
+  "admin": {
+    "nav": {
+      "overview": "Overview",
+      "clients": "Clients",
+      "bookings": "Bookings",
+      "documents": "Documents",
+      "messages": "Messages",
+      "invoices": "Invoices",
+      "backToPortal": "Client portal"
+    },
+    "overview": {
+      "title": "Overview",
+      "subtitle": "Operational summary of the agency.",
+      "clients": "Clients",
+      "pendingDocs": "Documents to review",
+      "unpaidInvoices": "Open invoices",
+      "openMessages": "Messages in queue",
+      "recentBookings": "Recent bookings",
+      "reviewQueue": "Review queue"
+    },
+    "clients": {
+      "title": "Clients",
+      "subtitle": "Manage your client base.",
+      "new": "New client",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "language": "Language",
+      "bookings": "Bookings",
+      "empty": "No clients registered"
+    },
+    "bookings": {
+      "title": "All bookings",
+      "subtitle": "Manage the status of each booking.",
+      "client": "Client",
+      "manage": "Manage status"
+    },
+    "documents": {
+      "title": "Document review",
+      "subtitle": "Approve or reject submitted documents.",
+      "client": "Client",
+      "approve": "Approve",
+      "reject": "Reject",
+      "approved": "Document approved.",
+      "rejected": "Document rejected.",
+      "queueEmpty": "No documents in the queue"
+    },
+    "messages": {
+      "title": "Messages",
+      "subtitle": "All conversations and the AI assistant.",
+      "aiAgent": "AI agent",
+      "aiOn": "AI enabled",
+      "aiOff": "AI disabled"
+    },
+    "invoices": {
+      "title": "Invoices",
+      "subtitle": "Create, send and track payments.",
+      "create": "Create invoice",
+      "client": "Client"
+    }
+  },
+  "status": {
+    "booking": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    },
+    "invoice": {
+      "unpaid": "Unpaid",
+      "paid": "Paid",
+      "overdue": "Overdue"
+    },
+    "review": {
+      "pending": "Pending",
+      "under_review": "Under review",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "docType": {
+    "passport": "Passport",
+    "residence": "Proof of residence",
+    "bank_statement": "Bank statement",
+    "photo_id": "Photo / ID",
+    "other": "Other"
+  },
+  "legal": {
+    "lastUpdated": "Last updated",
+    "intlNotice": "This policy is available in Portuguese and English. The English version is shown here for your convenience; in case of any conflict, the Portuguese version prevails."
+  },
+  "cookies": {
+    "bannerText": "We use essential cookies and, with your consent, analytics and advertising cookies (Meta, Google, TikTok) to improve your experience.",
+    "bannerLink": "Learn more",
+    "accept": "Accept all",
+    "reject": "Essential only"
+  },
+  "footer": {
+    "servicesTitle": "Services",
+    "contactTitle": "Contact",
+    "legalTitle": "Legal",
+    "privacy": "Privacy Policy",
+    "cookies": "Cookie Policy",
+    "terms": "Terms of Use",
+    "bookingTerms": "Booking & Refunds",
+    "rights": "All rights reserved.",
+    "mei": "63.588.045 OMAR OUKHIRA — CNPJ 63.588.045/0001-49"
+  }
+}

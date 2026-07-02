@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String     @id @default(uuid()) @db.Uuid
+  email             String     @unique
+  fullName          String     @map("full_name")
+  phone             String?
+  preferredLanguage String     @default("pt") @map("preferred_language")
+  role              String     @default("client")
+  whatsappId        String?    @unique @map("whatsapp_id")
+  createdAt         DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  bookings  Booking[]
+  documents Document[]
+  invoices  Invoice[]
+  messages  Message[]
+
+  @@map("users")
+}
+
+model Booking {
+  id          String    @id @default(uuid()) @db.Uuid
+  clientId    String    @map("client_id") @db.Uuid
+  serviceType String    @map("service_type")
+  destination String
+  travelDate  DateTime? @map("travel_date") @db.Date
+  returnDate  DateTime? @map("return_date") @db.Date
+  status      String    @default("pending")
+  amountBrl   Decimal?  @map("amount_brl") @db.Decimal(10, 2)
+  notes       String?
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  client    User       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  documents Document[]
+  invoices  Invoice[]
+
+  @@map("bookings")
+}
+
+model Document {
+  id           String   @id @default(uuid()) @db.Uuid
+  bookingId    String?  @map("booking_id") @db.Uuid
+  clientId     String   @map("client_id") @db.Uuid
+  fileName     String   @map("file_name")
+  storagePath  String   @map("storage_path")
+  docType      String?  @map("doc_type")
+  reviewStatus String   @default("pending") @map("review_status")
+  uploadedAt   DateTime @default(now()) @map("uploaded_at") @db.Timestamptz(6)
+
+  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  client  User     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@map("documents")
+}
+
+model Invoice {
+  id             String    @id @default(uuid()) @db.Uuid
+  bookingId      String?   @map("booking_id") @db.Uuid
+  clientId       String?   @map("client_id") @db.Uuid
+  invoiceNumber  String    @unique @map("invoice_number")
+  lineItems      Json      @map("line_items")
+  totalBrl       Decimal   @map("total_brl") @db.Decimal(10, 2)
+  status         String    @default("unpaid")
+  dueDate        DateTime? @map("due_date") @db.Date
+  paidAt         DateTime? @map("paid_at") @db.Timestamptz(6)
+  paymentMethod  String?   @map("payment_method")
+  mercadoPagoId  String?   @map("mercado_pago_id")
+
+  booking Booking? @relation(fields: [bookingId], references: [id])
+  client  User?    @relation(fields: [clientId], references: [id])
+
+  @@map("invoices")
+}
+
+model Message {
+  id            String    @id @default(uuid()) @db.Uuid
+  clientId      String    @map("client_id") @db.Uuid
+  direction     String
+  channel       String    @default("portal")
+  content       String
+  isAiGenerated Boolean   @default(false) @map("is_ai_generated")
+  readAt        DateTime? @map("read_at") @db.Timestamptz(6)
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  client User @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}

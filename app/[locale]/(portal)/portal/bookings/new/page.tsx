@@ -1,0 +1,226 @@
+'use client';
+
+import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { Check, ArrowRight, ArrowLeft, Paperclip } from 'lucide-react';
+import { useRouter } from '@/i18n/routing';
+import { PageHeader } from '@/components/page-header';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select } from '@/components/ui/select';
+import { ServiceIcon } from '@/components/service-icon';
+import { useToast } from '@/lib/use-toast';
+import { SERVICE_TYPES } from '@/lib/constants';
+import { cn } from '@/lib/utils';
+import type { ServiceType } from '@/lib/types';
+
+const TOTAL_STEPS = 3;
+
+export default function NewBookingPage() {
+  const t = useTranslations('portal.newBooking');
+  const ts = useTranslations('services.items');
+  const tc = useTranslations('common');
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const [step, setStep] = useState(1);
+  const [service, setService] = useState<ServiceType | null>(null);
+  const [destination, setDestination] = useState('');
+
+  const stepTitles = [t('step1'), t('step2'), t('step3')];
+
+  function next() {
+    if (step < TOTAL_STEPS) setStep((s) => s + 1);
+  }
+  function back() {
+    if (step > 1) setStep((s) => s - 1);
+  }
+  function submit() {
+    toast({ title: t('submitted'), variant: 'success' });
+    router.push('/portal/bookings');
+  }
+
+  const canAdvance = step === 1 ? Boolean(service) : step === 2 ? Boolean(destination) : true;
+
+  return (
+    <div className="mx-auto max-w-2xl">
+      <PageHeader title={t('title')} subtitle={t('subtitle')} />
+
+      {/* Stepper */}
+      <div className="mb-6 flex items-center">
+        {stepTitles.map((title, i) => {
+          const n = i + 1;
+          const done = n < step;
+          const active = n === step;
+          return (
+            <div key={title} className="flex flex-1 items-center last:flex-none">
+              <div className="flex items-center gap-2">
+                <span
+                  className={cn(
+                    'flex h-8 w-8 items-center justify-center rounded-full border text-sm font-semibold',
+                    done && 'border-primary bg-primary text-primary-foreground',
+                    active && 'border-primary text-primary',
+                    !done && !active && 'border-border text-text-secondary',
+                  )}
+                >
+                  {done ? <Check className="h-4 w-4" /> : n}
+                </span>
+                <span
+                  className={cn(
+                    'hidden text-sm sm:inline',
+                    active ? 'font-medium text-text-primary' : 'text-text-secondary',
+                  )}
+                >
+                  {title}
+                </span>
+              </div>
+              {n < TOTAL_STEPS && <span className="mx-3 h-px flex-1 bg-border" />}
+            </div>
+          );
+        })}
+      </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          {step === 1 && (
+            <div>
+              <Label className="mb-3">{t('chooseService')}</Label>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {SERVICE_TYPES.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setService(s)}
+                    className={cn(
+                      'flex cursor-pointer items-center gap-3 rounded-md border p-3 text-start transition-colors',
+                      service === s
+                        ? 'border-primary bg-primary-light'
+                        : 'border-border hover:bg-surface-muted',
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        'flex h-9 w-9 items-center justify-center rounded-md',
+                        service === s
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-surface-muted text-text-secondary',
+                      )}
+                    >
+                      <ServiceIcon type={s} className="h-4 w-4" />
+                    </span>
+                    <span className="text-sm font-medium">{ts(`${s}.name`)}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="destination">{t('destination')}</Label>
+                <Input
+                  id="destination"
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  placeholder={t('destinationPh')}
+                />
+              </div>
+
+              {service === 'car_rental' ? (
+                <div className="space-y-4 rounded-xl border border-accent/20 bg-accent/5 p-4">
+                  <p className="font-heading text-sm font-medium text-accent">
+                    {t('carDetails')}
+                  </p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <Label htmlFor="car-pickup">{t('carPickup')}</Label>
+                      <Input id="car-pickup" placeholder={t('carPickupPh')} />
+                    </div>
+                    <div>
+                      <Label htmlFor="car-dropoff">{t('carDropoff')}</Label>
+                      <Input id="car-dropoff" placeholder={t('carDropoffPh')} />
+                    </div>
+                    <div>
+                      <Label htmlFor="car-pickup-dt">{t('carPickupDateTime')}</Label>
+                      <Input id="car-pickup-dt" type="datetime-local" />
+                    </div>
+                    <div>
+                      <Label htmlFor="car-days">{t('carDays')}</Label>
+                      <Input id="car-days" type="number" min={1} defaultValue={1} />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <Label htmlFor="car-vehicle">{t('carVehicle')}</Label>
+                      <Select id="car-vehicle" defaultValue="economy">
+                        <option value="economy">{t('carVehicleEconomy')}</option>
+                        <option value="business">{t('carVehicleBusiness')}</option>
+                        <option value="luxury">{t('carVehicleLuxury')}</option>
+                        <option value="van">{t('carVehicleVan')}</option>
+                      </Select>
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="car-special">{t('carSpecial')}</Label>
+                    <Textarea id="car-special" rows={2} placeholder={t('carSpecialPh')} />
+                  </div>
+                </div>
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <Label htmlFor="travel">{t('travelDate')}</Label>
+                    <Input id="travel" type="date" />
+                  </div>
+                  <div>
+                    <Label htmlFor="return">{t('returnDate')}</Label>
+                    <Input id="return" type="date" />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="notes">{t('notes')}</Label>
+                <Textarea id="notes" rows={4} placeholder={t('notesPh')} />
+              </div>
+              <div>
+                <Label>{t('attachments')}</Label>
+                <label className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-border px-4 py-6 text-sm text-text-secondary hover:bg-surface-muted">
+                  <Paperclip className="h-4 w-4" />
+                  {t('attachments')}
+                  <input type="file" multiple className="hidden" />
+                </label>
+              </div>
+            </div>
+          )}
+
+          <div className="mt-6 flex items-center justify-between">
+            <Button variant="ghost" onClick={back} disabled={step === 1} className="gap-2">
+              <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
+              {tc('back')}
+            </Button>
+            <span className="text-xs text-text-secondary">
+              {t('step', { current: step, total: TOTAL_STEPS })}
+            </span>
+            {step < TOTAL_STEPS ? (
+              <Button onClick={next} disabled={!canAdvance} className="gap-2">
+                {tc('next')}
+                <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+              </Button>
+            ) : (
+              <Button onClick={submit} variant="success" className="gap-2">
+                <Check className="h-4 w-4" />
+                {t('review')}
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

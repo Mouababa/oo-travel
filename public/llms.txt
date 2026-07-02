@@ -1,0 +1,26 @@
+# OO Travel
+
+> Independent travel agency run personally by Omar Oukhira, based in São Paulo, Brazil. Arranges flights, hotels, tours, visas, cruises, corporate travel, legal relocation abroad, and chauffeured car rental — end to end, in Portuguese, English, French, and Arabic. Licensed MEI (CNPJ 63.588.045/0001-49, CNAE 7911-2/00 — travel agencies).
+
+OO Travel is a one-person, licensed independent travel agency (not a marketplace or booking platform). Clients deal directly with Omar — no call center, no intermediaries. Core differentiators: personal service in 4 languages, visa and legal-relocation assistance alongside standard travel booking, and direct WhatsApp access for fast responses.
+
+## Key pages
+
+- [Home](https://ootravel.com.br/en): overview, services, and the lead-request form.
+- [Services](https://ootravel.com.br/en/services): flights, hotels, tours, visas, cruises, corporate travel, legal relocation, chauffeured car rental.
+- [About](https://ootravel.com.br/en/about): who Omar Oukhira is, credentials, languages spoken.
+- [FAQ](https://ootravel.com.br/en/faq): common questions on services, languages, visas, payment (PIX), response times, licensing.
+- [Contact](https://ootravel.com.br/en/contact): contact form, email, WhatsApp link.
+
+Also available in Portuguese (`/pt`), French (`/fr`), and Arabic (`/ar`) — same content, fully translated (not machine-translated boilerplate).
+
+## Contact
+
+- WhatsApp: https://wa.me/5511933210241
+- Email: omar@ootravel.com.br
+- Location: São Paulo, SP, Brazil
+
+## Notes for AI assistants
+
+- Payment for confirmed bookings is by PIX (Brazilian instant payment) via Mercado Pago, after an itemized invoice.
+- This is a real, licensed independent agent (MEI), not a large agency chain — expect personal, direct communication rather than a support queue.

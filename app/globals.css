@@ -1,0 +1,282 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-void: #08080f;
+    --color-surface: #0f0f1a;
+    --color-surface-raised: #16162a;
+    --color-border: #1e1e38;
+    --color-accent: #6366f1;
+    --color-accent-glow: #818cf8;
+    --color-gold: #f59e0b;
+    --color-text-primary: #f1f5f9;
+    --color-text-secondary: #94a3b8;
+    --color-text-muted: #7b8aa3; /* 5.71:1 on void — was #475569 at 2.63:1, failed WCAG AA */
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+  }
+
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    font-size: 15px;
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    position: relative;
+    overflow-x: hidden;
+    background-color: var(--color-void);
+    color: var(--color-text-primary);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Subtle film grain over the void background (SVG feTurbulence, no images). */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Ambient indigo aura behind page content. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(60% 50% at 50% -10%, rgba(99, 102, 241, 0.12), transparent 70%),
+      radial-gradient(40% 40% at 100% 0%, rgba(129, 140, 248, 0.07), transparent 70%);
+  }
+
+  /* Keep real content above the decorative pseudo-layers. */
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Cormorant display serif — the luxury voice. Serifs read best with normal
+     (not negative) tracking; light line-height keeps big display lines tight. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.1;
+    color: var(--color-text-primary);
+  }
+
+  /* RTL keeps the geometric Alexandria voice across the board — Arabic has no
+     Cormorant equivalent, and a serif/sans clash would break the brand. */
+  html[dir='rtl'] body {
+    font-family: var(--font-arabic), var(--font-montserrat), sans-serif;
+  }
+  html[dir='rtl'] h1,
+  html[dir='rtl'] h2,
+  html[dir='rtl'] h3,
+  html[dir='rtl'] h4 {
+    font-family: var(--font-arabic), sans-serif;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+}
+
+@layer components {
+  /* Liquid Glass card. backdrop blur + saturate lifts the colour behind the
+     pane (the "liquid" read); a faint iridescent top-edge highlight + indigo
+     hairline give it the premium translucent depth. */
+  .glass {
+    position: relative;
+    background-color: rgba(15, 15, 26, 0.68);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid rgba(99, 102, 241, 0.15);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+      inset 0 0 24px 0 rgba(99, 102, 241, 0.04);
+  }
+
+  .glass-raised {
+    position: relative;
+    background-color: rgba(22, 22, 42, 0.72);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+      inset 0 0 32px 0 rgba(99, 102, 241, 0.05);
+  }
+
+  /* Iridescent hairline frame — the signature Liquid-Glass edge. Apply to a
+     card to wrap it in a faint indigo→gold→indigo gradient border that catches
+     light. Uses a masked gradient ring so the fill stays untouched. */
+  .iridescent-ring {
+    position: relative;
+  }
+  .iridescent-ring::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(129, 140, 248, 0.55) 0%,
+      rgba(245, 158, 11, 0.35) 45%,
+      rgba(99, 102, 241, 0.5) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.7;
+    transition: opacity 0.5s ease;
+  }
+  .iridescent-ring:hover::before {
+    opacity: 1;
+  }
+
+  /* Pause the floating gallery while the visitor inspects it. */
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  /* Fade the gallery edges into the background for a seamless float. */
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent
+    );
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  /* Hover lift on interactive cards. Luxury spec calls for slower, fluid
+     curves (400-600ms) — never snappy. */
+  .lift {
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lift:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Small uppercase editorial kicker above section headings. */
+  .eyebrow {
+    font-family: var(--font-montserrat), sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--color-text-muted);
+  }
+}
+
+@layer utilities {
+  /* Gradient text for headings. */
+  .text-gradient {
+    background: linear-gradient(135deg, #f1f5f9 0%, #6366f1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Luxury ivory→gold gradient for the most premium display headlines. */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #fdf6e3 0%, #f5e0a3 35%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Iridescent indigo→gold→indigo for hero word-accents (Liquid-Glass spectrum). */
+  .text-gradient-iridescent {
+    background: linear-gradient(120deg, #818cf8 0%, #f5e0a3 50%, #6366f1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Thin gold hairline divider — quiet luxury punctuation between elements. */
+  .rule-gold {
+    height: 1px;
+    width: 3.5rem;
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(245, 158, 11, 0.9),
+      transparent
+    );
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded-md;
+    background-color: var(--color-surface-raised);
+  }
+
+  /* Darkened image overlay helper for photo cards. */
+  .img-darken::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8, 8, 15, 0.25) 0%, rgba(8, 8, 15, 0.85) 100%);
+  }
+}
+
+/* Thin futuristic scrollbars. */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a4a;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+  color: #fff;
+}
+
+/* Respect reduced-motion globally. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
