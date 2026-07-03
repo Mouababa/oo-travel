@@ -19,12 +19,16 @@
 --      otherwise honor Prisma's @updatedAt).
 --   7. Added an invoice-number generator (sequence + function) — unique
 --      text can't be hand-assigned safely at scale.
+--   8. public.users.id now has a real foreign key to auth.users(id) with
+--      ON DELETE CASCADE. It previously only matched auth.users.id by
+--      convention (handle_new_user() sets id = new.id), so deleting an
+--      auth user never cleaned up the matching profile row.
 -- ════════════════════════════════════════════════════════════════
 
 -- ─── Tables ─────────────────────────────────────────────────────
 
 create table if not exists public.users (
-  id uuid primary key default gen_random_uuid(),
+  id uuid primary key references auth.users(id) on delete cascade,
   email text unique not null,
   full_name text not null,
   phone text,
@@ -186,6 +190,12 @@ create trigger trg_bookings_updated_at
 -- which ROW a client may touch (their own); it does not restrict which
 -- COLUMNS they change within that row. Without this trigger, a client
 -- could UPDATE their own row and set role = 'admin'.
+--
+-- auth.uid() is null for service-role/admin-API operations (no end-user
+-- session) — those are trusted and must be exempt, or legitimate actions
+-- like promoting a new account via the Supabase Admin API would be
+-- blocked too. Only a signed-in non-admin client (auth.uid() is not null,
+-- is_admin() false) is the actual threat this guards against.
 
 create or replace function public.prevent_role_self_escalation()
 returns trigger
@@ -194,7 +204,7 @@ security definer
 set search_path = public
 as $$
 begin
-  if not public.is_admin() then
+  if auth.uid() is not null and not public.is_admin() then
     if new.role is distinct from old.role then
       raise exception 'Only admins can change role';
     end if;
