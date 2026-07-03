@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import {
   CalendarCheck,
@@ -28,12 +29,12 @@ import { BookingsChart } from '@/components/portal/bookings-chart';
 import { PhotoBackdrop } from '@/components/public/photo-card';
 import { scenePhoto } from '@/lib/images';
 import {
+  getCurrentUser,
   bookingsForClient,
   documentsForClient,
   invoicesForClient,
   messagesForClient,
-  mockUser,
-} from '@/lib/mock-data';
+} from '@/lib/data';
 import { formatBRL } from '@/lib/utils';
 
 export default async function DashboardPage({
@@ -47,10 +48,17 @@ export default async function DashboardPage({
   const tb = await getTranslations('portal.bookings');
   const ts = await getTranslations('services.items');
 
-  const bookings = bookingsForClient(mockUser.id);
-  const docs = documentsForClient(mockUser.id);
-  const invoices = invoicesForClient(mockUser.id);
-  const messages = messagesForClient(mockUser.id);
+  // Middleware already gates unauthenticated access to /portal; this is a
+  // defensive fallback for the edge case of a session outliving its user row.
+  const user = await getCurrentUser();
+  if (!user) redirect('/login');
+
+  const [bookings, docs, invoices, messages] = await Promise.all([
+    bookingsForClient(user.id),
+    documentsForClient(user.id),
+    invoicesForClient(user.id),
+    messagesForClient(user.id),
+  ]);
 
   const activeBookings = bookings.filter((b) => b.status !== 'cancelled').length;
   const pendingDocs = docs.filter((d) => d.review_status !== 'approved').length;
@@ -94,7 +102,7 @@ export default async function DashboardPage({
           <div>
             <p className="text-sm text-text-secondary">{t('welcomeBack')}</p>
             <h1 className="mt-1 font-heading text-3xl font-bold tracking-heading text-text-primary">
-              {mockUser.full_name}
+              {user.full_name}
             </h1>
             {nextTrip ? (
               <p className="mt-2 flex items-center gap-2 text-sm text-text-secondary">

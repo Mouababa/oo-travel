@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Plus, Download, CalendarX } from 'lucide-react';
 import { Link } from '@/i18n/routing';
@@ -15,7 +16,7 @@ import {
 import { BookingStatusBadge } from '@/components/status-badge';
 import { ServiceIcon } from '@/components/service-icon';
 import { EmptyState } from '@/components/empty-state';
-import { bookingsForClient, mockUser } from '@/lib/mock-data';
+import { getCurrentUser, bookingsForClient } from '@/lib/data';
 import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
 
 export default async function BookingsPage({
@@ -27,7 +28,10 @@ export default async function BookingsPage({
   setRequestLocale(locale);
   const t = await getTranslations('portal.bookings');
   const ts = await getTranslations('services.items');
-  const bookings = bookingsForClient(mockUser.id);
+
+  const user = await getCurrentUser();
+  if (!user) redirect('/login');
+  const bookings = await bookingsForClient(user.id);
 
   const newButton = (
     <Link href="/portal/bookings/new">

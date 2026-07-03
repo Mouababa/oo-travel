@@ -20,7 +20,10 @@ import {
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import { LocalePills } from '@/components/locale-pills';
 import { BrandMark } from '@/components/brand-mark';
+import { createClient } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
+
+const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
 
 interface NavItem {
   href: string;
@@ -125,7 +128,12 @@ export function AppShell({
             <span className="min-w-0 truncate text-sm text-text-secondary">{userName}</span>
           </div>
           <button
-            onClick={() => router.push('/login')}
+            onClick={async () => {
+              // Without this, the session cookie survives the redirect and
+              // navigating back to /portal would still be authenticated.
+              if (!MOCK_MODE) await createClient().auth.signOut();
+              router.push('/login');
+            }}
             className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors hover:bg-danger/10 hover:text-danger"
             aria-label={variant === 'portal' ? t('logout') : t('backToPortal')}
           >

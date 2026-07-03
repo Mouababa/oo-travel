@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Send, ArrowRight } from 'lucide-react';
+import { Send, ArrowRight, Loader2 } from 'lucide-react';
 import { WhatsAppLogo } from '@/components/icons/whatsapp';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
 import { useToast } from '@/lib/use-toast';
 import { SERVICE_TYPES, whatsappLink } from '@/lib/constants';
+import { submitLeadAction } from '@/lib/actions';
+import type { ServiceType } from '@/lib/types';
 
 export function HomeRequestForm() {
   const t = useTranslations('home');
@@ -17,11 +20,30 @@ export function HomeRequestForm() {
   const ts = useTranslations('services.items');
   const tc = useTranslations('common');
   const { toast } = useToast();
+  const [submitting, setSubmitting] = useState(false);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    toast({ title: tf('sent'), variant: 'success' });
-    (e.target as HTMLFormElement).reset();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    setSubmitting(true);
+
+    const result = await submitLeadAction({
+      full_name: String(fd.get('name') ?? ''),
+      email: String(fd.get('email') ?? ''),
+      whatsapp: String(fd.get('whatsapp') ?? '') || undefined,
+      service_type: (String(fd.get('service') ?? '') || undefined) as ServiceType | undefined,
+      destination: String(fd.get('destination') ?? '') || undefined,
+      message: String(fd.get('message') ?? '') || undefined,
+    });
+
+    setSubmitting(false);
+    if (result.ok) {
+      toast({ title: tf('sent'), variant: 'success' });
+      form.reset();
+    } else {
+      toast({ title: tf('error'), variant: 'danger' });
+    }
   }
 
   return (
@@ -73,8 +95,12 @@ export function HomeRequestForm() {
           </Label>
           <Textarea id="rf-message" name="message" rows={4} placeholder={tf('messagePh')} />
         </div>
-        <Button type="submit" size="lg" className="w-full gap-2">
-          <Send className="h-4 w-4 rtl:rotate-180" />
+        <Button type="submit" size="lg" className="w-full gap-2" disabled={submitting}>
+          {submitting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Send className="h-4 w-4 rtl:rotate-180" />
+          )}
           {tf('submit')}
         </Button>
         <p className="text-center text-xs text-text-muted">{tf('privacyNote')}</p>

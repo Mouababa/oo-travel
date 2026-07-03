@@ -13,7 +13,7 @@ import {
   TableHead,
   TableCell,
 } from '@/components/ui/table';
-import { mockClients, bookingsForClient } from '@/lib/mock-data';
+import { allClients, allBookings } from '@/lib/data';
 
 const langLabels: Record<string, string> = {
   pt: 'PT',
@@ -31,6 +31,12 @@ export default async function AdminClientsPage({
   setRequestLocale(locale);
   const t = await getTranslations('admin.clients');
   const tc = await getTranslations('common');
+
+  const [clients, bookings] = await Promise.all([allClients(), allBookings()]);
+  const bookingCounts = bookings.reduce<Record<string, number>>((acc, b) => {
+    acc[b.client_id] = (acc[b.client_id] ?? 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <>
@@ -62,7 +68,7 @@ export default async function AdminClientsPage({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockClients.map((c) => (
+              {clients.map((c) => (
                 <TableRow key={c.id}>
                   <TableCell>
                     <span className="flex items-center gap-2 font-medium">
@@ -78,7 +84,7 @@ export default async function AdminClientsPage({
                     <Badge variant="neutral">{langLabels[c.preferred_language]}</Badge>
                   </TableCell>
                   <TableCell className="text-end font-medium">
-                    {bookingsForClient(c.id).length}
+                    {bookingCounts[c.id] ?? 0}
                   </TableCell>
                 </TableRow>
               ))}

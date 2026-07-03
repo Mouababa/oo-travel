@@ -99,7 +99,8 @@
       "messagePh": "Tell us a little about your trip...",
       "submit": "Send my request to Omar",
       "sent": "Request sent! Omar will get back to you soon.",
-      "privacyNote": "Your data is private. No spam — ever."
+      "privacyNote": "Your data is private. No spam — ever.",
+      "error": "Something went wrong. Please try WhatsApp instead."
     },
     "stats": {
       "destinations": "Destinations served",
@@ -202,6 +203,7 @@
     "message": "Message",
     "send": "Send message",
     "sent": "Message sent! We'll get back to you soon.",
+    "error": "Something went wrong. Please try WhatsApp instead.",
     "location": "São Paulo, Brazil"
   },
   "login": {
@@ -276,6 +278,7 @@
       "attachments": "Attachments (optional)",
       "review": "Review & submit",
       "submitted": "Request submitted! Omar will be in touch soon.",
+      "submitError": "Couldn't submit your request. Please try again or message on WhatsApp.",
       "carDetails": "Car rental with driver details",
       "carPickup": "Pickup location",
       "carPickupPh": "e.g. Dubai Airport (DXB)",
@@ -303,13 +306,15 @@
       "empty": "No documents uploaded",
       "emptyDesc": "Upload your passport, statements and photos to speed up your process.",
       "uploading": "Uploading...",
-      "uploadSuccess": "Document submitted for review."
+      "uploadSuccess": "Document submitted for review.",
+      "uploadError": "Upload failed. Please try again."
     },
     "messages": {
       "title": "Messages",
       "subtitle": "Chat with Omar's team — portal and WhatsApp in one place.",
       "placeholder": "Write your message...",
       "aiBadge": "AI · off-hours reply",
+      "sendError": "Message failed to send. Please try again.",
       "empty": "No messages yet",
       "emptyDesc": "Start a conversation with Omar's team.",
       "you": "You",
@@ -335,6 +340,7 @@
       "pixPaid": "Payment confirmed! Thank you.",
       "installmentsTitle": "Card installments",
       "installmentsDesc": "Up to 12x. You'll be redirected to secure checkout.",
+      "paymentError": "Couldn't confirm payment. Please try again.",
       "lineItems": "Items"
     },
     "profile": {
@@ -346,7 +352,8 @@
       "language": "Preferred language",
       "whatsapp": "Linked WhatsApp",
       "whatsappLink": "Link WhatsApp",
-      "saved": "Profile updated successfully."
+      "saved": "Profile updated successfully.",
+      "saveError": "Couldn't save changes. Please try again."
     }
   },
   "admin": {
@@ -394,7 +401,8 @@
       "reject": "Reject",
       "approved": "Document approved.",
       "rejected": "Document rejected.",
-      "queueEmpty": "No documents in the queue"
+      "queueEmpty": "No documents in the queue",
+      "actionError": "Couldn't update the document. Please try again."
     },
     "messages": {
       "title": "Messages",

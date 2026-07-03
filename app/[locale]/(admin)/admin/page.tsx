@@ -14,12 +14,13 @@ import {
 import { BookingStatusBadge, ReviewStatusBadge } from '@/components/status-badge';
 import { ServiceIcon } from '@/components/service-icon';
 import {
-  mockBookings,
-  mockClients,
-  mockDocuments,
-  mockInvoices,
-  clientName,
-} from '@/lib/mock-data';
+  allBookings,
+  allClients,
+  allDocuments,
+  allInvoices,
+  allMessages,
+  clientNameMap,
+} from '@/lib/data';
 import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
 
 export default async function AdminOverviewPage({
@@ -32,15 +33,30 @@ export default async function AdminOverviewPage({
   const t = await getTranslations('admin.overview');
   const ts = await getTranslations('services.items');
 
-  const pendingDocs = mockDocuments.filter((d) => d.review_status !== 'approved');
-  const unpaid = mockInvoices.filter((i) => i.status !== 'paid');
+  const [bookings, clients, documents, invoices, messages] = await Promise.all([
+    allBookings(),
+    allClients(),
+    allDocuments(),
+    allInvoices(),
+    allMessages(),
+  ]);
+  const names = await clientNameMap([
+    ...bookings.map((b) => b.client_id),
+    ...documents.map((d) => d.client_id),
+  ]);
+
+  const pendingDocs = documents.filter((d) => d.review_status !== 'approved');
+  const unpaid = invoices.filter((i) => i.status !== 'paid');
+  const openConversations = new Set(
+    messages.filter((m) => m.direction === 'inbound' && !m.read_at).map((m) => m.client_id),
+  ).size;
 
   return (
     <>
       <PageHeader title={t('title')} subtitle={t('subtitle')} />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={Users} label={t('clients')} value={mockClients.length} />
+        <StatCard icon={Users} label={t('clients')} value={clients.length} />
         <StatCard
           icon={FileCheck}
           label={t('pendingDocs')}
@@ -56,7 +72,7 @@ export default async function AdminOverviewPage({
         <StatCard
           icon={MessageSquare}
           label={t('openMessages')}
-          value={3}
+          value={openConversations}
           tone="success"
         />
       </div>
@@ -77,7 +93,7 @@ export default async function AdminOverviewPage({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {mockBookings.slice(0, 5).map((b) => (
+                {bookings.slice(0, 5).map((b) => (
                   <TableRow key={b.id}>
                     <TableCell>
                       <span className="flex items-center gap-2">
@@ -89,7 +105,7 @@ export default async function AdminOverviewPage({
                       </span>
                     </TableCell>
                     <TableCell className="text-text-secondary">
-                      {clientName(b.client_id)}
+                      {names[b.client_id] ?? '—'}
                     </TableCell>
                     <TableCell>
                       <BookingStatusBadge status={b.status} />
@@ -123,7 +139,7 @@ export default async function AdminOverviewPage({
                   <TableRow key={d.id}>
                     <TableCell className="font-medium">{d.file_name}</TableCell>
                     <TableCell className="text-text-secondary">
-                      {clientName(d.client_id)}
+                      {names[d.client_id] ?? '—'}
                     </TableCell>
                     <TableCell>
                       <ReviewStatusBadge status={d.review_status} />

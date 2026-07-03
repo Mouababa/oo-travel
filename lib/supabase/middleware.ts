@@ -6,8 +6,9 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
 const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
 
 /**
- * Refreshes the Supabase auth session and returns the current user (if any).
- * In mock mode we short-circuit so the UI is browsable without a backend.
+ * Refreshes the Supabase auth session and returns the current user (if any)
+ * plus their role. In mock mode we short-circuit so the UI is browsable
+ * without a backend.
  *
  * `@supabase/ssr` is imported lazily (only in the non-mock branch): its
  * module graph pulls in `@supabase/supabase-js`, which touches
@@ -20,7 +21,7 @@ export async function updateSession(request: NextRequest) {
   const response = NextResponse.next({ request });
 
   if (MOCK_MODE) {
-    return { response, user: null };
+    return { response, user: null, role: null as string | null };
   }
 
   const { createServerClient } = await import('@supabase/ssr');
@@ -45,5 +46,13 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return { response, user };
+  let role: string | null = null;
+  if (user) {
+    // Needed to gate /admin — being signed in is not the same as being an
+    // admin. RLS (users_self) allows a user to read their own row.
+    const { data } = await supabase.from('users').select('role').eq('id', user.id).single();
+    role = data?.role ?? null;
+  }
+
+  return { response, user, role };
 }

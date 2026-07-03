@@ -12,7 +12,7 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { InvoiceStatusBadge } from '@/components/status-badge';
-import { mockInvoices, clientName } from '@/lib/mock-data';
+import { allInvoices, clientNameMap } from '@/lib/data';
 import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
 
 export default async function AdminInvoicesPage({
@@ -24,6 +24,11 @@ export default async function AdminInvoicesPage({
   setRequestLocale(locale);
   const t = await getTranslations('admin.invoices');
   const ti = await getTranslations('portal.invoices');
+
+  const invoices = await allInvoices();
+  const names = await clientNameMap(
+    invoices.map((i) => i.client_id).filter((id): id is string => Boolean(id)),
+  );
 
   return (
     <>
@@ -51,13 +56,13 @@ export default async function AdminInvoicesPage({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockInvoices.map((inv) => (
+              {invoices.map((inv) => (
                 <TableRow key={inv.id}>
                   <TableCell className="font-mono font-medium">
                     {inv.invoice_number}
                   </TableCell>
                   <TableCell className="text-text-secondary">
-                    {inv.client_id ? clientName(inv.client_id) : '—'}
+                    {inv.client_id ? (names[inv.client_id] ?? '—') : '—'}
                   </TableCell>
                   <TableCell className="text-text-secondary">
                     {inv.due_date ? formatDate(inv.due_date, intlLocale(locale)) : '—'}

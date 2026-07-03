@@ -99,7 +99,8 @@
       "messagePh": "Conte um pouco sobre sua viagem...",
       "submit": "Enviar meu pedido ao Omar",
       "sent": "Pedido enviado! O Omar vai te responder em breve.",
-      "privacyNote": "Seus dados são privados. Sem spam — nunca."
+      "privacyNote": "Seus dados são privados. Sem spam — nunca.",
+      "error": "Algo deu errado. Tente pelo WhatsApp."
     },
     "stats": {
       "destinations": "Destinos atendidos",
@@ -202,6 +203,7 @@
     "message": "Mensagem",
     "send": "Enviar mensagem",
     "sent": "Mensagem enviada! Retornaremos em breve.",
+    "error": "Algo deu errado. Tente pelo WhatsApp.",
     "location": "São Paulo, Brasil"
   },
   "login": {
@@ -276,6 +278,7 @@
       "attachments": "Anexos (opcional)",
       "review": "Revisar e enviar",
       "submitted": "Solicitação enviada! O Omar entrará em contato em breve.",
+      "submitError": "Não foi possível enviar sua solicitação. Tente novamente ou fale pelo WhatsApp.",
       "carDetails": "Detalhes do aluguel com motorista",
       "carPickup": "Local de retirada",
       "carPickupPh": "Ex.: Aeroporto de Dubai (DXB)",
@@ -303,13 +306,15 @@
       "empty": "Nenhum documento enviado",
       "emptyDesc": "Envie passaporte, comprovantes e fotos para agilizar seu processo.",
       "uploading": "Enviando...",
-      "uploadSuccess": "Documento enviado para análise."
+      "uploadSuccess": "Documento enviado para análise.",
+      "uploadError": "Falha no envio. Tente novamente."
     },
     "messages": {
       "title": "Mensagens",
       "subtitle": "Converse com a equipe do Omar — portal e WhatsApp em um só lugar.",
       "placeholder": "Escreva sua mensagem...",
       "aiBadge": "IA · resposta fora do horário",
+      "sendError": "Falha ao enviar. Tente novamente.",
       "empty": "Nenhuma mensagem ainda",
       "emptyDesc": "Inicie uma conversa com a equipe do Omar.",
       "you": "Você",
@@ -335,6 +340,7 @@
       "pixPaid": "Pagamento confirmado! Obrigado.",
       "installmentsTitle": "Parcelamento no cartão",
       "installmentsDesc": "Em até 12x. Você será redirecionado para o checkout seguro.",
+      "paymentError": "Não foi possível confirmar o pagamento. Tente novamente.",
       "lineItems": "Itens"
     },
     "profile": {
@@ -346,7 +352,8 @@
       "language": "Idioma preferido",
       "whatsapp": "WhatsApp vinculado",
       "whatsappLink": "Vincular WhatsApp",
-      "saved": "Perfil atualizado com sucesso."
+      "saved": "Perfil atualizado com sucesso.",
+      "saveError": "Não foi possível salvar. Tente novamente."
     }
   },
   "admin": {
@@ -394,7 +401,8 @@
       "reject": "Rejeitar",
       "approved": "Documento aprovado.",
       "rejected": "Documento rejeitado.",
-      "queueEmpty": "Nenhum documento na fila"
+      "queueEmpty": "Nenhum documento na fila",
+      "actionError": "Não foi possível atualizar o documento. Tente novamente."
     },
     "messages": {
       "title": "Mensagens",

@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { MapPin, Mail } from 'lucide-react';
+import { MapPin, Mail, Loader2 } from 'lucide-react';
 import { WhatsAppIcon } from '@/components/icons/whatsapp';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,16 +11,34 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/lib/use-toast';
 import { whatsappLink } from '@/lib/constants';
+import { submitLeadAction } from '@/lib/actions';
 
 export function ContactContent() {
   const t = useTranslations('contact');
   const tc = useTranslations('common');
   const { toast } = useToast();
+  const [submitting, setSubmitting] = useState(false);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    toast({ title: t('sent'), variant: 'success' });
-    (e.target as HTMLFormElement).reset();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    setSubmitting(true);
+
+    const result = await submitLeadAction({
+      full_name: String(fd.get('name') ?? ''),
+      email: String(fd.get('email') ?? ''),
+      whatsapp: String(fd.get('phone') ?? '') || undefined,
+      message: String(fd.get('message') ?? '') || undefined,
+    });
+
+    setSubmitting(false);
+    if (result.ok) {
+      toast({ title: t('sent'), variant: 'success' });
+      form.reset();
+    } else {
+      toast({ title: t('error'), variant: 'danger' });
+    }
   }
 
   return (
@@ -51,7 +70,10 @@ export function ContactContent() {
                 <Label htmlFor="message">{t('message')}</Label>
                 <Textarea id="message" name="message" rows={5} required />
               </div>
-              <Button type="submit">{t('send')}</Button>
+              <Button type="submit" disabled={submitting} className="gap-2">
+                {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
+                {t('send')}
+              </Button>
             </form>
           </CardContent>
         </Card>

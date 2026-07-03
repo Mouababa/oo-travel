@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Check, ArrowRight, ArrowLeft, Paperclip } from 'lucide-react';
+import { Check, ArrowRight, ArrowLeft, Paperclip, Loader2 } from 'lucide-react';
 import { useRouter } from '@/i18n/routing';
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import { Select } from '@/components/ui/select';
 import { ServiceIcon } from '@/components/service-icon';
 import { useToast } from '@/lib/use-toast';
 import { SERVICE_TYPES } from '@/lib/constants';
+import { createBookingAction } from '@/lib/actions';
 import { cn } from '@/lib/utils';
 import type { ServiceType } from '@/lib/types';
 
@@ -29,6 +30,16 @@ export default function NewBookingPage() {
   const [step, setStep] = useState(1);
   const [service, setService] = useState<ServiceType | null>(null);
   const [destination, setDestination] = useState('');
+  const [travelDate, setTravelDate] = useState('');
+  const [returnDate, setReturnDate] = useState('');
+  const [notes, setNotes] = useState('');
+  const [carPickup, setCarPickup] = useState('');
+  const [carDropoff, setCarDropoff] = useState('');
+  const [carPickupDateTime, setCarPickupDateTime] = useState('');
+  const [carDays, setCarDays] = useState(1);
+  const [carVehicle, setCarVehicle] = useState('economy');
+  const [carSpecial, setCarSpecial] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const stepTitles = [t('step1'), t('step2'), t('step3')];
 
@@ -38,9 +49,44 @@ export default function NewBookingPage() {
   function back() {
     if (step > 1) setStep((s) => s - 1);
   }
-  function submit() {
-    toast({ title: t('submitted'), variant: 'success' });
-    router.push('/portal/bookings');
+
+  async function submit() {
+    if (!service) return;
+    setSubmitting(true);
+
+    // The bookings table has no dedicated car-rental columns — fold those
+    // details into notes as structured text rather than expanding the schema
+    // for a single service type.
+    const composedNotes =
+      service === 'car_rental'
+        ? [
+            `${t('carPickup')}: ${carPickup || '—'}`,
+            `${t('carDropoff')}: ${carDropoff || '—'}`,
+            `${t('carPickupDateTime')}: ${carPickupDateTime || '—'}`,
+            `${t('carDays')}: ${carDays}`,
+            `${t('carVehicle')}: ${carVehicle}`,
+            carSpecial ? `${t('carSpecial')}: ${carSpecial}` : null,
+            notes ? `\n${notes}` : null,
+          ]
+            .filter(Boolean)
+            .join('\n')
+        : notes || undefined;
+
+    const result = await createBookingAction({
+      service_type: service,
+      destination,
+      travel_date: service === 'car_rental' ? undefined : travelDate || undefined,
+      return_date: service === 'car_rental' ? undefined : returnDate || undefined,
+      notes: composedNotes,
+    });
+
+    setSubmitting(false);
+    if (result.ok) {
+      toast({ title: t('submitted'), variant: 'success' });
+      router.push('/portal/bookings');
+    } else {
+      toast({ title: t('submitError'), variant: 'danger' });
+    }
   }
 
   const canAdvance = step === 1 ? Boolean(service) : step === 2 ? Boolean(destination) : true;
@@ -138,23 +184,48 @@ export default function NewBookingPage() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <Label htmlFor="car-pickup">{t('carPickup')}</Label>
-                      <Input id="car-pickup" placeholder={t('carPickupPh')} />
+                      <Input
+                        id="car-pickup"
+                        value={carPickup}
+                        onChange={(e) => setCarPickup(e.target.value)}
+                        placeholder={t('carPickupPh')}
+                      />
                     </div>
                     <div>
                       <Label htmlFor="car-dropoff">{t('carDropoff')}</Label>
-                      <Input id="car-dropoff" placeholder={t('carDropoffPh')} />
+                      <Input
+                        id="car-dropoff"
+                        value={carDropoff}
+                        onChange={(e) => setCarDropoff(e.target.value)}
+                        placeholder={t('carDropoffPh')}
+                      />
                     </div>
                     <div>
                       <Label htmlFor="car-pickup-dt">{t('carPickupDateTime')}</Label>
-                      <Input id="car-pickup-dt" type="datetime-local" />
+                      <Input
+                        id="car-pickup-dt"
+                        type="datetime-local"
+                        value={carPickupDateTime}
+                        onChange={(e) => setCarPickupDateTime(e.target.value)}
+                      />
                     </div>
                     <div>
                       <Label htmlFor="car-days">{t('carDays')}</Label>
-                      <Input id="car-days" type="number" min={1} defaultValue={1} />
+                      <Input
+                        id="car-days"
+                        type="number"
+                        min={1}
+                        value={carDays}
+                        onChange={(e) => setCarDays(Number(e.target.value) || 1)}
+                      />
                     </div>
                     <div className="sm:col-span-2">
                       <Label htmlFor="car-vehicle">{t('carVehicle')}</Label>
-                      <Select id="car-vehicle" defaultValue="economy">
+                      <Select
+                        id="car-vehicle"
+                        value={carVehicle}
+                        onChange={(e) => setCarVehicle(e.target.value)}
+                      >
                         <option value="economy">{t('carVehicleEconomy')}</option>
                         <option value="business">{t('carVehicleBusiness')}</option>
                         <option value="luxury">{t('carVehicleLuxury')}</option>
@@ -164,18 +235,34 @@ export default function NewBookingPage() {
                   </div>
                   <div>
                     <Label htmlFor="car-special">{t('carSpecial')}</Label>
-                    <Textarea id="car-special" rows={2} placeholder={t('carSpecialPh')} />
+                    <Textarea
+                      id="car-special"
+                      rows={2}
+                      value={carSpecial}
+                      onChange={(e) => setCarSpecial(e.target.value)}
+                      placeholder={t('carSpecialPh')}
+                    />
                   </div>
                 </div>
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="travel">{t('travelDate')}</Label>
-                    <Input id="travel" type="date" />
+                    <Input
+                      id="travel"
+                      type="date"
+                      value={travelDate}
+                      onChange={(e) => setTravelDate(e.target.value)}
+                    />
                   </div>
                   <div>
                     <Label htmlFor="return">{t('returnDate')}</Label>
-                    <Input id="return" type="date" />
+                    <Input
+                      id="return"
+                      type="date"
+                      value={returnDate}
+                      onChange={(e) => setReturnDate(e.target.value)}
+                    />
                   </div>
                 </div>
               )}
@@ -186,7 +273,13 @@ export default function NewBookingPage() {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="notes">{t('notes')}</Label>
-                <Textarea id="notes" rows={4} placeholder={t('notesPh')} />
+                <Textarea
+                  id="notes"
+                  rows={4}
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder={t('notesPh')}
+                />
               </div>
               <div>
                 <Label>{t('attachments')}</Label>
@@ -213,8 +306,17 @@ export default function NewBookingPage() {
                 <ArrowRight className="h-4 w-4 rtl:rotate-180" />
               </Button>
             ) : (
-              <Button onClick={submit} variant="success" className="gap-2">
-                <Check className="h-4 w-4" />
+              <Button
+                onClick={submit}
+                variant="success"
+                className="gap-2"
+                disabled={submitting}
+              >
+                {submitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Check className="h-4 w-4" />
+                )}
                 {t('review')}
               </Button>
             )}

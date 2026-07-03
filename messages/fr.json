@@ -99,7 +99,8 @@
       "messagePh": "Parlez-nous un peu de votre voyage...",
       "submit": "Envoyer ma demande à Omar",
       "sent": "Demande envoyée ! Omar vous répondra bientôt.",
-      "privacyNote": "Vos données restent privées. Jamais de spam."
+      "privacyNote": "Vos données restent privées. Jamais de spam.",
+      "error": "Une erreur est survenue. Essayez plutôt WhatsApp."
     },
     "stats": {
       "destinations": "Destinations servies",
@@ -202,6 +203,7 @@
     "message": "Message",
     "send": "Envoyer le message",
     "sent": "Message envoyé ! Nous reviendrons vers vous bientôt.",
+    "error": "Une erreur est survenue. Essayez plutôt WhatsApp.",
     "location": "São Paulo, Brésil"
   },
   "login": {
@@ -276,6 +278,7 @@
       "attachments": "Pièces jointes (optionnel)",
       "review": "Vérifier et envoyer",
       "submitted": "Demande envoyée ! Omar vous contactera bientôt.",
+      "submitError": "Impossible d'envoyer votre demande. Réessayez ou écrivez sur WhatsApp.",
       "carDetails": "Détails de la location avec chauffeur",
       "carPickup": "Lieu de prise en charge",
       "carPickupPh": "ex. Aéroport de Dubaï (DXB)",
@@ -303,13 +306,15 @@
       "empty": "Aucun document téléversé",
       "emptyDesc": "Téléversez votre passeport, justificatifs et photos pour accélérer votre dossier.",
       "uploading": "Téléversement...",
-      "uploadSuccess": "Document soumis pour examen."
+      "uploadSuccess": "Document soumis pour examen.",
+      "uploadError": "Échec de l'envoi. Veuillez réessayer."
     },
     "messages": {
       "title": "Messages",
       "subtitle": "Discutez avec l'équipe d'Omar — portail et WhatsApp en un seul endroit.",
       "placeholder": "Écrivez votre message...",
       "aiBadge": "IA · réponse hors horaires",
+      "sendError": "Échec de l'envoi. Réessayez.",
       "empty": "Aucun message pour l'instant",
       "emptyDesc": "Démarrez une conversation avec l'équipe d'Omar.",
       "you": "Vous",
@@ -335,6 +340,7 @@
       "pixPaid": "Paiement confirmé ! Merci.",
       "installmentsTitle": "Paiement par carte échelonné",
       "installmentsDesc": "Jusqu'à 12x. Vous serez redirigé vers le paiement sécurisé.",
+      "paymentError": "Impossible de confirmer le paiement. Réessayez.",
       "lineItems": "Éléments"
     },
     "profile": {
@@ -346,7 +352,8 @@
       "language": "Langue préférée",
       "whatsapp": "WhatsApp lié",
       "whatsappLink": "Lier WhatsApp",
-      "saved": "Profil mis à jour avec succès."
+      "saved": "Profil mis à jour avec succès.",
+      "saveError": "Impossible d'enregistrer. Réessayez."
     }
   },
   "admin": {
@@ -394,7 +401,8 @@
       "reject": "Rejeter",
       "approved": "Document approuvé.",
       "rejected": "Document rejeté.",
-      "queueEmpty": "Aucun document dans la file"
+      "queueEmpty": "Aucun document dans la file",
+      "actionError": "Impossible de mettre à jour le document. Réessayez."
     },
     "messages": {
       "title": "Messages",

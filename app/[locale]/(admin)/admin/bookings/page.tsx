@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table';
 import { BookingStatusBadge } from '@/components/status-badge';
 import { ServiceIcon } from '@/components/service-icon';
-import { mockBookings, clientName } from '@/lib/mock-data';
+import { allBookings, clientNameMap } from '@/lib/data';
 import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
 
 export default async function AdminBookingsPage({
@@ -24,6 +24,9 @@ export default async function AdminBookingsPage({
   const t = await getTranslations('admin.bookings');
   const tb = await getTranslations('portal.bookings');
   const ts = await getTranslations('services.items');
+
+  const bookings = await allBookings();
+  const names = await clientNameMap(bookings.map((b) => b.client_id));
 
   return (
     <>
@@ -43,9 +46,9 @@ export default async function AdminBookingsPage({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockBookings.map((b) => (
+              {bookings.map((b) => (
                 <TableRow key={b.id}>
-                  <TableCell className="font-medium">{clientName(b.client_id)}</TableCell>
+                  <TableCell className="font-medium">{names[b.client_id] ?? '—'}</TableCell>
                   <TableCell>
                     <span className="flex items-center gap-2 text-text-secondary">
                       <ServiceIcon type={b.service_type} className="h-4 w-4" />
