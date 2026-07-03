@@ -350,6 +350,8 @@
       "cihBankName": "Banque",
       "cihAccountHolder": "Titulaire du compte",
       "cihIban": "IBAN",
+      "cihRib": "RIB",
+      "cihSwift": "SWIFT/BIC",
       "cihReference": "Référence de paiement",
       "cihDropzone": "Glissez votre justificatif ici, ou cliquez pour l'envoyer",
       "cihDropzoneHint": "PDF, JPG ou PNG · max 10 Mo",

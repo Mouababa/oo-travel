@@ -350,6 +350,8 @@
       "cihBankName": "Bank",
       "cihAccountHolder": "Account holder",
       "cihIban": "IBAN",
+      "cihRib": "RIB",
+      "cihSwift": "SWIFT/BIC",
       "cihReference": "Payment reference",
       "cihDropzone": "Drag your bank slip here, or click to upload",
       "cihDropzoneHint": "PDF, JPG or PNG · max 10 MB",

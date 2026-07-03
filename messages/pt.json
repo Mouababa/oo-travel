@@ -350,6 +350,8 @@
       "cihBankName": "Banco",
       "cihAccountHolder": "Titular da conta",
       "cihIban": "IBAN",
+      "cihRib": "RIB",
+      "cihSwift": "SWIFT/BIC",
       "cihReference": "Referência do pagamento",
       "cihDropzone": "Arraste o comprovante aqui ou clique para enviar",
       "cihDropzoneHint": "PDF, JPG ou PNG · máx. 10 MB",

@@ -19,13 +19,10 @@ export const SERVICE_TYPES: ServiceType[] = [
   'car_rental',
 ];
 
-// ⚠️ PLACEHOLDER — replace with Omar's real CIH Bank account details before
-// this is shown to real customers. A wrong IBAN/RIB here would send real
-// customer money to the wrong place, so this is intentionally left as an
-// obvious placeholder rather than a guessed value.
 export const CIH_BANK_DETAILS = {
   bankName: 'CIH Bank',
-  accountHolder: 'REPLACE — Omar Oukhira / 63.588.045 OMAR OUKHIRA',
-  iban: 'REPLACE — MA00 0000 0000 0000 0000 0000',
-  swift: 'REPLACE — CIHMMAMC',
+  accountHolder: 'KHALID OUKHIRA',
+  rib: '230 780 4610278211002800 40',
+  iban: 'MA64 2307 8046 1027 8211 0028 0040',
+  swift: 'CIHMMAMC',
 };

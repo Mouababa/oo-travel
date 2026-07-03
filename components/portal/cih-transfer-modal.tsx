@@ -100,6 +100,8 @@ export function CihTransferModal({
           <CopyRow label={t('cihBankName')} value={CIH_BANK_DETAILS.bankName} />
           <CopyRow label={t('cihAccountHolder')} value={CIH_BANK_DETAILS.accountHolder} />
           <CopyRow label={t('cihIban')} value={CIH_BANK_DETAILS.iban} />
+          <CopyRow label={t('cihRib')} value={CIH_BANK_DETAILS.rib} />
+          <CopyRow label={t('cihSwift')} value={CIH_BANK_DETAILS.swift} />
           <CopyRow label={t('cihReference')} value={invoice?.invoice_number ?? ''} />
         </div>
 

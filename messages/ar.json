@@ -350,6 +350,8 @@
       "cihBankName": "البنك",
       "cihAccountHolder": "صاحب الحساب",
       "cihIban": "رقم الحساب البنكي الدولي (IBAN)",
+      "cihRib": "RIB",
+      "cihSwift": "SWIFT/BIC",
       "cihReference": "مرجع الدفع",
       "cihDropzone": "اسحب إيصال التحويل هنا، أو انقر للرفع",
       "cihDropzoneHint": "PDF أو JPG أو PNG · بحد أقصى 10 ميغابايت",
