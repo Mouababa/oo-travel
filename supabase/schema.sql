@@ -23,6 +23,10 @@
 --      ON DELETE CASCADE. It previously only matched auth.users.id by
 --      convention (handle_new_user() sets id = new.id), so deleting an
 --      auth user never cleaned up the matching profile row.
+--   9. Added the CIH bank-transfer payment method: invoices.payment_method
+--      now allows 'cih_transfer', plus payment_proof_path/status/
+--      uploaded_at for the manual slip-upload + admin-review workflow,
+--      guarded by a self-approval-blocking trigger.
 -- ════════════════════════════════════════════════════════════════
 
 -- ─── Tables ─────────────────────────────────────────────────────
@@ -92,9 +96,15 @@ create table if not exists public.invoices (
   status text default 'unpaid' check (status in ('unpaid','paid','overdue')),
   due_date date,
   paid_at timestamptz,
-  payment_method text check (payment_method in ('pix','card')),
+  payment_method text check (payment_method in ('pix','card','cih_transfer')),
   mercado_pago_id text,
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  -- CIH bank-transfer proof-of-payment lifecycle (manual review, not an API
+  -- gateway): client uploads a slip, payment_proof_status goes pending ->
+  -- approved/rejected only by an admin (see the trigger below).
+  payment_proof_path text,
+  payment_proof_status text check (payment_proof_status in ('pending','approved','rejected')),
+  payment_proof_uploaded_at timestamptz
 );
 
 create table if not exists public.messages (
@@ -116,6 +126,7 @@ create index if not exists idx_documents_client_id on public.documents(client_id
 create index if not exists idx_documents_booking_id on public.documents(booking_id);
 create index if not exists idx_invoices_client_id on public.invoices(client_id);
 create index if not exists idx_invoices_status on public.invoices(status);
+create index if not exists idx_invoices_payment_proof_status on public.invoices(payment_proof_status);
 create index if not exists idx_messages_client_id on public.messages(client_id);
 create index if not exists idx_messages_created_at on public.messages(created_at);
 create index if not exists idx_users_role on public.users(role);
@@ -220,6 +231,35 @@ drop trigger if exists trg_prevent_role_self_escalation on public.users;
 create trigger trg_prevent_role_self_escalation
   before update on public.users
   for each row execute function public.prevent_role_self_escalation();
+
+-- ─── Trigger: block payment-proof self-approval ─────────────────
+-- SECURITY. A client may upload a CIH bank-transfer slip (payment_proof_
+-- status: null -> 'pending') but must never be able to approve/reject it
+-- themselves. Scoped to payment_proof_status only (not invoices.status)
+-- so it doesn't interfere with the existing PIX demo "simulate paid" flow.
+
+create or replace function public.prevent_payment_proof_self_approval()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is not null and not public.is_admin() then
+    if new.payment_proof_status is distinct from old.payment_proof_status then
+      if old.payment_proof_status is not null or new.payment_proof_status <> 'pending' then
+        raise exception 'Only admins can review payment proof';
+      end if;
+    end if;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists trg_prevent_payment_proof_self_approval on public.invoices;
+create trigger trg_prevent_payment_proof_self_approval
+  before update on public.invoices
+  for each row execute function public.prevent_payment_proof_self_approval();
 
 -- ─── Invoice number generator ───────────────────────────────────
 -- Call from app code: select public.next_invoice_number();

@@ -89,6 +89,10 @@ model Invoice {
   paymentMethod  String?   @map("payment_method")
   mercadoPagoId  String?   @map("mercado_pago_id")
   createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  // CIH bank-transfer proof-of-payment — manual review, not an API gateway.
+  paymentProofPath       String?   @map("payment_proof_path")
+  paymentProofStatus     String?   @map("payment_proof_status")
+  paymentProofUploadedAt DateTime? @map("payment_proof_uploaded_at") @db.Timestamptz(6)
 
   booking Booking? @relation(fields: [bookingId], references: [id])
   client  User?    @relation(fields: [clientId], references: [id])

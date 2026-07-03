@@ -54,11 +54,13 @@
     "q3": "Aidez-vous avec les visas et l'installation légale à l'étranger ?",
     "a3": "Oui. Nous préparons et guidons les demandes de visa et les démarches d'installation légale, en même temps que vos vols et votre hébergement.",
     "q4": "Comment puis-je payer ?",
-    "a4": "Vous recevez une facture claire et détaillée et payez en toute sécurité par PIX via Mercado Pago avant toute confirmation.",
+    "a4": "Vous recevez une facture claire et détaillée et payez en toute sécurité par PIX via Mercado Pago, ou par virement bancaire CIH — avant toute confirmation.",
     "q5": "En combien de temps aurai-je une réponse ?",
     "a5": "Écrivez à Omar sur WhatsApp pour une réponse rapide et personnelle — généralement le jour même, souvent en quelques heures.",
     "q6": "OO Travel est-elle une agence agréée ?",
-    "a6": "Oui. OO Travel opère en tant que MEI enregistré à São Paulo (CNPJ 63.588.045/0001-49, CNAE 7911-2/00 — agences de voyages)."
+    "a6": "Oui. OO Travel opère en tant que MEI enregistré à São Paulo (CNPJ 63.588.045/0001-49, CNAE 7911-2/00 — agences de voyages).",
+    "q7": "Puis-je payer par virement bancaire CIH ?",
+    "a7": "Oui — pratique si vous payez depuis le Maroc ou l'étranger. Virez le montant sur le compte CIH indiqué lors du paiement, puis envoyez votre justificatif dans l'espace client. L'équipe d'Omar le vérifie et confirme votre paiement sous 24 heures."
   },
   "home": {
     "eyebrow": "L'agent de voyages indépendant nº 1 de São Paulo",
@@ -341,7 +343,21 @@
       "installmentsTitle": "Paiement par carte échelonné",
       "installmentsDesc": "Jusqu'à 12x. Vous serez redirigé vers le paiement sécurisé.",
       "paymentError": "Impossible de confirmer le paiement. Réessayez.",
-      "lineItems": "Éléments"
+      "lineItems": "Éléments",
+      "payCih": "Payer par virement (CIH)",
+      "cihTitle": "Virement bancaire CIH",
+      "cihInstructions": "Virez ce montant sur le compte ci-dessous, puis envoyez votre justificatif. L'équipe d'Omar le vérifie et confirme votre paiement sous 24 heures.",
+      "cihBankName": "Banque",
+      "cihAccountHolder": "Titulaire du compte",
+      "cihIban": "IBAN",
+      "cihReference": "Référence de paiement",
+      "cihDropzone": "Glissez votre justificatif ici, ou cliquez pour l'envoyer",
+      "cihDropzoneHint": "PDF, JPG ou PNG · max 10 Mo",
+      "cihUploading": "Envoi en cours…",
+      "cihUploadSuccess": "Justificatif envoyé — nous le vérifions sous peu.",
+      "cihUploadError": "Échec de l'envoi. Réessayez.",
+      "cihPending": "Justificatif en cours de vérification",
+      "cihRejected": "Votre dernier justificatif n'a pas pu être validé — réessayez ou contactez Omar."
     },
     "profile": {
       "title": "Profil",
@@ -415,7 +431,18 @@
       "title": "Factures",
       "subtitle": "Créez, envoyez et suivez les paiements.",
       "create": "Créer une facture",
-      "client": "Client"
+      "client": "Client",
+      "empty": "Aucune facture pour l'instant",
+      "cihQueueTitle": "Virements CIH en attente de vérification",
+      "uploadedAt": "Envoyé",
+      "actions": "Actions",
+      "viewSlip": "Voir le justificatif",
+      "approve": "Approuver",
+      "reject": "Refuser",
+      "proofApproved": "Paiement approuvé et facture marquée comme payée.",
+      "proofRejected": "Justificatif de paiement refusé.",
+      "proofError": "Impossible de mettre à jour le paiement. Réessayez.",
+      "slipError": "Impossible d'ouvrir le justificatif. Réessayez."
     }
   },
   "status": {

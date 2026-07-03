@@ -54,11 +54,13 @@
     "q3": "Can you help with visas and legal relocation abroad?",
     "a3": "Yes. We prepare and guide visa applications and legal settlement paperwork alongside your flights and accommodation.",
     "q4": "How do I pay?",
-    "a4": "You receive a clear, itemised invoice and pay securely by PIX through Mercado Pago before anything is confirmed.",
+    "a4": "You receive a clear, itemised invoice and pay securely by PIX through Mercado Pago, or by CIH bank transfer — before anything is confirmed.",
     "q5": "How quickly will I get a reply?",
     "a5": "Message Omar on WhatsApp for a fast, personal response — usually the same day, and often within a couple of hours.",
     "q6": "Is OO Travel a licensed agency?",
-    "a6": "Yes. OO Travel operates as a registered MEI in São Paulo (CNPJ 63.588.045/0001-49, CNAE 7911-2/00 — travel agencies)."
+    "a6": "Yes. OO Travel operates as a registered MEI in São Paulo (CNPJ 63.588.045/0001-49, CNAE 7911-2/00 — travel agencies).",
+    "q7": "Can I pay by CIH bank transfer?",
+    "a7": "Yes — convenient if you're paying from Morocco or abroad. Transfer the amount to the CIH account shown at checkout, then upload your bank slip in the portal. Omar's team verifies it and confirms your payment within 24 hours."
   },
   "home": {
     "eyebrow": "São Paulo's #1 Independent Travel Agent",
@@ -341,7 +343,21 @@
       "installmentsTitle": "Card installments",
       "installmentsDesc": "Up to 12x. You'll be redirected to secure checkout.",
       "paymentError": "Couldn't confirm payment. Please try again.",
-      "lineItems": "Items"
+      "lineItems": "Items",
+      "payCih": "Pay by bank transfer (CIH)",
+      "cihTitle": "CIH bank transfer",
+      "cihInstructions": "Transfer this amount to the account below, then upload your bank slip. Omar's team verifies it and confirms your payment within 24 hours.",
+      "cihBankName": "Bank",
+      "cihAccountHolder": "Account holder",
+      "cihIban": "IBAN",
+      "cihReference": "Payment reference",
+      "cihDropzone": "Drag your bank slip here, or click to upload",
+      "cihDropzoneHint": "PDF, JPG or PNG · max 10 MB",
+      "cihUploading": "Uploading…",
+      "cihUploadSuccess": "Slip submitted — we'll verify it shortly.",
+      "cihUploadError": "Upload failed. Please try again.",
+      "cihPending": "Payment proof under review",
+      "cihRejected": "Your last slip couldn't be verified — please try again or contact Omar."
     },
     "profile": {
       "title": "Profile",
@@ -415,7 +431,18 @@
       "title": "Invoices",
       "subtitle": "Create, send and track payments.",
       "create": "Create invoice",
-      "client": "Client"
+      "client": "Client",
+      "empty": "No invoices yet",
+      "cihQueueTitle": "CIH bank transfers awaiting review",
+      "uploadedAt": "Submitted",
+      "actions": "Actions",
+      "viewSlip": "View slip",
+      "approve": "Approve",
+      "reject": "Reject",
+      "proofApproved": "Payment approved and invoice marked paid.",
+      "proofRejected": "Payment proof rejected.",
+      "proofError": "Couldn't update the payment. Please try again.",
+      "slipError": "Couldn't open the slip. Please try again."
     }
   },
   "status": {

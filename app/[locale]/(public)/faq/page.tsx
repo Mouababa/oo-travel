@@ -5,8 +5,8 @@ import { JsonLd } from '@/components/seo/json-ld';
 import { pageMetadata, breadcrumbLd, faqLd } from '@/lib/seo';
 import type { Locale } from '@/i18n/routing';
 
-// Six visible Q&A — the FAQPage schema must mirror on-page text exactly.
-const IDS = [1, 2, 3, 4, 5, 6] as const;
+// Seven visible Q&A — the FAQPage schema must mirror on-page text exactly.
+const IDS = [1, 2, 3, 4, 5, 6, 7] as const;
 
 export async function generateMetadata({
   params,

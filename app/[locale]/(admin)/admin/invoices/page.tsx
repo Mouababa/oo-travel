@@ -2,18 +2,8 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Plus } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from '@/components/ui/table';
-import { InvoiceStatusBadge } from '@/components/status-badge';
+import { AdminInvoicesClient } from '@/components/admin/invoices-client';
 import { allInvoices, clientNameMap } from '@/lib/data';
-import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
 
 export default async function AdminInvoicesPage({
   params,
@@ -23,7 +13,6 @@ export default async function AdminInvoicesPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('admin.invoices');
-  const ti = await getTranslations('portal.invoices');
 
   const invoices = await allInvoices();
   const names = await clientNameMap(
@@ -42,43 +31,7 @@ export default async function AdminInvoicesPage({
           </Button>
         }
       />
-
-      <Card>
-        <CardContent className="px-0 py-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{ti('number')}</TableHead>
-                <TableHead>{t('client')}</TableHead>
-                <TableHead>{ti('dueDate')}</TableHead>
-                <TableHead>{ti('status')}</TableHead>
-                <TableHead className="text-end">{ti('total')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invoices.map((inv) => (
-                <TableRow key={inv.id}>
-                  <TableCell className="font-mono font-medium">
-                    {inv.invoice_number}
-                  </TableCell>
-                  <TableCell className="text-text-secondary">
-                    {inv.client_id ? (names[inv.client_id] ?? '—') : '—'}
-                  </TableCell>
-                  <TableCell className="text-text-secondary">
-                    {inv.due_date ? formatDate(inv.due_date, intlLocale(locale)) : '—'}
-                  </TableCell>
-                  <TableCell>
-                    <InvoiceStatusBadge status={inv.status} />
-                  </TableCell>
-                  <TableCell className="text-end font-medium">
-                    {formatBRL(inv.total_brl)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      <AdminInvoicesClient initialInvoices={invoices} names={names} />
     </>
   );
 }

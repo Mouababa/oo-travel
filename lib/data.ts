@@ -272,6 +272,39 @@ export async function markInvoicePaid(
   return error ? { ok: false, error: error.message } : { ok: true };
 }
 
+/**
+ * Admin-only: approve or reject a CIH bank-transfer proof. Approving also
+ * marks the invoice paid. RLS + the prevent_payment_proof_self_approval
+ * trigger both guard this — a non-admin caller gets rejected at the DB
+ * layer regardless of what this function does, but is_admin() is checked
+ * here too so the UI can show a clear error instead of a raw DB exception.
+ */
+export async function verifyPaymentProof(
+  invoiceId: string,
+  approve: boolean,
+): Promise<{ ok: boolean; error?: string }> {
+  if (MOCK_MODE) return { ok: true };
+
+  if (!(await isCurrentUserAdmin())) {
+    return { ok: false, error: 'not authorized' };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from('invoices')
+    .update(
+      approve
+        ? {
+            payment_proof_status: 'approved',
+            status: 'paid',
+            paid_at: new Date().toISOString(),
+          }
+        : { payment_proof_status: 'rejected' },
+    )
+    .eq('id', invoiceId);
+  return error ? { ok: false, error: error.message } : { ok: true };
+}
+
 export async function updateProfile(
   userId: string,
   input: { full_name?: string; phone?: string; preferred_language?: string },

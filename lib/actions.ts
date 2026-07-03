@@ -132,3 +132,54 @@ export async function uploadDocumentAction(formData: FormData) {
   revalidatePath('/[locale]/admin/documents', 'page');
   return { ok: true, document: row };
 }
+
+/**
+ * Uploads a CIH bank-transfer slip for a specific invoice. Stored in the
+ * same private `documents` bucket under a payment-proofs/ subfolder of the
+ * client's own prefix (bucket RLS already scopes access by folder owner).
+ * RLS on invoices_own additionally guarantees the invoiceId belongs to the
+ * caller (or an admin) before the UPDATE is allowed to take effect.
+ */
+export async function uploadPaymentProofAction(invoiceId: string, formData: FormData) {
+  const file = formData.get('file') as File | null;
+  if (!file) return { ok: false, error: 'missing file' };
+
+  if (MOCK_MODE) {
+    console.log('[data:mock] payment proof uploaded →', invoiceId, file.name);
+    return { ok: true };
+  }
+
+  const user = await data.getCurrentUser();
+  if (!user) return { ok: false, error: 'not authenticated' };
+
+  const supabase = await createClient();
+  const path = `${user.id}/payment-proofs/${invoiceId}_${Date.now()}_${file.name}`;
+
+  const { error: uploadError } = await supabase.storage.from('documents').upload(path, file);
+  if (uploadError) return { ok: false, error: uploadError.message };
+
+  const { error: updateError } = await supabase
+    .from('invoices')
+    .update({
+      payment_method: 'cih_transfer',
+      payment_proof_path: path,
+      payment_proof_status: 'pending',
+      payment_proof_uploaded_at: new Date().toISOString(),
+    })
+    .eq('id', invoiceId);
+
+  if (updateError) return { ok: false, error: updateError.message };
+
+  revalidatePath('/[locale]/portal/invoices', 'page');
+  revalidatePath('/[locale]/admin/invoices', 'page');
+  return { ok: true };
+}
+
+export async function verifyPaymentProofAction(invoiceId: string, approve: boolean) {
+  const result = await data.verifyPaymentProof(invoiceId, approve);
+  if (result.ok) {
+    revalidatePath('/[locale]/admin/invoices', 'page');
+    revalidatePath('/[locale]/portal/invoices', 'page');
+  }
+  return result;
+}

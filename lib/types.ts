@@ -17,7 +17,8 @@ export type BookingStatus = 'pending' | 'processing' | 'confirmed' | 'cancelled'
 export type DocType = 'passport' | 'residence' | 'bank_statement' | 'photo_id' | 'other';
 export type ReviewStatus = 'pending' | 'under_review' | 'approved' | 'rejected';
 export type InvoiceStatus = 'unpaid' | 'paid' | 'overdue';
-export type PaymentMethod = 'pix' | 'card';
+export type PaymentMethod = 'pix' | 'card' | 'cih_transfer';
+export type PaymentProofStatus = 'pending' | 'approved' | 'rejected';
 export type MessageDirection = 'inbound' | 'outbound';
 export type MessageChannel = 'portal' | 'whatsapp';
 export type LeadStatus = 'new' | 'contacted' | 'converted' | 'closed';
@@ -88,6 +89,10 @@ export interface Invoice {
   paid_at?: string;
   payment_method?: PaymentMethod;
   mercado_pago_id?: string;
+  /** CIH bank-transfer proof-of-payment — manual review, not an API gateway. */
+  payment_proof_path?: string;
+  payment_proof_status?: PaymentProofStatus;
+  payment_proof_uploaded_at?: string;
 }
 
 export interface Message {

@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { QrCode, CreditCard, Receipt } from 'lucide-react';
+import { QrCode, Landmark, Receipt, Clock, XCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { InvoiceStatusBadge } from '@/components/status-badge';
 import { EmptyState } from '@/components/empty-state';
 import { PixModal } from '@/components/portal/pix-modal';
+import { CihTransferModal } from '@/components/portal/cih-transfer-modal';
 import { useToast } from '@/lib/use-toast';
 import { markInvoicePaidAction } from '@/lib/actions';
 import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
@@ -21,10 +22,27 @@ export function InvoicesClient({ initialInvoices }: { initialInvoices: Invoice[]
   const [invoices, setInvoices] = useState<Invoice[]>(initialInvoices);
   const [active, setActive] = useState<Invoice | null>(null);
   const [open, setOpen] = useState(false);
+  const [cihActive, setCihActive] = useState<Invoice | null>(null);
+  const [cihOpen, setCihOpen] = useState(false);
 
   function openPix(inv: Invoice) {
     setActive(inv);
     setOpen(true);
+  }
+
+  function openCih(inv: Invoice) {
+    setCihActive(inv);
+    setCihOpen(true);
+  }
+
+  function onCihUploaded(id: string) {
+    setInvoices((list) =>
+      list.map((i) =>
+        i.id === id
+          ? { ...i, payment_method: 'cih_transfer', payment_proof_status: 'pending' }
+          : i,
+      ),
+    );
   }
 
   async function markPaid(id: string) {
@@ -82,32 +100,45 @@ export function InvoicesClient({ initialInvoices }: { initialInvoices: Invoice[]
                 </span>
               </div>
 
-              {inv.status !== 'paid' ? (
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <Button
-                    variant="success"
-                    onClick={() => openPix(inv)}
-                    className="flex-1 gap-2 hover:animate-pulse-ring"
-                  >
-                    <QrCode className="h-4 w-4" />
-                    {t('payPix')}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="flex-1 gap-2"
-                    onClick={() =>
-                      toast({ title: t('installmentsDesc'), variant: 'default' })
-                    }
-                  >
-                    <CreditCard className="h-4 w-4" />
-                    {t('installments')}
-                  </Button>
-                </div>
-              ) : (
+              {inv.status === 'paid' ? (
                 <p className="text-center text-sm font-medium text-success">
                   {inv.paid_at && formatDate(inv.paid_at, intlLocale(locale))} ·{' '}
                   {t('status')}
                 </p>
+              ) : inv.payment_method === 'cih_transfer' &&
+                inv.payment_proof_status === 'pending' ? (
+                <p className="flex items-center justify-center gap-2 rounded-md border border-warning/30 bg-warning/10 py-2.5 text-center text-sm font-medium text-warning">
+                  <Clock className="h-4 w-4" />
+                  {t('cihPending')}
+                </p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {inv.payment_method === 'cih_transfer' &&
+                    inv.payment_proof_status === 'rejected' && (
+                      <p className="flex items-center justify-center gap-2 rounded-md border border-danger/30 bg-danger/10 py-2 text-center text-xs font-medium text-danger">
+                        <XCircle className="h-3.5 w-3.5" />
+                        {t('cihRejected')}
+                      </p>
+                    )}
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <Button
+                      variant="success"
+                      onClick={() => openPix(inv)}
+                      className="flex-1 gap-2 hover:animate-pulse-ring"
+                    >
+                      <QrCode className="h-4 w-4" />
+                      {t('payPix')}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex-1 gap-2"
+                      onClick={() => openCih(inv)}
+                    >
+                      <Landmark className="h-4 w-4" />
+                      {t('payCih')}
+                    </Button>
+                  </div>
+                </div>
               )}
             </CardContent>
           </Card>
@@ -119,6 +150,12 @@ export function InvoicesClient({ initialInvoices }: { initialInvoices: Invoice[]
         open={open}
         onClose={() => setOpen(false)}
         onPaid={markPaid}
+      />
+      <CihTransferModal
+        invoice={cihActive}
+        open={cihOpen}
+        onClose={() => setCihOpen(false)}
+        onUploaded={onCihUploaded}
       />
     </>
   );
