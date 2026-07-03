@@ -20,6 +20,20 @@ export type InvoiceStatus = 'unpaid' | 'paid' | 'overdue';
 export type PaymentMethod = 'pix' | 'card';
 export type MessageDirection = 'inbound' | 'outbound';
 export type MessageChannel = 'portal' | 'whatsapp';
+export type LeadStatus = 'new' | 'contacted' | 'converted' | 'closed';
+
+export interface Lead {
+  id: string;
+  full_name: string;
+  email: string;
+  whatsapp?: string;
+  service_type?: ServiceType;
+  destination?: string;
+  message?: string;
+  source: string;
+  status: LeadStatus;
+  created_at: string;
+}
 
 export interface User {
   id: string;

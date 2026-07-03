@@ -25,6 +25,21 @@ model User {
   @@map("users")
 }
 
+model Lead {
+  id          String   @id @default(uuid()) @db.Uuid
+  fullName    String   @map("full_name")
+  email       String
+  whatsapp    String?
+  serviceType String?  @map("service_type")
+  destination String?
+  message     String?
+  source      String   @default("website")
+  status      String   @default("new")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("leads")
+}
+
 model Booking {
   id          String    @id @default(uuid()) @db.Uuid
   clientId    String    @map("client_id") @db.Uuid
@@ -73,6 +88,7 @@ model Invoice {
   paidAt         DateTime? @map("paid_at") @db.Timestamptz(6)
   paymentMethod  String?   @map("payment_method")
   mercadoPagoId  String?   @map("mercado_pago_id")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
   booking Booking? @relation(fields: [bookingId], references: [id])
   client  User?    @relation(fields: [clientId], references: [id])
