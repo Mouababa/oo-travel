@@ -13,9 +13,15 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(`${origin}/${locale}/portal`);
+      const { data: profile } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', data.user.id)
+        .single();
+      const dest = profile?.role === 'admin' ? 'admin' : 'portal';
+      return NextResponse.redirect(`${origin}/${locale}/${dest}`);
     }
   }
 

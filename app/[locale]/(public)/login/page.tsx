@@ -34,13 +34,23 @@ export default function LoginPage() {
     }
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
+      setLoading(false);
       toast({ title: error.message, variant: 'danger' });
       return;
     }
-    router.push('/portal');
+
+    // Land admins on the admin panel directly instead of the client portal —
+    // they can already switch views manually, but defaulting to the wrong
+    // dashboard reads as "access is broken" to anyone who doesn't know that.
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', data.user.id)
+      .single();
+    setLoading(false);
+    router.push(profile?.role === 'admin' ? '/admin' : '/portal');
   }
 
   async function onMagicLink() {
