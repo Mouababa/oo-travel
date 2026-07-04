@@ -35,6 +35,9 @@
 --      policy has no column-level restriction, so a client could otherwise
 --      set their own booking straight to 'confirmed' without an admin ever
 --      approving it. Clients may still self-cancel (legitimate self-service).
+--  12. Added invoices.currency (BRL/USD/MAD) and suggested_payment_method
+--      (pix/cih_transfer, nullable = let the customer choose). PIX can only
+--      ever settle in BRL, enforced by a constraint, not just app logic.
 -- ════════════════════════════════════════════════════════════════
 
 -- ─── Tables ─────────────────────────────────────────────────────
@@ -115,7 +118,16 @@ create table if not exists public.invoices (
   -- approved/rejected only by an admin (see the trigger below).
   payment_proof_path text,
   payment_proof_status text check (payment_proof_status in ('pending','approved','rejected')),
-  payment_proof_uploaded_at timestamptz
+  payment_proof_uploaded_at timestamptz,
+  -- total_brl keeps its legacy name (renaming touches the not-yet-live
+  -- PIX/webhook code too) but holds the amount in whatever `currency` is —
+  -- main customers are Moroccan and Brazilian, then the rest of the world.
+  currency text default 'BRL' check (currency in ('BRL','USD','MAD')),
+  -- Admin can suggest a specific method at invoice creation, or leave this
+  -- null to let the client pick from whatever's valid for the currency.
+  -- PIX only ever settles in BRL — enforced below, not just in app code.
+  suggested_payment_method text check (suggested_payment_method in ('pix','cih_transfer')),
+  constraint invoices_pix_requires_brl check (suggested_payment_method <> 'pix' or currency = 'BRL')
 );
 
 create table if not exists public.messages (

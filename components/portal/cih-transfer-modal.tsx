@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useDropzone } from 'react-dropzone';
 import { Copy, Check, Loader2, UploadCloud, FileText } from 'lucide-react';
 import { Dialog } from '@/components/ui/dialog';
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/lib/use-toast';
 import { uploadPaymentProofAction } from '@/lib/actions';
 import { CIH_BANK_DETAILS } from '@/lib/constants';
-import { formatBRL, cn } from '@/lib/utils';
+import { formatCurrency, intlLocale, cn } from '@/lib/utils';
 import type { Invoice } from '@/lib/types';
 
 const ACCEPTED = {
@@ -56,6 +56,7 @@ export function CihTransferModal({
   onUploaded: (invoiceId: string) => void;
 }) {
   const t = useTranslations('portal.invoices');
+  const locale = useLocale();
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
 
@@ -92,7 +93,9 @@ export function CihTransferModal({
     <Dialog open={open} onClose={onClose} title={t('cihTitle')}>
       <div className="flex flex-col gap-4">
         {invoice && (
-          <p className="text-center text-2xl font-semibold">{formatBRL(invoice.total_brl)}</p>
+          <p className="text-center text-2xl font-semibold">
+            {formatCurrency(invoice.total_brl, invoice.currency, intlLocale(locale))}
+          </p>
         )}
         <p className="text-center text-sm text-text-secondary">{t('cihInstructions')}</p>
 

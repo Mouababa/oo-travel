@@ -495,7 +495,12 @@
       "addItem": "إضافة بند",
       "total": "الإجمالي",
       "invoiceCreated": "تم إنشاء الفاتورة.",
-      "invoiceCreateError": "تعذّر إنشاء الفاتورة. حاول مرة أخرى."
+      "invoiceCreateError": "تعذّر إنشاء الفاتورة. حاول مرة أخرى.",
+      "currency": "العملة",
+      "suggestedMethod": "طريقة الدفع",
+      "letCustomerChoose": "اترك العميل يختار",
+      "methodPix": "اقتراح PIX",
+      "methodCih": "اقتراح التحويل البنكي عبر CIH"
     }
   },
   "status": {

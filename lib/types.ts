@@ -18,6 +18,11 @@ export type DocType = 'passport' | 'residence' | 'bank_statement' | 'photo_id' |
 export type ReviewStatus = 'pending' | 'under_review' | 'approved' | 'rejected';
 export type InvoiceStatus = 'unpaid' | 'paid' | 'overdue';
 export type PaymentMethod = 'pix' | 'card' | 'cih_transfer';
+/** Main customers are Moroccan and Brazilian, then the rest of the world. */
+export type Currency = 'BRL' | 'USD' | 'MAD';
+/** Payment methods an admin may suggest at invoice creation — PIX only ever
+ * settles in BRL, so it's excluded when currency isn't BRL (see lib/data.ts). */
+export type SuggestedPaymentMethod = 'pix' | 'cih_transfer';
 export type PaymentProofStatus = 'pending' | 'approved' | 'rejected';
 export type MessageDirection = 'inbound' | 'outbound';
 export type MessageChannel = 'portal' | 'whatsapp';
@@ -86,7 +91,12 @@ export interface Invoice {
   client_id: string;
   invoice_number: string;
   line_items: InvoiceLineItem[];
+  /** Legacy name — holds the amount in whatever `currency` is, not always BRL. */
   total_brl: number;
+  currency: Currency;
+  /** Set by the admin at creation to suggest one method; null lets the
+   * client choose from whatever's valid for the invoice's currency. */
+  suggested_payment_method?: SuggestedPaymentMethod;
   status: InvoiceStatus;
   due_date?: string;
   paid_at?: string;

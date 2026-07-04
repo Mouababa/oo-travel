@@ -495,7 +495,12 @@
       "addItem": "Adicionar item",
       "total": "Total",
       "invoiceCreated": "Fatura criada.",
-      "invoiceCreateError": "Não foi possível criar a fatura. Tente novamente."
+      "invoiceCreateError": "Não foi possível criar a fatura. Tente novamente.",
+      "currency": "Moeda",
+      "suggestedMethod": "Forma de pagamento",
+      "letCustomerChoose": "Deixar o cliente escolher",
+      "methodPix": "Sugerir PIX",
+      "methodCih": "Sugerir transferência bancária CIH"
     }
   },
   "status": {

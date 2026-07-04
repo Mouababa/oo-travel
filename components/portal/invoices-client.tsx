@@ -11,8 +11,15 @@ import { PixModal } from '@/components/portal/pix-modal';
 import { CihTransferModal } from '@/components/portal/cih-transfer-modal';
 import { useToast } from '@/lib/use-toast';
 import { markInvoicePaidAction } from '@/lib/actions';
-import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
-import type { Invoice } from '@/lib/types';
+import { formatCurrency, formatDate, intlLocale } from '@/lib/utils';
+import type { Invoice, SuggestedPaymentMethod } from '@/lib/types';
+
+/** PIX only ever settles in BRL. When the admin hasn't suggested a specific
+ * method, the client picks from whatever's valid for the invoice's currency. */
+function availableMethods(inv: Invoice): SuggestedPaymentMethod[] {
+  if (inv.suggested_payment_method) return [inv.suggested_payment_method];
+  return inv.currency === 'BRL' ? ['pix', 'cih_transfer'] : ['cih_transfer'];
+}
 
 export function InvoicesClient({ initialInvoices }: { initialInvoices: Invoice[] }) {
   const t = useTranslations('portal.invoices');
@@ -86,7 +93,7 @@ export function InvoicesClient({ initialInvoices }: { initialInvoices: Invoice[]
                   <li key={i} className="flex justify-between gap-4">
                     <span className="text-text-secondary">{item.label}</span>
                     <span className="whitespace-nowrap font-mono font-medium text-text-primary">
-                      {formatBRL(item.amount_brl)}
+                      {formatCurrency(item.amount_brl, inv.currency, intlLocale(locale))}
                     </span>
                   </li>
                 ))}
@@ -96,7 +103,7 @@ export function InvoicesClient({ initialInvoices }: { initialInvoices: Invoice[]
                   {t('total')}
                 </span>
                 <span className="font-mono text-xl font-semibold text-text-primary">
-                  {formatBRL(inv.total_brl)}
+                  {formatCurrency(inv.total_brl, inv.currency, intlLocale(locale))}
                 </span>
               </div>
 
@@ -121,22 +128,26 @@ export function InvoicesClient({ initialInvoices }: { initialInvoices: Invoice[]
                       </p>
                     )}
                   <div className="flex flex-col gap-2 sm:flex-row">
-                    <Button
-                      variant="success"
-                      onClick={() => openPix(inv)}
-                      className="flex-1 gap-2 hover:animate-pulse-ring"
-                    >
-                      <QrCode className="h-4 w-4" />
-                      {t('payPix')}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="flex-1 gap-2"
-                      onClick={() => openCih(inv)}
-                    >
-                      <Landmark className="h-4 w-4" />
-                      {t('payCih')}
-                    </Button>
+                    {availableMethods(inv).includes('pix') && (
+                      <Button
+                        variant="success"
+                        onClick={() => openPix(inv)}
+                        className="flex-1 gap-2 hover:animate-pulse-ring"
+                      >
+                        <QrCode className="h-4 w-4" />
+                        {t('payPix')}
+                      </Button>
+                    )}
+                    {availableMethods(inv).includes('cih_transfer') && (
+                      <Button
+                        variant="outline"
+                        className="flex-1 gap-2"
+                        onClick={() => openCih(inv)}
+                      >
+                        <Landmark className="h-4 w-4" />
+                        {t('payCih')}
+                      </Button>
+                    )}
                   </div>
                 </div>
               )}

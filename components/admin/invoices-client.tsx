@@ -19,7 +19,7 @@ import { EmptyState } from '@/components/empty-state';
 import { CreateInvoiceModal } from '@/components/admin/create-invoice-modal';
 import { useToast } from '@/lib/use-toast';
 import { verifyPaymentProofAction } from '@/lib/actions';
-import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
+import { formatCurrency, formatDate, intlLocale } from '@/lib/utils';
 import type { Invoice, User, Booking } from '@/lib/types';
 
 function ReviewRow({
@@ -72,7 +72,9 @@ function ReviewRow({
           ? formatDate(invoice.payment_proof_uploaded_at, intlLocale(locale))
           : '—'}
       </TableCell>
-      <TableCell className="text-end font-medium">{formatBRL(invoice.total_brl)}</TableCell>
+      <TableCell className="text-end font-medium">
+        {formatCurrency(invoice.total_brl, invoice.currency, intlLocale(locale))}
+      </TableCell>
       <TableCell>
         <div className="flex items-center justify-end gap-2">
           <Button
@@ -250,7 +252,7 @@ export function AdminInvoicesClient({
                       <InvoiceStatusBadge status={inv.status} />
                     </TableCell>
                     <TableCell className="text-end font-medium">
-                      {formatBRL(inv.total_brl)}
+                      {formatCurrency(inv.total_brl, inv.currency, intlLocale(locale))}
                     </TableCell>
                   </TableRow>
                 ))}

@@ -12,6 +12,13 @@ export function formatBRL(amount: number): string {
   }).format(amount);
 }
 
+/** Formats an invoice amount in its actual currency, in the active UI locale
+ * (so the symbol reflects what the client owes, while digit grouping etc.
+ * still matches the language they're browsing in). */
+export function formatCurrency(amount: number, currency: string, locale = 'pt-BR'): string {
+  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
+}
+
 export function formatDate(date: string | Date, locale = 'pt-BR'): string {
   const d = typeof date === 'string' ? new Date(date) : date;
   return new Intl.DateTimeFormat(locale, {

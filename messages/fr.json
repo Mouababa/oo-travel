@@ -495,7 +495,12 @@
       "addItem": "Ajouter un article",
       "total": "Total",
       "invoiceCreated": "Facture créée.",
-      "invoiceCreateError": "Impossible de créer la facture. Réessayez."
+      "invoiceCreateError": "Impossible de créer la facture. Réessayez.",
+      "currency": "Devise",
+      "suggestedMethod": "Mode de paiement",
+      "letCustomerChoose": "Laisser le client choisir",
+      "methodPix": "Suggérer PIX",
+      "methodCih": "Suggérer le virement bancaire CIH"
     }
   },
   "status": {

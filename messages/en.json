@@ -495,7 +495,12 @@
       "addItem": "Add item",
       "total": "Total",
       "invoiceCreated": "Invoice created.",
-      "invoiceCreateError": "Couldn't create the invoice. Please try again."
+      "invoiceCreateError": "Couldn't create the invoice. Please try again.",
+      "currency": "Currency",
+      "suggestedMethod": "Payment method",
+      "letCustomerChoose": "Let the customer choose",
+      "methodPix": "Suggest PIX",
+      "methodCih": "Suggest CIH bank transfer"
     }
   },
   "status": {

@@ -29,6 +29,8 @@ import type {
   Document,
   Invoice,
   InvoiceLineItem,
+  Currency,
+  SuggestedPaymentMethod,
   Message,
   Lead,
   ServiceType,
@@ -313,6 +315,8 @@ export async function createInvoice(input: {
   booking_id?: string;
   line_items: InvoiceLineItem[];
   due_date?: string;
+  currency?: Currency;
+  suggested_payment_method?: SuggestedPaymentMethod;
 }): Promise<{ ok: boolean; invoice?: Invoice; error?: string }> {
   if (MOCK_MODE) return { ok: true };
 
@@ -321,6 +325,11 @@ export async function createInvoice(input: {
   }
   if (input.line_items.length === 0) {
     return { ok: false, error: 'at least one line item is required' };
+  }
+  // PIX only ever settles in BRL — the DB constraint would reject this too,
+  // but check here for a clear error instead of a raw constraint violation.
+  if (input.suggested_payment_method === 'pix' && input.currency && input.currency !== 'BRL') {
+    return { ok: false, error: 'PIX can only be suggested for BRL invoices' };
   }
 
   const supabase = await createClient();
@@ -338,6 +347,8 @@ export async function createInvoice(input: {
       line_items: input.line_items,
       total_brl,
       due_date: input.due_date || null,
+      currency: input.currency || 'BRL',
+      suggested_payment_method: input.suggested_payment_method || null,
     })
     .select('*')
     .single();

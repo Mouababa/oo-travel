@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Plus, Trash2, Loader2 } from 'lucide-react';
 import { Dialog } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -10,10 +10,18 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { useToast } from '@/lib/use-toast';
 import { createInvoiceAction } from '@/lib/actions';
-import { formatBRL } from '@/lib/utils';
-import type { User, Booking, Invoice, InvoiceLineItem } from '@/lib/types';
+import { formatCurrency, intlLocale } from '@/lib/utils';
+import type {
+  User,
+  Booking,
+  Invoice,
+  InvoiceLineItem,
+  Currency,
+  SuggestedPaymentMethod,
+} from '@/lib/types';
 
 const EMPTY_ITEM: InvoiceLineItem = { label: '', amount_brl: 0 };
+const CURRENCIES: Currency[] = ['BRL', 'USD', 'MAD'];
 
 export function CreateInvoiceModal({
   open,
@@ -29,11 +37,14 @@ export function CreateInvoiceModal({
   onCreated: (invoice: Invoice) => void;
 }) {
   const t = useTranslations('admin.invoices');
+  const locale = useLocale();
   const { toast } = useToast();
 
   const [clientId, setClientId] = useState('');
   const [bookingId, setBookingId] = useState('');
   const [dueDate, setDueDate] = useState('');
+  const [currency, setCurrency] = useState<Currency>('BRL');
+  const [suggestedMethod, setSuggestedMethod] = useState<SuggestedPaymentMethod | ''>('');
   const [items, setItems] = useState<InvoiceLineItem[]>([{ ...EMPTY_ITEM }]);
   const [submitting, setSubmitting] = useState(false);
 
@@ -49,11 +60,20 @@ export function CreateInvoiceModal({
     setClientId('');
     setBookingId('');
     setDueDate('');
+    setCurrency('BRL');
+    setSuggestedMethod('');
     setItems([{ ...EMPTY_ITEM }]);
   }
 
   function updateItem(index: number, patch: Partial<InvoiceLineItem>) {
     setItems((list) => list.map((li, i) => (i === index ? { ...li, ...patch } : li)));
+  }
+
+  function onCurrencyChange(next: Currency) {
+    setCurrency(next);
+    // PIX only ever settles in BRL — clear an incompatible suggestion
+    // rather than let the user submit something the DB will reject.
+    if (next !== 'BRL' && suggestedMethod === 'pix') setSuggestedMethod('');
   }
 
   async function submit() {
@@ -64,6 +84,8 @@ export function CreateInvoiceModal({
       booking_id: bookingId || undefined,
       line_items: items,
       due_date: dueDate || undefined,
+      currency,
+      suggested_payment_method: suggestedMethod || undefined,
     });
     setSubmitting(false);
 
@@ -125,14 +147,43 @@ export function CreateInvoiceModal({
           </div>
         )}
 
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor="invoice-currency">{t('currency')}</Label>
+            <Select
+              id="invoice-currency"
+              value={currency}
+              onChange={(e) => onCurrencyChange(e.target.value as Currency)}
+            >
+              {CURRENCIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="invoice-due">{t('dueDate')}</Label>
+            <Input
+              id="invoice-due"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </div>
+        </div>
+
         <div>
-          <Label htmlFor="invoice-due">{t('dueDate')}</Label>
-          <Input
-            id="invoice-due"
-            type="date"
-            value={dueDate}
-            onChange={(e) => setDueDate(e.target.value)}
-          />
+          <Label htmlFor="invoice-method">{t('suggestedMethod')}</Label>
+          <Select
+            id="invoice-method"
+            value={suggestedMethod}
+            onChange={(e) => setSuggestedMethod(e.target.value as SuggestedPaymentMethod | '')}
+          >
+            <option value="">{t('letCustomerChoose')}</option>
+            {currency === 'BRL' && <option value="pix">{t('methodPix')}</option>}
+            <option value="cih_transfer">{t('methodCih')}</option>
+          </Select>
         </div>
 
         <div className="space-y-2">
@@ -179,7 +230,9 @@ export function CreateInvoiceModal({
 
         <div className="flex items-center justify-between rounded-md border border-border bg-surface-muted px-4 py-3">
           <span className="text-sm text-text-secondary">{t('total')}</span>
-          <span className="text-lg font-semibold">{formatBRL(total)}</span>
+          <span className="text-lg font-semibold">
+            {formatCurrency(total, currency, intlLocale(locale))}
+          </span>
         </div>
 
         <Button onClick={submit} disabled={!canSubmit || submitting} className="w-full gap-2">

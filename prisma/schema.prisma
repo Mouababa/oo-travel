@@ -94,6 +94,9 @@ model Invoice {
   paymentProofPath       String?   @map("payment_proof_path")
   paymentProofStatus     String?   @map("payment_proof_status")
   paymentProofUploadedAt DateTime? @map("payment_proof_uploaded_at") @db.Timestamptz(6)
+  // Main customers are Moroccan and Brazilian, then the rest of the world.
+  currency                 String  @default("BRL")
+  suggestedPaymentMethod   String? @map("suggested_payment_method")
 
   booking Booking? @relation(fields: [bookingId], references: [id])
   client  User?    @relation(fields: [clientId], references: [id])

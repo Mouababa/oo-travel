@@ -13,7 +13,14 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import * as data from '@/lib/data';
-import type { ServiceType, ReviewStatus, InvoiceLineItem, BookingStatus } from '@/lib/types';
+import type {
+  ServiceType,
+  ReviewStatus,
+  InvoiceLineItem,
+  BookingStatus,
+  Currency,
+  SuggestedPaymentMethod,
+} from '@/lib/types';
 
 const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
 const MOCK_USER_ID = 'u_001'; // matches lib/mock-data.ts's mockUser.id
@@ -82,6 +89,8 @@ export async function createInvoiceAction(input: {
   booking_id?: string;
   line_items: InvoiceLineItem[];
   due_date?: string;
+  currency?: Currency;
+  suggested_payment_method?: SuggestedPaymentMethod;
 }) {
   const result = await data.createInvoice(input);
   if (result.ok) {
