@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Plane } from 'lucide-react';
 import { useRouter } from '@/i18n/routing';
 import { Button } from '@/components/ui/button';
@@ -10,11 +10,13 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/lib/use-toast';
 import { createClient } from '@/lib/supabase/client';
+import { SITE_URL } from '@/lib/seo';
 
 const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
 
 export default function LoginPage() {
   const t = useTranslations('login');
+  const locale = useLocale();
   const router = useRouter();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
@@ -48,7 +50,12 @@ export default function LoginPage() {
     }
     if (!email) return;
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({ email });
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${SITE_URL}/api/auth/callback?locale=${locale}`,
+      },
+    });
     toast({
       title: error ? error.message : t('magicLinkSent'),
       variant: error ? 'danger' : 'success',

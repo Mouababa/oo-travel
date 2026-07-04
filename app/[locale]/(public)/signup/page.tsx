@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/lib/use-toast';
 import { createClient } from '@/lib/supabase/client';
+import { SITE_URL } from '@/lib/seo';
 
 const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
 
@@ -52,6 +53,10 @@ export default function SignupPage() {
       password,
       options: {
         data: { full_name: fullName, phone, preferred_language: locale },
+        // Without this, Supabase falls back to the project's default Site
+        // URL (still localhost:3000 from local dev) — the confirmation
+        // email would send a real customer to a dead link.
+        emailRedirectTo: `${SITE_URL}/api/auth/callback?locale=${locale}`,
       },
     });
 
