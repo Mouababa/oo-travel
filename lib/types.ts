@@ -106,6 +106,7 @@ export interface Invoice {
   payment_proof_path?: string;
   payment_proof_status?: PaymentProofStatus;
   payment_proof_uploaded_at?: string;
+  created_at: string;
 }
 
 export interface Message {

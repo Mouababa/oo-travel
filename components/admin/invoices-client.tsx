@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { Check, X, Landmark, Inbox, ExternalLink, Loader2, Plus } from 'lucide-react';
+import { Check, X, Landmark, Inbox, ExternalLink, Loader2, Plus, Download } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -234,6 +234,7 @@ export function AdminInvoicesClient({
                   <TableHead>{ti('dueDate')}</TableHead>
                   <TableHead>{ti('status')}</TableHead>
                   <TableHead className="text-end">{ti('total')}</TableHead>
+                  <TableHead className="text-end">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -253,6 +254,18 @@ export function AdminInvoicesClient({
                     </TableCell>
                     <TableCell className="text-end font-medium">
                       {formatCurrency(inv.total_brl, inv.currency, intlLocale(locale))}
+                    </TableCell>
+                    <TableCell className="text-end">
+                      <a
+                        href={`/api/invoices/${inv.id}/pdf`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-raised hover:text-text-primary"
+                        aria-label={t('downloadPdf')}
+                        title={t('downloadPdf')}
+                      >
+                        <Download className="h-4 w-4" />
+                      </a>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -371,6 +371,7 @@
       "installmentsDesc": "Jusqu'à 12x. Vous serez redirigé vers le paiement sécurisé.",
       "paymentError": "Impossible de confirmer le paiement. Réessayez.",
       "lineItems": "Éléments",
+      "downloadPdf": "Télécharger le PDF",
       "payCih": "Payer par virement (CIH)",
       "cihTitle": "Virement bancaire CIH",
       "cihInstructions": "Virez ce montant sur le compte ci-dessous, puis envoyez votre justificatif. L'équipe d'Omar le vérifie et confirme votre paiement sous 24 heures.",
@@ -500,7 +501,8 @@
       "suggestedMethod": "Mode de paiement",
       "letCustomerChoose": "Laisser le client choisir",
       "methodPix": "Suggérer PIX",
-      "methodCih": "Suggérer le virement bancaire CIH"
+      "methodCih": "Suggérer le virement bancaire CIH",
+      "downloadPdf": "Télécharger le PDF"
     }
   },
   "status": {

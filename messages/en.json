@@ -371,6 +371,7 @@
       "installmentsDesc": "Up to 12x. You'll be redirected to secure checkout.",
       "paymentError": "Couldn't confirm payment. Please try again.",
       "lineItems": "Items",
+      "downloadPdf": "Download PDF",
       "payCih": "Pay by bank transfer (CIH)",
       "cihTitle": "CIH bank transfer",
       "cihInstructions": "Transfer this amount to the account below, then upload your bank slip. Omar's team verifies it and confirms your payment within 24 hours.",
@@ -500,7 +501,8 @@
       "suggestedMethod": "Payment method",
       "letCustomerChoose": "Let the customer choose",
       "methodPix": "Suggest PIX",
-      "methodCih": "Suggest CIH bank transfer"
+      "methodCih": "Suggest CIH bank transfer",
+      "downloadPdf": "Download PDF"
     }
   },
   "status": {

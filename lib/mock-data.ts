@@ -198,6 +198,7 @@ export const mockInvoices: Invoice[] = [
     paid_at: '2026-06-08T13:22:00Z',
     payment_method: 'pix',
     mercado_pago_id: 'mp_abc123',
+    created_at: '2026-06-01T09:00:00Z',
   },
   {
     id: 'i_002',
@@ -211,6 +212,7 @@ export const mockInvoices: Invoice[] = [
     currency: 'BRL',
     status: 'unpaid',
     due_date: '2026-07-01',
+    created_at: '2026-06-08T10:00:00Z',
   },
   {
     id: 'i_003',
@@ -224,6 +226,7 @@ export const mockInvoices: Invoice[] = [
     currency: 'BRL',
     status: 'overdue',
     due_date: '2026-06-20',
+    created_at: '2026-06-01T09:00:00Z',
   },
 ];
 

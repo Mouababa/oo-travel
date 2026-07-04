@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { QrCode, Landmark, Receipt, Clock, XCircle } from 'lucide-react';
+import { QrCode, Landmark, Receipt, Clock, XCircle, Download } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { InvoiceStatusBadge } from '@/components/status-badge';
@@ -85,7 +85,19 @@ export function InvoicesClient({ initialInvoices }: { initialInvoices: Invoice[]
                   </p>
                 )}
               </div>
-              <InvoiceStatusBadge status={inv.status} />
+              <div className="flex items-center gap-2">
+                <a
+                  href={`/api/invoices/${inv.id}/pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-surface-raised hover:text-text-primary"
+                  aria-label={t('downloadPdf')}
+                  title={t('downloadPdf')}
+                >
+                  <Download className="h-4 w-4" />
+                </a>
+                <InvoiceStatusBadge status={inv.status} />
+              </div>
             </CardHeader>
             <CardContent>
               <ul className="mb-4 space-y-1.5 border-y border-border py-3 text-sm">

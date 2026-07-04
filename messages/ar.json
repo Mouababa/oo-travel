@@ -371,6 +371,7 @@
       "installmentsDesc": "حتى 12 دفعة. ستتم إعادة توجيهك إلى الدفع الآمن.",
       "paymentError": "تعذّر تأكيد الدفع. حاول مرة أخرى.",
       "lineItems": "البنود",
+      "downloadPdf": "تنزيل PDF",
       "payCih": "الدفع عبر تحويل بنكي (CIH)",
       "cihTitle": "تحويل بنكي عبر CIH",
       "cihInstructions": "حوّل هذا المبلغ إلى الحساب أدناه، ثم ارفع إيصال التحويل. سيتحقق فريق عمر منه ويؤكد دفعتك خلال 24 ساعة.",
@@ -500,7 +501,8 @@
       "suggestedMethod": "طريقة الدفع",
       "letCustomerChoose": "اترك العميل يختار",
       "methodPix": "اقتراح PIX",
-      "methodCih": "اقتراح التحويل البنكي عبر CIH"
+      "methodCih": "اقتراح التحويل البنكي عبر CIH",
+      "downloadPdf": "تنزيل PDF"
     }
   },
   "status": {

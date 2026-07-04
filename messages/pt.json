@@ -371,6 +371,7 @@
       "installmentsDesc": "Em até 12x. Você será redirecionado para o checkout seguro.",
       "paymentError": "Não foi possível confirmar o pagamento. Tente novamente.",
       "lineItems": "Itens",
+      "downloadPdf": "Baixar PDF",
       "payCih": "Pagar por transferência (CIH)",
       "cihTitle": "Transferência bancária CIH",
       "cihInstructions": "Transfira este valor para a conta abaixo e envie o comprovante. A equipe do Omar verifica e confirma seu pagamento em até 24 horas.",
@@ -500,7 +501,8 @@
       "suggestedMethod": "Forma de pagamento",
       "letCustomerChoose": "Deixar o cliente escolher",
       "methodPix": "Sugerir PIX",
-      "methodCih": "Sugerir transferência bancária CIH"
+      "methodCih": "Sugerir transferência bancária CIH",
+      "downloadPdf": "Baixar PDF"
     }
   },
   "status": {
