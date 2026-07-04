@@ -54,10 +54,16 @@ const adminNav: NavItem[] = [
 export function AppShell({
   variant,
   userName,
+  isAdmin = false,
   children,
 }: {
   variant: 'portal' | 'admin';
   userName: string;
+  /** Only meaningful for variant="portal" — clients must never see the
+   * admin-panel toggle. variant="admin" is always reached by an actual
+   * admin (middleware.ts gates it), so its "back to portal" link always
+   * shows regardless of this prop. */
+  isAdmin?: boolean;
   children: React.ReactNode;
 }) {
   const nav = variant === 'portal' ? portalNav : adminNav;
@@ -140,20 +146,22 @@ export function AppShell({
             <LogOut className="h-4 w-4" />
           </button>
         </div>
-        <Link
-          href={variant === 'portal' ? '/admin' : '/portal'}
-          className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-text-muted transition-colors hover:text-accent"
-        >
-          {variant === 'portal' ? (
-            <>
-              <ShieldCheck className="h-3.5 w-3.5" /> Admin
-            </>
-          ) : (
-            <>
-              <User className="h-3.5 w-3.5" /> {t('backToPortal')}
-            </>
-          )}
-        </Link>
+        {(variant === 'admin' || isAdmin) && (
+          <Link
+            href={variant === 'portal' ? '/admin' : '/portal'}
+            className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-text-muted transition-colors hover:text-accent"
+          >
+            {variant === 'portal' ? (
+              <>
+                <ShieldCheck className="h-3.5 w-3.5" /> Admin
+              </>
+            ) : (
+              <>
+                <User className="h-3.5 w-3.5" /> {t('backToPortal')}
+              </>
+            )}
+          </Link>
+        )}
       </div>
     </div>
   );
