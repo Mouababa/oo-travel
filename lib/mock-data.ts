@@ -10,6 +10,7 @@ export const mockUser: User = {
   phone: '+55 11 98888-1234',
   preferred_language: 'pt',
   role: 'client',
+  approval_status: 'approved',
   whatsapp_id: '5511988881234',
   created_at: '2026-01-12T10:00:00Z',
 };
@@ -21,6 +22,7 @@ export const mockAdmin: User = {
   phone: '+55 11 93321-0241',
   preferred_language: 'pt',
   role: 'admin',
+  approval_status: 'approved',
   created_at: '2025-09-01T08:00:00Z',
 };
 
@@ -33,6 +35,7 @@ export const mockClients: User[] = [
     phone: '+212 6 12 34 56 78',
     preferred_language: 'ar',
     role: 'client',
+    approval_status: 'pending',
     whatsapp_id: '212612345678',
     created_at: '2026-02-20T14:30:00Z',
   },
@@ -43,6 +46,7 @@ export const mockClients: User[] = [
     phone: '+33 6 11 22 33 44',
     preferred_language: 'fr',
     role: 'client',
+    approval_status: 'approved',
     whatsapp_id: '33611223344',
     created_at: '2026-03-05T09:15:00Z',
   },
@@ -53,6 +57,7 @@ export const mockClients: User[] = [
     phone: '+1 415 555 0199',
     preferred_language: 'en',
     role: 'client',
+    approval_status: 'approved',
     created_at: '2026-04-18T16:45:00Z',
   },
 ];

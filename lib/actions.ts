@@ -183,3 +183,9 @@ export async function verifyPaymentProofAction(invoiceId: string, approve: boole
   }
   return result;
 }
+
+export async function approveClientAction(clientId: string, approve: boolean) {
+  const result = await data.approveClient(clientId, approve);
+  if (result.ok) revalidatePath('/[locale]/admin/clients', 'page');
+  return result;
+}

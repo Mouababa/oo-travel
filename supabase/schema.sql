@@ -27,6 +27,10 @@
 --      now allows 'cih_transfer', plus payment_proof_path/status/
 --      uploaded_at for the manual slip-upload + admin-review workflow,
 --      guarded by a self-approval-blocking trigger.
+--  10. Added self-service client signup: users.approval_status
+--      (pending/approved/rejected) gates portal access until an admin
+--      approves, guarded by the same self-escalation trigger as role/email.
+--      handle_new_user now also captures the phone number from signup.
 -- ════════════════════════════════════════════════════════════════
 
 -- ─── Tables ─────────────────────────────────────────────────────
@@ -39,6 +43,9 @@ create table if not exists public.users (
   preferred_language text default 'pt' check (preferred_language in ('pt','en','fr','ar')),
   role text default 'client' check (role in ('client','admin')),
   whatsapp_id text unique,
+  -- Self-service signups land here as 'pending' until an admin approves
+  -- them. Admin accounts are created directly by Omar, never self-signed-up.
+  approval_status text default 'pending' check (approval_status in ('pending','approved','rejected')),
   created_at timestamptz default now()
 );
 
@@ -130,6 +137,7 @@ create index if not exists idx_invoices_payment_proof_status on public.invoices(
 create index if not exists idx_messages_client_id on public.messages(client_id);
 create index if not exists idx_messages_created_at on public.messages(created_at);
 create index if not exists idx_users_role on public.users(role);
+create index if not exists idx_users_approval_status on public.users(approval_status);
 create index if not exists idx_leads_status on public.leads(status);
 create index if not exists idx_leads_created_at on public.leads(created_at);
 
@@ -162,11 +170,12 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.users (id, email, full_name, preferred_language)
+  insert into public.users (id, email, full_name, phone, preferred_language)
   values (
     new.id,
     new.email,
     coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)),
+    new.raw_user_meta_data->>'phone',
     coalesce(new.raw_user_meta_data->>'preferred_language', 'pt')
   )
   on conflict (id) do nothing;
@@ -222,6 +231,9 @@ begin
     if new.email is distinct from old.email then
       raise exception 'Email changes are not permitted through this update';
     end if;
+    if new.approval_status is distinct from old.approval_status then
+      raise exception 'Only admins can change approval status';
+    end if;
   end if;
   return new;
 end;
@@ -231,6 +243,12 @@ drop trigger if exists trg_prevent_role_self_escalation on public.users;
 create trigger trg_prevent_role_self_escalation
   before update on public.users
   for each row execute function public.prevent_role_self_escalation();
+
+-- Existing admin accounts were created directly by Omar, not self-signed-up
+-- — they must never sit in a pending state (harmless either way since
+-- is_admin()/admin routes don't check approval_status, but keeps the data
+-- honest for the admin clients screen).
+update public.users set approval_status = 'approved' where role = 'admin';
 
 -- ─── Trigger: block payment-proof self-approval ─────────────────
 -- SECURITY. A client may upload a CIH bank-transfer slip (payment_proof_

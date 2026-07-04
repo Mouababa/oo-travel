@@ -15,6 +15,7 @@ model User {
   preferredLanguage String     @default("pt") @map("preferred_language")
   role              String     @default("client")
   whatsappId        String?    @unique @map("whatsapp_id")
+  approvalStatus    String     @default("pending") @map("approval_status")
   createdAt         DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
 
   bookings  Booking[]

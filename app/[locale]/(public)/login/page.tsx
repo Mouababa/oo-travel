@@ -104,7 +104,14 @@ export default function LoginPage() {
           </Button>
 
           <p className="mt-6 text-center text-xs text-text-secondary">
-            {t('noAccount')}
+            {t('noAccount')}{' '}
+            <button
+              type="button"
+              onClick={() => router.push('/signup')}
+              className="cursor-pointer font-medium text-accent hover:underline"
+            >
+              {t('signUpLink')}
+            </button>
           </p>
         </CardContent>
       </Card>

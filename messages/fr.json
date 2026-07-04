@@ -16,6 +16,7 @@
     "loading": "Chargement...",
     "all": "Tous",
     "actions": "Actions",
+    "status": "Statut",
     "whatsapp": "WhatsApp",
     "talkOnWhatsapp": "Discuter sur WhatsApp",
     "optional": "facultatif"
@@ -217,7 +218,25 @@
     "magicLink": "Envoyer un lien magique",
     "or": "ou",
     "magicLinkSent": "Lien envoyé ! Vérifiez votre e-mail.",
-    "noAccount": "Pas encore de compte ? Contactez Omar pour créer votre accès."
+    "noAccount": "Pas encore de compte ?",
+    "signUpLink": "Créer un compte"
+  },
+  "signup": {
+    "title": "Créez votre compte",
+    "subtitle": "Inscrivez-vous pour accéder à votre espace client.",
+    "fullName": "Nom complet",
+    "email": "E-mail",
+    "phone": "Téléphone (WhatsApp)",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
+    "createAccount": "Créer le compte",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "signInLink": "Se connecter",
+    "successTitle": "Compte créé !",
+    "successBody": "L'équipe d'Omar va examiner votre compte sous peu. Vous aurez pleinement accès à l'espace client dès son approbation.",
+    "goToLogin": "Aller à la connexion"
   },
   "portal": {
     "nav": {
@@ -227,6 +246,14 @@
       "messages": "Messages",
       "invoices": "Factures",
       "profile": "Profil",
+      "logout": "Déconnexion"
+    },
+    "pendingApproval": {
+      "pendingTitle": "En attente d'approbation",
+      "pendingBody": "Votre compte a été créé avec succès. L'équipe d'Omar examine votre inscription — vous aurez pleinement accès à l'espace client dès son approbation.",
+      "rejectedTitle": "Compte non approuvé",
+      "rejectedBody": "Votre demande d'inscription n'a pas été approuvée. Contactez-nous sur WhatsApp, l'équipe d'Omar vous aidera à résoudre cela.",
+      "contactWhatsapp": "Discuter sur WhatsApp",
       "logout": "Déconnexion"
     },
     "dashboard": {
@@ -403,7 +430,15 @@
       "phone": "Téléphone",
       "language": "Langue",
       "bookings": "Réservations",
-      "empty": "Aucun client enregistré"
+      "empty": "Aucun client enregistré",
+      "pendingQueueTitle": "Inscriptions en attente d'approbation",
+      "signedUpOn": "Inscrit le",
+      "actions": "Actions",
+      "approve": "Approuver",
+      "reject": "Rejeter",
+      "clientApproved": "Client approuvé",
+      "clientRejected": "Client rejeté",
+      "approvalError": "Impossible de mettre à jour le statut d'approbation. Veuillez réessayer."
     },
     "bookings": {
       "title": "Toutes les réservations",

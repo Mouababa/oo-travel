@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Badge, type BadgeProps } from '@/components/ui/badge';
-import type { BookingStatus, InvoiceStatus, ReviewStatus } from '@/lib/types';
+import type { BookingStatus, InvoiceStatus, ReviewStatus, ApprovalStatus } from '@/lib/types';
 
 const bookingMap: Record<BookingStatus, BadgeProps['variant']> = {
   pending: 'warning',
@@ -35,4 +35,16 @@ export function InvoiceStatusBadge({ status }: { status: InvoiceStatus }) {
 export function ReviewStatusBadge({ status }: { status: ReviewStatus }) {
   const t = useTranslations('status.review');
   return <Badge variant={reviewMap[status]}>{t(status)}</Badge>;
+}
+
+const approvalMap: Record<ApprovalStatus, BadgeProps['variant']> = {
+  pending: 'neutral',
+  approved: 'success',
+  rejected: 'danger',
+};
+
+// Reuses status.review's pending/approved/rejected copy — same words apply.
+export function ApprovalStatusBadge({ status }: { status: ApprovalStatus }) {
+  const t = useTranslations('status.review');
+  return <Badge variant={approvalMap[status]}>{t(status)}</Badge>;
 }

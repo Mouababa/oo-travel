@@ -16,6 +16,7 @@
     "loading": "Carregando...",
     "all": "Todos",
     "actions": "Ações",
+    "status": "Status",
     "whatsapp": "WhatsApp",
     "talkOnWhatsapp": "Falar no WhatsApp",
     "optional": "opcional"
@@ -217,7 +218,25 @@
     "magicLink": "Enviar link mágico",
     "or": "ou",
     "magicLinkSent": "Link enviado! Verifique seu e-mail.",
-    "noAccount": "Ainda não tem conta? Fale com o Omar para criar o seu acesso."
+    "noAccount": "Ainda não tem conta?",
+    "signUpLink": "Criar conta"
+  },
+  "signup": {
+    "title": "Crie sua conta",
+    "subtitle": "Cadastre-se para acessar o seu portal do cliente.",
+    "fullName": "Nome completo",
+    "email": "E-mail",
+    "phone": "Telefone (WhatsApp)",
+    "password": "Senha",
+    "confirmPassword": "Confirmar senha",
+    "passwordMismatch": "As senhas não coincidem.",
+    "passwordTooShort": "A senha deve ter pelo menos 8 caracteres.",
+    "createAccount": "Criar conta",
+    "haveAccount": "Já tem uma conta?",
+    "signInLink": "Entrar",
+    "successTitle": "Conta criada!",
+    "successBody": "A equipe do Omar vai revisar a sua conta em breve. Você terá acesso completo ao portal assim que for aprovada.",
+    "goToLogin": "Ir para o login"
   },
   "portal": {
     "nav": {
@@ -227,6 +246,14 @@
       "messages": "Mensagens",
       "invoices": "Faturas",
       "profile": "Perfil",
+      "logout": "Sair"
+    },
+    "pendingApproval": {
+      "pendingTitle": "Aguardando aprovação",
+      "pendingBody": "Sua conta foi criada com sucesso. A equipe do Omar está analisando o seu cadastro — você terá acesso completo ao portal assim que for aprovado.",
+      "rejectedTitle": "Conta não aprovada",
+      "rejectedBody": "Seu cadastro não foi aprovado. Fale pelo WhatsApp e a equipe do Omar vai te ajudar a resolver.",
+      "contactWhatsapp": "Falar no WhatsApp",
       "logout": "Sair"
     },
     "dashboard": {
@@ -403,7 +430,15 @@
       "phone": "Telefone",
       "language": "Idioma",
       "bookings": "Reservas",
-      "empty": "Nenhum cliente cadastrado"
+      "empty": "Nenhum cliente cadastrado",
+      "pendingQueueTitle": "Cadastros aguardando aprovação",
+      "signedUpOn": "Cadastrado em",
+      "actions": "Ações",
+      "approve": "Aprovar",
+      "reject": "Rejeitar",
+      "clientApproved": "Cliente aprovado",
+      "clientRejected": "Cliente rejeitado",
+      "approvalError": "Não foi possível atualizar o status de aprovação. Tente novamente."
     },
     "bookings": {
       "title": "Todas as reservas",

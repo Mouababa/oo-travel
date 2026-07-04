@@ -22,6 +22,7 @@ export type PaymentProofStatus = 'pending' | 'approved' | 'rejected';
 export type MessageDirection = 'inbound' | 'outbound';
 export type MessageChannel = 'portal' | 'whatsapp';
 export type LeadStatus = 'new' | 'contacted' | 'converted' | 'closed';
+export type ApprovalStatus = 'pending' | 'approved' | 'rejected';
 
 export interface Lead {
   id: string;
@@ -44,6 +45,8 @@ export interface User {
   preferred_language: Locale;
   role: Role;
   whatsapp_id?: string;
+  /** Self-service signups start 'pending' until an admin approves them. */
+  approval_status: ApprovalStatus;
   created_at: string;
 }
 

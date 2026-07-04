@@ -16,6 +16,7 @@
     "loading": "Loading...",
     "all": "All",
     "actions": "Actions",
+    "status": "Status",
     "whatsapp": "WhatsApp",
     "talkOnWhatsapp": "Chat on WhatsApp",
     "optional": "optional"
@@ -217,7 +218,25 @@
     "magicLink": "Send magic link",
     "or": "or",
     "magicLinkSent": "Link sent! Check your email.",
-    "noAccount": "No account yet? Contact Omar to set up your access."
+    "noAccount": "No account yet?",
+    "signUpLink": "Create one"
+  },
+  "signup": {
+    "title": "Create your account",
+    "subtitle": "Sign up to access your client portal.",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone (WhatsApp)",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "passwordMismatch": "Passwords don't match.",
+    "passwordTooShort": "Password must be at least 8 characters.",
+    "createAccount": "Create account",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "successTitle": "Account created!",
+    "successBody": "Omar's team will review your account shortly. You'll get full access to the portal once it's approved.",
+    "goToLogin": "Go to sign in"
   },
   "portal": {
     "nav": {
@@ -227,6 +246,14 @@
       "messages": "Messages",
       "invoices": "Invoices",
       "profile": "Profile",
+      "logout": "Log out"
+    },
+    "pendingApproval": {
+      "pendingTitle": "Awaiting approval",
+      "pendingBody": "Your account was created successfully. Omar's team is reviewing it — you'll get full access to the portal once approved.",
+      "rejectedTitle": "Account not approved",
+      "rejectedBody": "Your signup request wasn't approved. Reach out on WhatsApp and Omar's team will help you sort it out.",
+      "contactWhatsapp": "Chat on WhatsApp",
       "logout": "Log out"
     },
     "dashboard": {
@@ -403,7 +430,15 @@
       "phone": "Phone",
       "language": "Language",
       "bookings": "Bookings",
-      "empty": "No clients registered"
+      "empty": "No clients registered",
+      "pendingQueueTitle": "Signups awaiting approval",
+      "signedUpOn": "Signed up",
+      "actions": "Actions",
+      "approve": "Approve",
+      "reject": "Reject",
+      "clientApproved": "Client approved",
+      "clientRejected": "Client rejected",
+      "approvalError": "Couldn't update approval status. Please try again."
     },
     "bookings": {
       "title": "All bookings",

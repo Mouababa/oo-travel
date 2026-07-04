@@ -123,6 +123,19 @@ export async function allClients(): Promise<User[]> {
   return (data as User[]) ?? [];
 }
 
+/** Self-signed-up clients awaiting admin review, oldest first (FIFO queue). */
+export async function pendingClients(): Promise<User[]> {
+  if (MOCK_MODE) return mockClients.filter((c) => c.approval_status === 'pending');
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('users')
+    .select('*')
+    .eq('role', 'client')
+    .eq('approval_status', 'pending')
+    .order('created_at', { ascending: true });
+  return (data as User[]) ?? [];
+}
+
 export async function allBookings(): Promise<Booking[]> {
   if (MOCK_MODE) return mockBookings;
   const supabase = await createClient();
@@ -302,6 +315,30 @@ export async function verifyPaymentProof(
         : { payment_proof_status: 'rejected' },
     )
     .eq('id', invoiceId);
+  return error ? { ok: false, error: error.message } : { ok: true };
+}
+
+/**
+ * Admin-only: approve or reject a self-service client signup. RLS + the
+ * prevent_role_self_escalation trigger both guard this at the DB layer too
+ * — is_admin() is checked here so the UI gets a clean error instead of a
+ * raw exception.
+ */
+export async function approveClient(
+  clientId: string,
+  approve: boolean,
+): Promise<{ ok: boolean; error?: string }> {
+  if (MOCK_MODE) return { ok: true };
+
+  if (!(await isCurrentUserAdmin())) {
+    return { ok: false, error: 'not authorized' };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from('users')
+    .update({ approval_status: approve ? 'approved' : 'rejected' })
+    .eq('id', clientId);
   return error ? { ok: false, error: error.message } : { ok: true };
 }
 
