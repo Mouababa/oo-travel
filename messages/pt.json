@@ -444,7 +444,10 @@
       "title": "Todas as reservas",
       "subtitle": "Gerencie o status de cada reserva.",
       "client": "Cliente",
-      "manage": "Gerenciar status"
+      "manage": "Gerenciar status",
+      "empty": "Ainda não há reservas",
+      "statusUpdated": "Status da reserva atualizado.",
+      "statusUpdateError": "Não foi possível atualizar o status. Tente novamente."
     },
     "documents": {
       "title": "Revisão de documentos",

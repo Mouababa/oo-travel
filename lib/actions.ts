@@ -13,7 +13,7 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import * as data from '@/lib/data';
-import type { ServiceType, ReviewStatus, InvoiceLineItem } from '@/lib/types';
+import type { ServiceType, ReviewStatus, InvoiceLineItem, BookingStatus } from '@/lib/types';
 
 const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
 const MOCK_USER_ID = 'u_001'; // matches lib/mock-data.ts's mockUser.id
@@ -41,6 +41,15 @@ export async function createBookingAction(input: {
 
   const result = await data.createBooking(user.id, input);
   if (result.ok) revalidatePath('/[locale]/portal/bookings', 'page');
+  return result;
+}
+
+export async function updateBookingStatusAction(bookingId: string, status: BookingStatus) {
+  const result = await data.updateBookingStatus(bookingId, status);
+  if (result.ok) {
+    revalidatePath('/[locale]/admin/bookings', 'page');
+    revalidatePath('/[locale]/portal/bookings', 'page');
+  }
   return result;
 }
 

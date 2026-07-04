@@ -444,7 +444,10 @@
       "title": "All bookings",
       "subtitle": "Manage the status of each booking.",
       "client": "Client",
-      "manage": "Manage status"
+      "manage": "Manage status",
+      "empty": "No bookings yet",
+      "statusUpdated": "Booking status updated.",
+      "statusUpdateError": "Couldn't update the status. Please try again."
     },
     "documents": {
       "title": "Document review",

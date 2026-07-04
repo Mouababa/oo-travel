@@ -444,7 +444,10 @@
       "title": "Toutes les réservations",
       "subtitle": "Gérez le statut de chaque réservation.",
       "client": "Client",
-      "manage": "Gérer le statut"
+      "manage": "Gérer le statut",
+      "empty": "Aucune réservation pour l'instant",
+      "statusUpdated": "Statut de la réservation mis à jour.",
+      "statusUpdateError": "Impossible de mettre à jour le statut. Réessayez."
     },
     "documents": {
       "title": "Examen des documents",

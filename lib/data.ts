@@ -25,6 +25,7 @@ import {
 import type {
   User,
   Booking,
+  BookingStatus,
   Document,
   Invoice,
   InvoiceLineItem,
@@ -245,6 +246,21 @@ export async function createBooking(
     .select('id')
     .single();
   return error ? { ok: false, error: error.message } : { ok: true, id: data.id };
+}
+
+export async function updateBookingStatus(
+  bookingId: string,
+  status: BookingStatus,
+): Promise<{ ok: boolean; error?: string }> {
+  if (MOCK_MODE) return { ok: true };
+
+  if (!(await isCurrentUserAdmin())) {
+    return { ok: false, error: 'not authorized' };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from('bookings').update({ status }).eq('id', bookingId);
+  return error ? { ok: false, error: error.message } : { ok: true };
 }
 
 export async function sendMessage(
