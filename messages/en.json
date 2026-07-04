@@ -479,7 +479,20 @@
       "proofApproved": "Payment approved and invoice marked paid.",
       "proofRejected": "Payment proof rejected.",
       "proofError": "Couldn't update the payment. Please try again.",
-      "slipError": "Couldn't open the slip. Please try again."
+      "slipError": "Couldn't open the slip. Please try again.",
+      "createTitle": "Create invoice",
+      "selectClient": "Select a client",
+      "linkedBooking": "Linked booking (optional)",
+      "noBooking": "No linked booking",
+      "dueDate": "Due date",
+      "lineItems": "Line items",
+      "itemLabelPh": "Description",
+      "itemAmountPh": "R$",
+      "removeItem": "Remove item",
+      "addItem": "Add item",
+      "total": "Total",
+      "invoiceCreated": "Invoice created.",
+      "invoiceCreateError": "Couldn't create the invoice. Please try again."
     }
   },
   "status": {

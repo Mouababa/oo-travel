@@ -479,7 +479,20 @@
       "proofApproved": "تمت الموافقة على الدفع وتم تحديد الفاتورة كمدفوعة.",
       "proofRejected": "تم رفض إيصال الدفع.",
       "proofError": "تعذّر تحديث حالة الدفع. حاول مرة أخرى.",
-      "slipError": "تعذّر فتح الإيصال. حاول مرة أخرى."
+      "slipError": "تعذّر فتح الإيصال. حاول مرة أخرى.",
+      "createTitle": "إنشاء فاتورة",
+      "selectClient": "اختر عميلاً",
+      "linkedBooking": "الحجز المرتبط (اختياري)",
+      "noBooking": "بدون حجز مرتبط",
+      "dueDate": "تاريخ الاستحقاق",
+      "lineItems": "البنود",
+      "itemLabelPh": "الوصف",
+      "itemAmountPh": "R$",
+      "removeItem": "إزالة البند",
+      "addItem": "إضافة بند",
+      "total": "الإجمالي",
+      "invoiceCreated": "تم إنشاء الفاتورة.",
+      "invoiceCreateError": "تعذّر إنشاء الفاتورة. حاول مرة أخرى."
     }
   },
   "status": {

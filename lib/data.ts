@@ -27,6 +27,7 @@ import type {
   Booking,
   Document,
   Invoice,
+  InvoiceLineItem,
   Message,
   Lead,
   ServiceType,
@@ -283,6 +284,49 @@ export async function markInvoicePaid(
     .update({ status: 'paid', paid_at: new Date().toISOString(), payment_method: paymentMethod })
     .eq('id', invoiceId);
   return error ? { ok: false, error: error.message } : { ok: true };
+}
+
+/**
+ * Admin-only: issues a new invoice for a client (optionally tied to one of
+ * their bookings). The invoice number comes from the DB sequence
+ * (next_invoice_number()) rather than being assigned in app code, so two
+ * concurrent admins can never collide on the same number.
+ */
+export async function createInvoice(input: {
+  client_id: string;
+  booking_id?: string;
+  line_items: InvoiceLineItem[];
+  due_date?: string;
+}): Promise<{ ok: boolean; invoice?: Invoice; error?: string }> {
+  if (MOCK_MODE) return { ok: true };
+
+  if (!(await isCurrentUserAdmin())) {
+    return { ok: false, error: 'not authorized' };
+  }
+  if (input.line_items.length === 0) {
+    return { ok: false, error: 'at least one line item is required' };
+  }
+
+  const supabase = await createClient();
+  const { data: invoiceNumber, error: numberError } = await supabase.rpc('next_invoice_number');
+  if (numberError) return { ok: false, error: numberError.message };
+
+  const total_brl = input.line_items.reduce((sum, li) => sum + li.amount_brl, 0);
+
+  const { data: row, error } = await supabase
+    .from('invoices')
+    .insert({
+      client_id: input.client_id,
+      booking_id: input.booking_id || null,
+      invoice_number: invoiceNumber,
+      line_items: input.line_items,
+      total_brl,
+      due_date: input.due_date || null,
+    })
+    .select('*')
+    .single();
+
+  return error ? { ok: false, error: error.message } : { ok: true, invoice: row as Invoice };
 }
 
 /**

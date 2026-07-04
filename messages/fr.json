@@ -479,7 +479,20 @@
       "proofApproved": "Paiement approuvé et facture marquée comme payée.",
       "proofRejected": "Justificatif de paiement refusé.",
       "proofError": "Impossible de mettre à jour le paiement. Réessayez.",
-      "slipError": "Impossible d'ouvrir le justificatif. Réessayez."
+      "slipError": "Impossible d'ouvrir le justificatif. Réessayez.",
+      "createTitle": "Créer une facture",
+      "selectClient": "Sélectionner un client",
+      "linkedBooking": "Réservation associée (facultatif)",
+      "noBooking": "Aucune réservation associée",
+      "dueDate": "Échéance",
+      "lineItems": "Articles",
+      "itemLabelPh": "Description",
+      "itemAmountPh": "R$",
+      "removeItem": "Retirer l'article",
+      "addItem": "Ajouter un article",
+      "total": "Total",
+      "invoiceCreated": "Facture créée.",
+      "invoiceCreateError": "Impossible de créer la facture. Réessayez."
     }
   },
   "status": {

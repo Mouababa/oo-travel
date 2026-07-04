@@ -479,7 +479,20 @@
       "proofApproved": "Pagamento aprovado e fatura marcada como paga.",
       "proofRejected": "Comprovante de pagamento rejeitado.",
       "proofError": "Não foi possível atualizar o pagamento. Tente novamente.",
-      "slipError": "Não foi possível abrir o comprovante. Tente novamente."
+      "slipError": "Não foi possível abrir o comprovante. Tente novamente.",
+      "createTitle": "Criar fatura",
+      "selectClient": "Selecione um cliente",
+      "linkedBooking": "Reserva vinculada (opcional)",
+      "noBooking": "Sem reserva vinculada",
+      "dueDate": "Vencimento",
+      "lineItems": "Itens",
+      "itemLabelPh": "Descrição",
+      "itemAmountPh": "R$",
+      "removeItem": "Remover item",
+      "addItem": "Adicionar item",
+      "total": "Total",
+      "invoiceCreated": "Fatura criada.",
+      "invoiceCreateError": "Não foi possível criar a fatura. Tente novamente."
     }
   },
   "status": {

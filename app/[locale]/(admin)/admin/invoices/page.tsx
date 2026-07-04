@@ -1,9 +1,6 @@
-import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { Plus } from 'lucide-react';
-import { PageHeader } from '@/components/page-header';
-import { Button } from '@/components/ui/button';
+import { setRequestLocale } from 'next-intl/server';
 import { AdminInvoicesClient } from '@/components/admin/invoices-client';
-import { allInvoices, clientNameMap } from '@/lib/data';
+import { allInvoices, allClients, allBookings, clientNameMap } from '@/lib/data';
 
 export default async function AdminInvoicesPage({
   params,
@@ -12,26 +9,22 @@ export default async function AdminInvoicesPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('admin.invoices');
 
-  const invoices = await allInvoices();
+  const [invoices, clients, bookings] = await Promise.all([
+    allInvoices(),
+    allClients(),
+    allBookings(),
+  ]);
   const names = await clientNameMap(
     invoices.map((i) => i.client_id).filter((id): id is string => Boolean(id)),
   );
 
   return (
-    <>
-      <PageHeader
-        title={t('title')}
-        subtitle={t('subtitle')}
-        action={
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            {t('create')}
-          </Button>
-        }
-      />
-      <AdminInvoicesClient initialInvoices={invoices} names={names} />
-    </>
+    <AdminInvoicesClient
+      initialInvoices={invoices}
+      names={names}
+      clients={clients}
+      bookings={bookings}
+    />
   );
 }

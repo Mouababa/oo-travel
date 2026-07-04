@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { Check, X, Landmark, Inbox, ExternalLink, Loader2 } from 'lucide-react';
+import { Check, X, Landmark, Inbox, ExternalLink, Loader2, Plus } from 'lucide-react';
+import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,10 +16,11 @@ import {
 } from '@/components/ui/table';
 import { InvoiceStatusBadge } from '@/components/status-badge';
 import { EmptyState } from '@/components/empty-state';
+import { CreateInvoiceModal } from '@/components/admin/create-invoice-modal';
 import { useToast } from '@/lib/use-toast';
 import { verifyPaymentProofAction } from '@/lib/actions';
 import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
-import type { Invoice } from '@/lib/types';
+import type { Invoice, User, Booking } from '@/lib/types';
 
 function ReviewRow({
   invoice,
@@ -116,15 +118,32 @@ function ReviewRow({
 export function AdminInvoicesClient({
   initialInvoices,
   names,
+  clients,
+  bookings,
 }: {
   initialInvoices: Invoice[];
   names: Record<string, string>;
+  clients: User[];
+  bookings: Booking[];
 }) {
   const t = useTranslations('admin.invoices');
   const ti = useTranslations('portal.invoices');
   const locale = useLocale();
 
   const [invoices, setInvoices] = useState<Invoice[]>(initialInvoices);
+  const [createOpen, setCreateOpen] = useState(false);
+
+  function onInvoiceCreated(invoice: Invoice) {
+    setInvoices((list) => [invoice, ...list]);
+  }
+
+  // `names` is precomputed server-side from the initial invoice list, so a
+  // just-created invoice's client won't be in it yet — fall back to the
+  // full client list, which every admin page already has loaded.
+  function clientNameFor(clientId?: string): string {
+    if (!clientId) return '—';
+    return names[clientId] ?? clients.find((c) => c.id === clientId)?.full_name ?? '—';
+  }
 
   function onResolved(id: string, status: 'approved' | 'rejected') {
     setInvoices((list) =>
@@ -147,6 +166,25 @@ export function AdminInvoicesClient({
 
   return (
     <>
+      <PageHeader
+        title={t('title')}
+        subtitle={t('subtitle')}
+        action={
+          <Button className="gap-2" onClick={() => setCreateOpen(true)}>
+            <Plus className="h-4 w-4" />
+            {t('create')}
+          </Button>
+        }
+      />
+
+      <CreateInvoiceModal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        clients={clients}
+        bookings={bookings}
+        onCreated={onInvoiceCreated}
+      />
+
       {pendingProofs.length > 0 && (
         <Card className="mb-6 border-warning/30">
           <CardHeader>
@@ -171,7 +209,7 @@ export function AdminInvoicesClient({
                   <ReviewRow
                     key={inv.id}
                     invoice={inv}
-                    clientName={inv.client_id ? (names[inv.client_id] ?? '—') : '—'}
+                    clientName={clientNameFor(inv.client_id)}
                     onResolved={onResolved}
                   />
                 ))}
@@ -203,7 +241,7 @@ export function AdminInvoicesClient({
                       {inv.invoice_number}
                     </TableCell>
                     <TableCell className="text-text-secondary">
-                      {inv.client_id ? (names[inv.client_id] ?? '—') : '—'}
+                      {clientNameFor(inv.client_id)}
                     </TableCell>
                     <TableCell className="text-text-secondary">
                       {inv.due_date ? formatDate(inv.due_date, intlLocale(locale)) : '—'}
