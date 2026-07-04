@@ -409,7 +409,7 @@
       "documents": "Documents",
       "messages": "Messages",
       "invoices": "Factures",
-      "backToPortal": "Espace client"
+      "logout": "Déconnexion"
     },
     "overview": {
       "title": "Vue d'ensemble",

@@ -14,7 +14,6 @@ import {
   LogOut,
   Menu,
   Bell,
-  ShieldCheck,
   type LucideIcon,
 } from 'lucide-react';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
@@ -54,16 +53,10 @@ const adminNav: NavItem[] = [
 export function AppShell({
   variant,
   userName,
-  isAdmin = false,
   children,
 }: {
   variant: 'portal' | 'admin';
   userName: string;
-  /** Only meaningful for variant="portal" — clients must never see the
-   * admin-panel toggle. variant="admin" is always reached by an actual
-   * admin (middleware.ts gates it), so its "back to portal" link always
-   * shows regardless of this prop. */
-  isAdmin?: boolean;
   children: React.ReactNode;
 }) {
   const nav = variant === 'portal' ? portalNav : adminNav;
@@ -141,27 +134,11 @@ export function AppShell({
               router.push('/login');
             }}
             className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-md text-text-muted transition-colors hover:bg-danger/10 hover:text-danger"
-            aria-label={variant === 'portal' ? t('logout') : t('backToPortal')}
+            aria-label={t('logout')}
           >
             <LogOut className="h-4 w-4" />
           </button>
         </div>
-        {(variant === 'admin' || isAdmin) && (
-          <Link
-            href={variant === 'portal' ? '/admin' : '/portal'}
-            className="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-text-muted transition-colors hover:text-accent"
-          >
-            {variant === 'portal' ? (
-              <>
-                <ShieldCheck className="h-3.5 w-3.5" /> Admin
-              </>
-            ) : (
-              <>
-                <User className="h-3.5 w-3.5" /> {t('backToPortal')}
-              </>
-            )}
-          </Link>
-        )}
       </div>
     </div>
   );

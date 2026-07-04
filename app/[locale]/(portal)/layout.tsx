@@ -28,7 +28,7 @@ export default async function PortalLayout({
   }
 
   return (
-    <AppShell variant="portal" userName={user?.full_name ?? ''} isAdmin={user?.role === 'admin'}>
+    <AppShell variant="portal" userName={user?.full_name ?? ''}>
       {children}
     </AppShell>
   );

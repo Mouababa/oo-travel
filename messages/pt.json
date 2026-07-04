@@ -409,7 +409,7 @@
       "documents": "Documentos",
       "messages": "Mensagens",
       "invoices": "Faturas",
-      "backToPortal": "Portal do cliente"
+      "logout": "Sair"
     },
     "overview": {
       "title": "Visão geral",
