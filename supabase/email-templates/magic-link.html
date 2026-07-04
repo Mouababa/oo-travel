@@ -1,0 +1,52 @@
+<!--
+  Supabase Auth → Authentication → Email Templates → "Magic Link".
+  Paste this whole file into the template body field.
+  Supported variables here: {{ .ConfirmationURL }}
+-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;padding:32px 0;font-family:Helvetica,Arial,sans-serif;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+        <tr>
+          <td style="background-color:#0b0b12;padding:28px 32px;text-align:center;">
+            <span style="font-family:Georgia,'Times New Roman',serif;font-size:22px;font-weight:600;color:#ffffff;letter-spacing:0.5px;">OO Travel</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:36px 40px 8px;">
+            <h1 style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-size:22px;color:#0b0b12;">Sign in to your account</h1>
+            <p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#3f3f46;">
+              Use the button below to sign in to your OO Travel client portal. This link expires
+              shortly and can only be used once.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 40px 32px;text-align:center;">
+            <a href="{{ .ConfirmationURL }}"
+               style="display:inline-block;background-color:#c9a961;color:#0b0b12;font-size:15px;font-weight:600;text-decoration:none;padding:14px 32px;border-radius:999px;">
+              Sign in
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 40px 32px;">
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#71717a;">
+              If you didn't request this, you can safely ignore this email — no one can access
+              your account without clicking this link.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="background-color:#fafafa;padding:20px 40px;border-top:1px solid #e5e5e5;text-align:center;">
+            <p style="margin:0 0 4px;font-size:12px;color:#a1a1aa;">OO Travel — Omar Oukhira, independent travel agent</p>
+            <p style="margin:0 0 4px;font-size:12px;color:#a1a1aa;">São Paulo, Brazil · MEI 63.588.045/0001-49</p>
+            <p style="margin:0;font-size:12px;color:#a1a1aa;">
+              <a href="mailto:contact@ootravel.com.br" style="color:#a1a1aa;">contact@ootravel.com.br</a>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
