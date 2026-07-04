@@ -25,6 +25,17 @@ export async function createClient() {
           }
         },
       },
+      // Next.js patches global fetch to cache GET requests by default.
+      // supabase-js's reads are GETs under the hood, so without this a
+      // client's row (e.g. approval_status, invoice status) could keep
+      // serving a stale cached response after an admin writes a change —
+      // this was reported live: a signup stayed stuck on the pending
+      // screen even after being approved, because the cached first read
+      // never got invalidated.
+      global: {
+        fetch: (url: RequestInfo | URL, options: RequestInit = {}) =>
+          fetch(url, { ...options, cache: 'no-store' }),
+      },
     },
   );
 }

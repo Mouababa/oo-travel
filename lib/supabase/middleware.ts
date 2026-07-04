@@ -39,6 +39,12 @@ export async function updateSession(request: NextRequest) {
           );
         },
       },
+      // See lib/supabase/server.ts — without this, Next.js's fetch cache can
+      // serve a stale cached role lookup right after a role change.
+      global: {
+        fetch: (url: RequestInfo | URL, options: RequestInit = {}) =>
+          fetch(url, { ...options, cache: 'no-store' }),
+      },
     },
   );
 
