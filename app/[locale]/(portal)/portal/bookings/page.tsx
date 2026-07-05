@@ -14,7 +14,7 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { BookingStatusBadge } from '@/components/status-badge';
-import { ServiceIcon } from '@/components/service-icon';
+import { ServiceBadges } from '@/components/service-badges';
 import { EmptyState } from '@/components/empty-state';
 import { getCurrentUser, bookingsForClient } from '@/lib/data';
 import { formatBRL, formatDate, intlLocale } from '@/lib/utils';
@@ -71,13 +71,9 @@ export default async function BookingsPage({
                 {bookings.map((b) => (
                   <TableRow key={b.id}>
                     <TableCell>
-                      <span className="flex items-center gap-2 font-medium">
-                        <ServiceIcon
-                          type={b.service_type}
-                          className="h-4 w-4 text-text-secondary"
-                        />
-                        {ts(`${b.service_type}.name`)}
-                      </span>
+                      <ServiceBadges
+                        items={b.service_types.map((t) => ({ type: t, label: ts(`${t}.name`) }))}
+                      />
                     </TableCell>
                     <TableCell className="text-text-secondary">{b.destination}</TableCell>
                     <TableCell className="whitespace-nowrap text-text-secondary">

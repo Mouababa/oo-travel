@@ -38,6 +38,9 @@
 --  12. Added invoices.currency (BRL/USD/MAD) and suggested_payment_method
 --      (pix/cih_transfer, nullable = let the customer choose). PIX can only
 --      ever settle in BRL, enforced by a constraint, not just app logic.
+--  13. bookings.service_type / leads.service_type (single enum) replaced by
+--      service_types (text[]) — a request can cover more than one service
+--      (e.g. flight + hotel + visa) instead of exactly one per submission.
 -- ════════════════════════════════════════════════════════════════
 
 -- ─── Tables ─────────────────────────────────────────────────────
@@ -63,9 +66,11 @@ create table if not exists public.leads (
   full_name text not null,
   email text not null,
   whatsapp text,
-  service_type text check (service_type in (
-    'flight','hotel','tour','visa','cruise','corporate','legal','car_rental'
-  )),
+  -- One lead can express interest in more than one service at once.
+  service_types text[] check (
+    service_types is null
+    or service_types <@ array['flight','hotel','tour','visa','cruise','corporate','legal','car_rental']::text[]
+  ),
   destination text,
   message text,
   source text default 'website',
@@ -76,9 +81,11 @@ create table if not exists public.leads (
 create table if not exists public.bookings (
   id uuid primary key default gen_random_uuid(),
   client_id uuid references public.users(id) on delete cascade,
-  service_type text not null check (service_type in (
-    'flight','hotel','tour','visa','cruise','corporate','legal','car_rental'
-  )),
+  -- A single request can cover more than one service (e.g. flight + hotel).
+  service_types text[] not null check (
+    array_length(service_types, 1) > 0
+    and service_types <@ array['flight','hotel','tour','visa','cruise','corporate','legal','car_rental']::text[]
+  ),
   destination text not null,
   travel_date date,
   return_date date,

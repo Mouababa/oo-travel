@@ -2,16 +2,17 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Send, ArrowRight, Loader2 } from 'lucide-react';
+import { Send, ArrowRight, Loader2, Check } from 'lucide-react';
 import { WhatsAppLogo } from '@/components/icons/whatsapp';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
+import { ServiceIcon } from '@/components/service-icon';
 import { useToast } from '@/lib/use-toast';
 import { SERVICE_TYPES, whatsappLink } from '@/lib/constants';
 import { submitLeadAction } from '@/lib/actions';
+import { cn } from '@/lib/utils';
 import type { ServiceType } from '@/lib/types';
 
 export function HomeRequestForm() {
@@ -21,9 +22,18 @@ export function HomeRequestForm() {
   const tc = useTranslations('common');
   const { toast } = useToast();
   const [submitting, setSubmitting] = useState(false);
+  const [services, setServices] = useState<ServiceType[]>([]);
+
+  function toggleService(s: ServiceType) {
+    setServices((list) => (list.includes(s) ? list.filter((x) => x !== s) : [...list, s]));
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (services.length === 0) {
+      toast({ title: tf('serviceRequired'), variant: 'danger' });
+      return;
+    }
     const form = e.currentTarget;
     const fd = new FormData(form);
     setSubmitting(true);
@@ -32,7 +42,7 @@ export function HomeRequestForm() {
       full_name: String(fd.get('name') ?? ''),
       email: String(fd.get('email') ?? ''),
       whatsapp: String(fd.get('whatsapp') ?? '') || undefined,
-      service_type: (String(fd.get('service') ?? '') || undefined) as ServiceType | undefined,
+      service_types: services,
       destination: String(fd.get('destination') ?? '') || undefined,
       message: String(fd.get('message') ?? '') || undefined,
     });
@@ -41,6 +51,7 @@ export function HomeRequestForm() {
     if (result.ok) {
       toast({ title: tf('sent'), variant: 'success' });
       form.reset();
+      setServices([]);
     } else {
       toast({ title: tf('error'), variant: 'danger' });
     }
@@ -59,26 +70,40 @@ export function HomeRequestForm() {
             <Input id="rf-email" name="email" type="email" required />
           </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <Label htmlFor="rf-whatsapp">
-              {tf('whatsapp')}{' '}
-              <span className="font-normal text-text-muted">({tc('optional')})</span>
-            </Label>
-            <Input id="rf-whatsapp" name="whatsapp" type="tel" inputMode="tel" />
-          </div>
-          <div>
-            <Label htmlFor="rf-service">{tf('service')}</Label>
-            <Select id="rf-service" name="service" defaultValue="" required>
-              <option value="" disabled>
-                {tf('servicePlaceholder')}
-              </option>
-              {SERVICE_TYPES.map((s) => (
-                <option key={s} value={s}>
+        <div>
+          <Label htmlFor="rf-whatsapp">
+            {tf('whatsapp')}{' '}
+            <span className="font-normal text-text-muted">({tc('optional')})</span>
+          </Label>
+          <Input id="rf-whatsapp" name="whatsapp" type="tel" inputMode="tel" />
+        </div>
+        <div>
+          <Label>{tf('service')}</Label>
+          <div className="mt-1.5 flex flex-wrap gap-2">
+            {SERVICE_TYPES.map((s) => {
+              const selected = services.includes(s);
+              return (
+                <button
+                  key={s}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => toggleService(s)}
+                  className={cn(
+                    'flex cursor-pointer items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium transition-colors',
+                    selected
+                      ? 'border-accent bg-accent/15 text-accent'
+                      : 'border-border text-text-secondary hover:bg-surface-muted',
+                  )}
+                >
+                  {selected ? (
+                    <Check className="h-3.5 w-3.5" />
+                  ) : (
+                    <ServiceIcon type={s} className="h-3.5 w-3.5" />
+                  )}
                   {ts(`${s}.name`)}
-                </option>
-              ))}
-            </Select>
+                </button>
+              );
+            })}
           </div>
         </div>
         <div>

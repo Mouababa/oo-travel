@@ -31,7 +31,7 @@ model Lead {
   fullName    String   @map("full_name")
   email       String
   whatsapp    String?
-  serviceType String?  @map("service_type")
+  serviceTypes String[] @map("service_types")
   destination String?
   message     String?
   source      String   @default("website")
@@ -44,7 +44,7 @@ model Lead {
 model Booking {
   id          String    @id @default(uuid()) @db.Uuid
   clientId    String    @map("client_id") @db.Uuid
-  serviceType String    @map("service_type")
+  serviceTypes String[] @map("service_types")
   destination String
   travelDate  DateTime? @map("travel_date") @db.Date
   returnDate  DateTime? @map("return_date") @db.Date

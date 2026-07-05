@@ -66,7 +66,7 @@ export const mockBookings: Booking[] = [
   {
     id: 'b_1001',
     client_id: 'u_001',
-    service_type: 'flight',
+    service_types: ['flight'],
     destination: 'Lisboa, Portugal',
     travel_date: '2026-07-14',
     return_date: '2026-07-28',
@@ -79,7 +79,7 @@ export const mockBookings: Booking[] = [
   {
     id: 'b_1002',
     client_id: 'u_001',
-    service_type: 'visa',
+    service_types: ['visa'],
     destination: 'Portugal (D7)',
     travel_date: '2026-07-10',
     status: 'processing',
@@ -91,7 +91,7 @@ export const mockBookings: Booking[] = [
   {
     id: 'b_1003',
     client_id: 'u_001',
-    service_type: 'hotel',
+    service_types: ['hotel'],
     destination: 'Lisboa, Portugal',
     travel_date: '2026-07-14',
     return_date: '2026-07-21',
@@ -103,7 +103,7 @@ export const mockBookings: Booking[] = [
   {
     id: 'b_2001',
     client_id: 'u_002',
-    service_type: 'tour',
+    service_types: ['tour'],
     destination: 'Dubai, UAE',
     travel_date: '2026-09-02',
     return_date: '2026-09-09',
@@ -115,7 +115,7 @@ export const mockBookings: Booking[] = [
   {
     id: 'b_3001',
     client_id: 'u_003',
-    service_type: 'cruise',
+    service_types: ['cruise'],
     destination: 'Mediterrâneo',
     travel_date: '2026-08-11',
     return_date: '2026-08-20',
@@ -127,7 +127,7 @@ export const mockBookings: Booking[] = [
   {
     id: 'b_4001',
     client_id: 'u_004',
-    service_type: 'corporate',
+    service_types: ['corporate'],
     destination: 'São Paulo → New York',
     travel_date: '2026-07-01',
     return_date: '2026-07-05',

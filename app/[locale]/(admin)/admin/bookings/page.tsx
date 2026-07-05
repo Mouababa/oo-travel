@@ -1,7 +1,6 @@
-import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { PageHeader } from '@/components/page-header';
+import { setRequestLocale } from 'next-intl/server';
 import { AdminBookingsClient } from '@/components/admin/bookings-client';
-import { allBookings, clientNameMap } from '@/lib/data';
+import { allBookings, allClients, clientNameMap } from '@/lib/data';
 
 export default async function AdminBookingsPage({
   params,
@@ -10,15 +9,16 @@ export default async function AdminBookingsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('admin.bookings');
 
-  const bookings = await allBookings();
+  const [bookings, clients] = await Promise.all([allBookings(), allClients()]);
   const names = await clientNameMap(bookings.map((b) => b.client_id));
 
   return (
-    <>
-      <PageHeader title={t('title')} subtitle={t('subtitle')} />
-      <AdminBookingsClient initialBookings={bookings} names={names} locale={locale} />
-    </>
+    <AdminBookingsClient
+      initialBookings={bookings}
+      names={names}
+      clients={clients}
+      locale={locale}
+    />
   );
 }

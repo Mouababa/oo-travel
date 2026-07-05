@@ -12,7 +12,7 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { BookingStatusBadge, ReviewStatusBadge } from '@/components/status-badge';
-import { ServiceIcon } from '@/components/service-icon';
+import { ServiceBadges } from '@/components/service-badges';
 import {
   allBookings,
   allClients,
@@ -96,13 +96,12 @@ export default async function AdminOverviewPage({
                 {bookings.slice(0, 5).map((b) => (
                   <TableRow key={b.id}>
                     <TableCell>
-                      <span className="flex items-center gap-2">
-                        <ServiceIcon
-                          type={b.service_type}
-                          className="h-4 w-4 text-text-secondary"
+                      <div className="flex flex-col gap-1">
+                        <span>{b.destination}</span>
+                        <ServiceBadges
+                          items={b.service_types.map((t) => ({ type: t, label: ts(`${t}.name`) }))}
                         />
-                        {b.destination}
-                      </span>
+                      </div>
                     </TableCell>
                     <TableCell className="text-text-secondary">
                       {names[b.client_id] ?? '—'}

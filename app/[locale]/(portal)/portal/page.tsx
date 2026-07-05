@@ -24,7 +24,7 @@ import {
   TableCell,
 } from '@/components/ui/table';
 import { BookingStatusBadge } from '@/components/status-badge';
-import { ServiceIcon } from '@/components/service-icon';
+import { ServiceBadges } from '@/components/service-badges';
 import { BookingsChart } from '@/components/portal/bookings-chart';
 import { PhotoBackdrop } from '@/components/public/photo-card';
 import { scenePhoto } from '@/lib/images';
@@ -69,9 +69,10 @@ export default async function DashboardPage({
     .filter((b) => b.travel_date && b.status !== 'cancelled')
     .sort((a, b) => (a.travel_date! < b.travel_date! ? -1 : 1))[0];
 
-  // Bookings grouped by service type, for the analytics chart.
+  // Bookings grouped by service type, for the analytics chart. A booking can
+  // list more than one service, so it's counted once per service it covers.
   const byType = bookings.reduce<Record<string, number>>((acc, b) => {
-    acc[b.service_type] = (acc[b.service_type] ?? 0) + 1;
+    for (const type of b.service_types) acc[type] = (acc[type] ?? 0) + 1;
     return acc;
   }, {});
   const chartData = Object.entries(byType).map(([type, count]) => ({
@@ -105,11 +106,7 @@ export default async function DashboardPage({
               {user.full_name}
             </h1>
             {nextTrip ? (
-              <p className="mt-2 flex items-center gap-2 text-sm text-text-secondary">
-                <ServiceIcon
-                  type={nextTrip.service_type}
-                  className="h-4 w-4 text-accent"
-                />
+              <p className="mt-2 text-sm text-text-secondary">
                 {t('nextTripTitle')}: {nextTrip.destination}
               </p>
             ) : (
@@ -187,13 +184,9 @@ export default async function DashboardPage({
                 {bookings.slice(0, 4).map((b) => (
                   <TableRow key={b.id}>
                     <TableCell>
-                      <span className="flex items-center gap-2">
-                        <ServiceIcon
-                          type={b.service_type}
-                          className="h-4 w-4 text-text-secondary"
-                        />
-                        {ts(`${b.service_type}.name`)}
-                      </span>
+                      <ServiceBadges
+                        items={b.service_types.map((t) => ({ type: t, label: ts(`${t}.name`) }))}
+                      />
                     </TableCell>
                     <TableCell className="text-text-secondary">{b.destination}</TableCell>
                     <TableCell>

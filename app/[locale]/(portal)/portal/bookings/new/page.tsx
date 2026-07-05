@@ -28,7 +28,7 @@ export default function NewBookingPage() {
   const { toast } = useToast();
 
   const [step, setStep] = useState(1);
-  const [service, setService] = useState<ServiceType | null>(null);
+  const [services, setServices] = useState<ServiceType[]>([]);
   const [destination, setDestination] = useState('');
   const [travelDate, setTravelDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
@@ -50,34 +50,44 @@ export default function NewBookingPage() {
     if (step > 1) setStep((s) => s - 1);
   }
 
+  function toggleService(s: ServiceType) {
+    setServices((list) => (list.includes(s) ? list.filter((x) => x !== s) : [...list, s]));
+  }
+
+  const hasCarRental = services.includes('car_rental');
+
   async function submit() {
-    if (!service) return;
+    if (services.length === 0) return;
     setSubmitting(true);
 
     // The bookings table has no dedicated car-rental columns — fold those
-    // details into notes as structured text rather than expanding the schema
-    // for a single service type.
-    const composedNotes =
-      service === 'car_rental'
+    // details into notes as structured text alongside any other services
+    // requested in the same submission, rather than expanding the schema.
+    const composedNotes = [
+      hasCarRental
         ? [
+            `${t('carDetails')}:`,
             `${t('carPickup')}: ${carPickup || '—'}`,
             `${t('carDropoff')}: ${carDropoff || '—'}`,
             `${t('carPickupDateTime')}: ${carPickupDateTime || '—'}`,
             `${t('carDays')}: ${carDays}`,
             `${t('carVehicle')}: ${carVehicle}`,
             carSpecial ? `${t('carSpecial')}: ${carSpecial}` : null,
-            notes ? `\n${notes}` : null,
           ]
             .filter(Boolean)
             .join('\n')
-        : notes || undefined;
+        : null,
+      notes || null,
+    ]
+      .filter(Boolean)
+      .join('\n\n');
 
     const result = await createBookingAction({
-      service_type: service,
+      service_types: services,
       destination,
-      travel_date: service === 'car_rental' ? undefined : travelDate || undefined,
-      return_date: service === 'car_rental' ? undefined : returnDate || undefined,
-      notes: composedNotes,
+      travel_date: travelDate || undefined,
+      return_date: returnDate || undefined,
+      notes: composedNotes || undefined,
     });
 
     setSubmitting(false);
@@ -89,7 +99,8 @@ export default function NewBookingPage() {
     }
   }
 
-  const canAdvance = step === 1 ? Boolean(service) : step === 2 ? Boolean(destination) : true;
+  const canAdvance =
+    step === 1 ? services.length > 0 : step === 2 ? Boolean(destination) : true;
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -134,32 +145,38 @@ export default function NewBookingPage() {
           {step === 1 && (
             <div>
               <Label className="mb-3">{t('chooseService')}</Label>
+              <p className="mb-3 text-xs text-text-secondary">{t('chooseServiceHint')}</p>
               <div className="grid gap-3 sm:grid-cols-2">
-                {SERVICE_TYPES.map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setService(s)}
-                    className={cn(
-                      'flex cursor-pointer items-center gap-3 rounded-md border p-3 text-start transition-colors',
-                      service === s
-                        ? 'border-primary bg-primary-light'
-                        : 'border-border hover:bg-surface-muted',
-                    )}
-                  >
-                    <span
+                {SERVICE_TYPES.map((s) => {
+                  const selected = services.includes(s);
+                  return (
+                    <button
+                      key={s}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => toggleService(s)}
                       className={cn(
-                        'flex h-9 w-9 items-center justify-center rounded-md',
-                        service === s
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-surface-muted text-text-secondary',
+                        'flex cursor-pointer items-center gap-3 rounded-md border p-3 text-start transition-colors',
+                        selected
+                          ? 'border-primary bg-primary-light'
+                          : 'border-border hover:bg-surface-muted',
                       )}
                     >
-                      <ServiceIcon type={s} className="h-4 w-4" />
-                    </span>
-                    <span className="text-sm font-medium">{ts(`${s}.name`)}</span>
-                  </button>
-                ))}
+                      <span
+                        className={cn(
+                          'flex h-9 w-9 items-center justify-center rounded-md',
+                          selected
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-surface-muted text-text-secondary',
+                        )}
+                      >
+                        <ServiceIcon type={s} className="h-4 w-4" />
+                      </span>
+                      <span className="flex-1 text-sm font-medium">{ts(`${s}.name`)}</span>
+                      {selected && <Check className="h-4 w-4 shrink-0 text-primary" />}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -176,7 +193,28 @@ export default function NewBookingPage() {
                 />
               </div>
 
-              {service === 'car_rental' ? (
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <Label htmlFor="travel">{t('travelDate')}</Label>
+                  <Input
+                    id="travel"
+                    type="date"
+                    value={travelDate}
+                    onChange={(e) => setTravelDate(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="return">{t('returnDate')}</Label>
+                  <Input
+                    id="return"
+                    type="date"
+                    value={returnDate}
+                    onChange={(e) => setReturnDate(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {hasCarRental && (
                 <div className="space-y-4 rounded-xl border border-accent/20 bg-accent/5 p-4">
                   <p className="font-heading text-sm font-medium text-accent">
                     {t('carDetails')}
@@ -241,27 +279,6 @@ export default function NewBookingPage() {
                       value={carSpecial}
                       onChange={(e) => setCarSpecial(e.target.value)}
                       placeholder={t('carSpecialPh')}
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <Label htmlFor="travel">{t('travelDate')}</Label>
-                    <Input
-                      id="travel"
-                      type="date"
-                      value={travelDate}
-                      onChange={(e) => setTravelDate(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="return">{t('returnDate')}</Label>
-                    <Input
-                      id="return"
-                      type="date"
-                      value={returnDate}
-                      onChange={(e) => setReturnDate(e.target.value)}
                     />
                   </div>
                 </div>

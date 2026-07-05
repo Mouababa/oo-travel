@@ -214,7 +214,7 @@ export async function createLead(input: {
   full_name: string;
   email: string;
   whatsapp?: string;
-  service_type?: ServiceType;
+  service_types?: ServiceType[];
   destination?: string;
   message?: string;
 }): Promise<{ ok: boolean; error?: string }> {
@@ -230,7 +230,7 @@ export async function createLead(input: {
 export async function createBooking(
   clientId: string,
   input: {
-    service_type: ServiceType;
+    service_types: ServiceType[];
     destination: string;
     travel_date?: string;
     return_date?: string;
@@ -248,6 +248,66 @@ export async function createBooking(
     .select('id')
     .single();
   return error ? { ok: false, error: error.message } : { ok: true, id: data.id };
+}
+
+/** Admin-only: creates a booking on a client's behalf (e.g. formalizing a
+ * phone/WhatsApp request into the system). Mirrors createInvoice's shape. */
+export async function createBookingForClient(input: {
+  client_id: string;
+  service_types: ServiceType[];
+  destination: string;
+  travel_date?: string;
+  return_date?: string;
+  notes?: string;
+}): Promise<{ ok: boolean; booking?: Booking; error?: string }> {
+  if (MOCK_MODE) return { ok: true };
+
+  if (!(await isCurrentUserAdmin())) {
+    return { ok: false, error: 'not authorized' };
+  }
+  if (input.service_types.length === 0) {
+    return { ok: false, error: 'at least one service is required' };
+  }
+
+  const supabase = await createClient();
+  const { data: row, error } = await supabase
+    .from('bookings')
+    .insert({
+      client_id: input.client_id,
+      service_types: input.service_types,
+      destination: input.destination,
+      travel_date: input.travel_date || null,
+      return_date: input.return_date || null,
+      notes: input.notes || null,
+    })
+    .select('*')
+    .single();
+
+  return error ? { ok: false, error: error.message } : { ok: true, booking: row as Booking };
+}
+
+/** Admin-only: adjusts which services are included on an existing booking
+ * (e.g. the client asked for flight + hotel, admin confirms flight now and
+ * removes hotel to handle separately) without creating a new request. */
+export async function updateBookingServices(
+  bookingId: string,
+  serviceTypes: ServiceType[],
+): Promise<{ ok: boolean; error?: string }> {
+  if (MOCK_MODE) return { ok: true };
+
+  if (!(await isCurrentUserAdmin())) {
+    return { ok: false, error: 'not authorized' };
+  }
+  if (serviceTypes.length === 0) {
+    return { ok: false, error: 'at least one service is required' };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from('bookings')
+    .update({ service_types: serviceTypes })
+    .eq('id', bookingId);
+  return error ? { ok: false, error: error.message } : { ok: true };
 }
 
 export async function updateBookingStatus(

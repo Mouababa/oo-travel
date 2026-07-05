@@ -34,7 +34,7 @@ export interface Lead {
   full_name: string;
   email: string;
   whatsapp?: string;
-  service_type?: ServiceType;
+  service_types?: ServiceType[];
   destination?: string;
   message?: string;
   source: string;
@@ -58,7 +58,7 @@ export interface User {
 export interface Booking {
   id: string;
   client_id: string;
-  service_type: ServiceType;
+  service_types: ServiceType[];
   destination: string;
   travel_date?: string;
   return_date?: string;

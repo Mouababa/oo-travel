@@ -29,7 +29,7 @@ export async function submitLeadAction(input: {
   full_name: string;
   email: string;
   whatsapp?: string;
-  service_type?: ServiceType;
+  service_types?: ServiceType[];
   destination?: string;
   message?: string;
 }) {
@@ -37,7 +37,7 @@ export async function submitLeadAction(input: {
 }
 
 export async function createBookingAction(input: {
-  service_type: ServiceType;
+  service_types: ServiceType[];
   destination: string;
   travel_date?: string;
   return_date?: string;
@@ -48,6 +48,31 @@ export async function createBookingAction(input: {
 
   const result = await data.createBooking(user.id, input);
   if (result.ok) revalidatePath('/[locale]/portal/bookings', 'page');
+  return result;
+}
+
+export async function createBookingForClientAction(input: {
+  client_id: string;
+  service_types: ServiceType[];
+  destination: string;
+  travel_date?: string;
+  return_date?: string;
+  notes?: string;
+}) {
+  const result = await data.createBookingForClient(input);
+  if (result.ok) {
+    revalidatePath('/[locale]/admin/bookings', 'page');
+    revalidatePath('/[locale]/portal/bookings', 'page');
+  }
+  return result;
+}
+
+export async function updateBookingServicesAction(bookingId: string, serviceTypes: ServiceType[]) {
+  const result = await data.updateBookingServices(bookingId, serviceTypes);
+  if (result.ok) {
+    revalidatePath('/[locale]/admin/bookings', 'page');
+    revalidatePath('/[locale]/portal/bookings', 'page');
+  }
   return result;
 }
 
