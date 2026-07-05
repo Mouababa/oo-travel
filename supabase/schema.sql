@@ -41,6 +41,9 @@
 --  13. bookings.service_type / leads.service_type (single enum) replaced by
 --      service_types (text[]) — a request can cover more than one service
 --      (e.g. flight + hotel + visa) instead of exactly one per submission.
+--  14. Added users.terms_accepted_at — the signup form now requires
+--      checking a box linking to Terms of Use + Booking & Refunds before
+--      account creation; the timestamp comes from client-side metadata.
 -- ════════════════════════════════════════════════════════════════
 
 -- ─── Tables ─────────────────────────────────────────────────────
@@ -56,6 +59,10 @@ create table if not exists public.users (
   -- Self-service signups land here as 'pending' until an admin approves
   -- them. Admin accounts are created directly by Omar, never self-signed-up.
   approval_status text default 'pending' check (approval_status in ('pending','approved','rejected')),
+  -- Set from the signup form's own metadata (the moment the required terms
+  -- checkbox was checked) — null for admin-created accounts, which never go
+  -- through the self-signup consent flow.
+  terms_accepted_at timestamptz,
   created_at timestamptz default now()
 );
 
@@ -195,13 +202,14 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.users (id, email, full_name, phone, preferred_language)
+  insert into public.users (id, email, full_name, phone, preferred_language, terms_accepted_at)
   values (
     new.id,
     new.email,
     coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)),
     new.raw_user_meta_data->>'phone',
-    coalesce(new.raw_user_meta_data->>'preferred_language', 'pt')
+    coalesce(new.raw_user_meta_data->>'preferred_language', 'pt'),
+    (new.raw_user_meta_data->>'terms_accepted_at')::timestamptz
   )
   on conflict (id) do nothing;
   return new;

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Plane, CheckCircle2 } from 'lucide-react';
-import { useRouter } from '@/i18n/routing';
+import { useRouter, Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,6 +24,7 @@ export default function SignupPage() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -36,6 +37,10 @@ export default function SignupPage() {
     }
     if (password.length < 8) {
       toast({ title: t('passwordTooShort'), variant: 'danger' });
+      return;
+    }
+    if (!termsAccepted) {
+      toast({ title: t('termsRequired'), variant: 'danger' });
       return;
     }
 
@@ -52,7 +57,12 @@ export default function SignupPage() {
       email,
       password,
       options: {
-        data: { full_name: fullName, phone, preferred_language: locale },
+        data: {
+          full_name: fullName,
+          phone,
+          preferred_language: locale,
+          terms_accepted_at: new Date().toISOString(),
+        },
         // Without this, Supabase falls back to the project's default Site
         // URL (still localhost:3000 from local dev) — the confirmation
         // email would send a real customer to a dead link.
@@ -148,6 +158,29 @@ export default function SignupPage() {
                 required
               />
             </div>
+            <label className="flex items-start gap-2.5 text-xs text-text-secondary">
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+                required
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-border-strong accent-accent"
+              />
+              <span>
+                {t('termsPrefix')}{' '}
+                <Link href="/legal/terms" target="_blank" className="text-accent hover:underline">
+                  {t('termsLink')}
+                </Link>{' '}
+                {t('termsAnd')}{' '}
+                <Link
+                  href="/legal/booking-terms"
+                  target="_blank"
+                  className="text-accent hover:underline"
+                >
+                  {t('bookingTermsLink')}
+                </Link>
+              </span>
+            </label>
             <Button type="submit" className="w-full" disabled={loading}>
               {t('createAccount')}
             </Button>

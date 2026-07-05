@@ -52,6 +52,9 @@ export interface User {
   whatsapp_id?: string;
   /** Self-service signups start 'pending' until an admin approves them. */
   approval_status: ApprovalStatus;
+  /** Set from the signup form's required terms checkbox; null for accounts
+   * created directly by an admin (no self-signup consent flow). */
+  terms_accepted_at?: string;
   created_at: string;
 }
 

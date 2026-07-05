@@ -16,6 +16,7 @@ model User {
   role              String     @default("client")
   whatsappId        String?    @unique @map("whatsapp_id")
   approvalStatus    String     @default("pending") @map("approval_status")
+  termsAcceptedAt   DateTime?  @map("terms_accepted_at") @db.Timestamptz(6)
   createdAt         DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
 
   bookings  Booking[]
