@@ -574,5 +574,50 @@
     "bookingTerms": "الحجز والاسترداد",
     "rights": "جميع الحقوق محفوظة.",
     "mei": "63.588.045 OMAR OUKHIRA — CNPJ 63.588.045/0001-49"
+  },
+  "email": {
+    "invoiceCreated": {
+      "subject": "فاتورة جديدة {invoiceNumber} من OO Travel",
+      "title": "لديك فاتورة جديدة",
+      "body": "مرحبًا {name}، فاتورة جديدة ({invoiceNumber}) بقيمة {amount} جاهزة. {dueDateText}",
+      "cta": "عرض الفاتورة"
+    },
+    "dueDateText": "الاستحقاق في {dueDate}.",
+    "paymentConfirmed": {
+      "subject": "تم تأكيد الدفع — {invoiceNumber}",
+      "title": "تم تأكيد الدفع",
+      "body": "مرحبًا {name}، لقد أكدنا دفعتك للفاتورة {invoiceNumber}. شكرًا لك!",
+      "cta": "عرض الفاتورة"
+    },
+    "paymentProofRejected": {
+      "subject": "تعذّر التحقق من دفعتك — {invoiceNumber}",
+      "title": "تعذّر التحقق من دفعتك",
+      "body": "مرحبًا {name}، لم نتمكن من التحقق من إيصال الدفع المُرسل للفاتورة {invoiceNumber}. يرجى رفع إيصال جديد أو التواصل معنا.",
+      "cta": "إعادة الإرسال"
+    },
+    "bookingConfirmed": {
+      "subject": "تم تأكيد حجزك إلى {destination}",
+      "title": "تم تأكيد حجزك",
+      "body": "مرحبًا {name}، تم الآن تأكيد حجزك إلى {destination}. سنتواصل معك بخصوص الخطوات التالية.",
+      "cta": "عرض الحجز"
+    },
+    "documentApproved": {
+      "subject": "تمت الموافقة على المستند",
+      "title": "تمت الموافقة على المستند",
+      "body": "مرحبًا {name}، تمت مراجعة مستندك ({docType}) والموافقة عليه.",
+      "cta": "عرض المستندات"
+    },
+    "documentRejected": {
+      "subject": "المستند يحتاج إلى مراجعة",
+      "title": "المستند يحتاج إلى مراجعة",
+      "body": "مرحبًا {name}، لم تتم الموافقة على مستندك ({docType}). يرجى مراجعة التفاصيل في البوابة وإعادة الرفع.",
+      "cta": "عرض المستندات"
+    },
+    "newMessage": {
+      "subject": "رسالة جديدة من عمر",
+      "title": "لديك رسالة جديدة",
+      "body": "مرحبًا {name}، لديك رسالة جديدة من فريق عمر في بوابة العميل الخاصة بك.",
+      "cta": "عرض الرسالة"
+    }
   }
 }

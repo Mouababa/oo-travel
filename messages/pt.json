@@ -574,5 +574,50 @@
     "bookingTerms": "Reservas e Reembolsos",
     "rights": "Todos os direitos reservados.",
     "mei": "63.588.045 OMAR OUKHIRA — CNPJ 63.588.045/0001-49"
+  },
+  "email": {
+    "invoiceCreated": {
+      "subject": "Nova fatura {invoiceNumber} da OO Travel",
+      "title": "Você tem uma nova fatura",
+      "body": "Olá {name}, uma nova fatura ({invoiceNumber}) no valor de {amount} está disponível. {dueDateText}",
+      "cta": "Ver fatura"
+    },
+    "dueDateText": "Vencimento em {dueDate}.",
+    "paymentConfirmed": {
+      "subject": "Pagamento confirmado — {invoiceNumber}",
+      "title": "Pagamento confirmado",
+      "body": "Olá {name}, confirmamos o pagamento da fatura {invoiceNumber}. Obrigado!",
+      "cta": "Ver fatura"
+    },
+    "paymentProofRejected": {
+      "subject": "Não foi possível confirmar seu pagamento — {invoiceNumber}",
+      "title": "Não foi possível confirmar seu pagamento",
+      "body": "Olá {name}, não conseguimos validar o comprovante enviado para a fatura {invoiceNumber}. Envie um novo comprovante ou fale conosco.",
+      "cta": "Enviar novamente"
+    },
+    "bookingConfirmed": {
+      "subject": "Sua reserva para {destination} foi confirmada",
+      "title": "Sua reserva está confirmada",
+      "body": "Olá {name}, sua reserva para {destination} está confirmada. Entraremos em contato com os próximos passos.",
+      "cta": "Ver reserva"
+    },
+    "documentApproved": {
+      "subject": "Documento aprovado",
+      "title": "Documento aprovado",
+      "body": "Olá {name}, seu documento ({docType}) foi analisado e aprovado.",
+      "cta": "Ver documentos"
+    },
+    "documentRejected": {
+      "subject": "Documento precisa de atenção",
+      "title": "Documento precisa de atenção",
+      "body": "Olá {name}, seu documento ({docType}) não foi aprovado. Confira os detalhes no portal e reenvie.",
+      "cta": "Ver documentos"
+    },
+    "newMessage": {
+      "subject": "Nova mensagem de Omar",
+      "title": "Você tem uma nova mensagem",
+      "body": "Olá {name}, você recebeu uma nova mensagem da equipe do Omar no seu portal do cliente.",
+      "cta": "Ver mensagem"
+    }
   }
 }

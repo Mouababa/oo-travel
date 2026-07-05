@@ -574,5 +574,50 @@
     "bookingTerms": "Booking & Refunds",
     "rights": "All rights reserved.",
     "mei": "63.588.045 OMAR OUKHIRA — CNPJ 63.588.045/0001-49"
+  },
+  "email": {
+    "invoiceCreated": {
+      "subject": "New invoice {invoiceNumber} from OO Travel",
+      "title": "You have a new invoice",
+      "body": "Hi {name}, a new invoice ({invoiceNumber}) for {amount} is ready. {dueDateText}",
+      "cta": "View invoice"
+    },
+    "dueDateText": "Due {dueDate}.",
+    "paymentConfirmed": {
+      "subject": "Payment confirmed — {invoiceNumber}",
+      "title": "Payment confirmed",
+      "body": "Hi {name}, we've confirmed your payment for invoice {invoiceNumber}. Thank you!",
+      "cta": "View invoice"
+    },
+    "paymentProofRejected": {
+      "subject": "We couldn't verify your payment — {invoiceNumber}",
+      "title": "We couldn't verify your payment",
+      "body": "Hi {name}, we couldn't verify the bank slip submitted for invoice {invoiceNumber}. Please upload a new one or reach out if you have questions.",
+      "cta": "Upload again"
+    },
+    "bookingConfirmed": {
+      "subject": "Your booking to {destination} is confirmed",
+      "title": "Your booking is confirmed",
+      "body": "Hi {name}, your booking to {destination} is now confirmed. We'll be in touch with any next steps.",
+      "cta": "View booking"
+    },
+    "documentApproved": {
+      "subject": "Document approved",
+      "title": "Document approved",
+      "body": "Hi {name}, your {docType} document has been reviewed and approved.",
+      "cta": "View documents"
+    },
+    "documentRejected": {
+      "subject": "Document needs attention",
+      "title": "Document needs attention",
+      "body": "Hi {name}, your {docType} document wasn't approved. Please check the portal for details and re-upload.",
+      "cta": "View documents"
+    },
+    "newMessage": {
+      "subject": "New message from Omar",
+      "title": "You have a new message",
+      "body": "Hi {name}, you have a new message from Omar's team in your client portal.",
+      "cta": "View message"
+    }
   }
 }

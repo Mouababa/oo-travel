@@ -574,5 +574,50 @@
     "bookingTerms": "Réservation et remboursements",
     "rights": "Tous droits réservés.",
     "mei": "63.588.045 OMAR OUKHIRA — CNPJ 63.588.045/0001-49"
+  },
+  "email": {
+    "invoiceCreated": {
+      "subject": "Nouvelle facture {invoiceNumber} d'OO Travel",
+      "title": "Vous avez une nouvelle facture",
+      "body": "Bonjour {name}, une nouvelle facture ({invoiceNumber}) de {amount} est disponible. {dueDateText}",
+      "cta": "Voir la facture"
+    },
+    "dueDateText": "Échéance le {dueDate}.",
+    "paymentConfirmed": {
+      "subject": "Paiement confirmé — {invoiceNumber}",
+      "title": "Paiement confirmé",
+      "body": "Bonjour {name}, nous avons confirmé votre paiement pour la facture {invoiceNumber}. Merci !",
+      "cta": "Voir la facture"
+    },
+    "paymentProofRejected": {
+      "subject": "Impossible de vérifier votre paiement — {invoiceNumber}",
+      "title": "Impossible de vérifier votre paiement",
+      "body": "Bonjour {name}, nous n'avons pas pu valider le justificatif envoyé pour la facture {invoiceNumber}. Merci d'en envoyer un nouveau ou de nous contacter.",
+      "cta": "Renvoyer"
+    },
+    "bookingConfirmed": {
+      "subject": "Votre réservation pour {destination} est confirmée",
+      "title": "Votre réservation est confirmée",
+      "body": "Bonjour {name}, votre réservation pour {destination} est maintenant confirmée. Nous reviendrons vers vous pour la suite.",
+      "cta": "Voir la réservation"
+    },
+    "documentApproved": {
+      "subject": "Document approuvé",
+      "title": "Document approuvé",
+      "body": "Bonjour {name}, votre document ({docType}) a été examiné et approuvé.",
+      "cta": "Voir les documents"
+    },
+    "documentRejected": {
+      "subject": "Document à revoir",
+      "title": "Document à revoir",
+      "body": "Bonjour {name}, votre document ({docType}) n'a pas été approuvé. Consultez les détails dans le portail et renvoyez-le.",
+      "cta": "Voir les documents"
+    },
+    "newMessage": {
+      "subject": "Nouveau message d'Omar",
+      "title": "Vous avez un nouveau message",
+      "body": "Bonjour {name}, vous avez reçu un nouveau message de l'équipe d'Omar dans votre portail client.",
+      "cta": "Voir le message"
+    }
   }
 }

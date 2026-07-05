@@ -8,6 +8,7 @@
 // file — client components that need writes use the browser client directly
 // (lib/supabase/client.ts) or call these through a Server Action.
 
+import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import {
   mockUser,
@@ -22,6 +23,14 @@ import {
   mockMessages,
   clientName as mockClientName,
 } from '@/lib/mock-data';
+import {
+  sendInvoiceCreatedEmail,
+  sendPaymentConfirmedEmail,
+  sendPaymentProofRejectedEmail,
+  sendBookingConfirmedEmail,
+  sendDocumentReviewedEmail,
+  sendNewMessageEmail,
+} from '@/lib/email/transactional';
 import type {
   User,
   Booking,
@@ -35,9 +44,25 @@ import type {
   Lead,
   ServiceType,
   ReviewStatus,
+  Locale,
 } from '@/lib/types';
 
 const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
+
+/** Contact info needed to send a transactional email — used by several
+ * write functions below that only receive an id (invoice/booking/document),
+ * not the owning client's email/name/locale. */
+async function getClientContact(
+  clientId: string,
+): Promise<{ email: string; full_name: string; preferred_language: Locale } | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('users')
+    .select('email, full_name, preferred_language')
+    .eq('id', clientId)
+    .single();
+  return data;
+}
 
 // ─── Current user ──────────────────────────────────────────────
 
@@ -321,8 +346,28 @@ export async function updateBookingStatus(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.from('bookings').update({ status }).eq('id', bookingId);
-  return error ? { ok: false, error: error.message } : { ok: true };
+  const { data: row, error } = await supabase
+    .from('bookings')
+    .update({ status })
+    .eq('id', bookingId)
+    .select('client_id, destination')
+    .single();
+
+  if (error) return { ok: false, error: error.message };
+
+  if (status === 'confirmed') {
+    const contact = await getClientContact(row.client_id);
+    if (contact) {
+      await sendBookingConfirmedEmail({
+        to: contact.email,
+        locale: contact.preferred_language,
+        name: contact.full_name,
+        destination: row.destination,
+      });
+    }
+  }
+
+  return { ok: true };
 }
 
 export async function sendMessage(
@@ -351,7 +396,18 @@ export async function sendAdminMessage(
     return { ok: false, error: 'not authorized' };
   }
 
-  return sendMessage(clientId, content, 'outbound');
+  const result = await sendMessage(clientId, content, 'outbound');
+  if (result.ok) {
+    const contact = await getClientContact(clientId);
+    if (contact) {
+      await sendNewMessageEmail({
+        to: contact.email,
+        locale: contact.preferred_language,
+        name: contact.full_name,
+      });
+    }
+  }
+  return result;
 }
 
 export async function setDocumentReviewStatus(
@@ -360,11 +416,30 @@ export async function setDocumentReviewStatus(
 ): Promise<{ ok: boolean; error?: string }> {
   if (MOCK_MODE) return { ok: true };
   const supabase = await createClient();
-  const { error } = await supabase
+  const { data: row, error } = await supabase
     .from('documents')
     .update({ review_status: status })
-    .eq('id', documentId);
-  return error ? { ok: false, error: error.message } : { ok: true };
+    .eq('id', documentId)
+    .select('client_id, doc_type')
+    .single();
+
+  if (error) return { ok: false, error: error.message };
+
+  if (status === 'approved' || status === 'rejected') {
+    const contact = await getClientContact(row.client_id);
+    if (contact) {
+      const t = await getTranslations({ locale: contact.preferred_language, namespace: 'docType' });
+      await sendDocumentReviewedEmail({
+        to: contact.email,
+        locale: contact.preferred_language,
+        name: contact.full_name,
+        docType: t(row.doc_type),
+        approved: status === 'approved',
+      });
+    }
+  }
+
+  return { ok: true };
 }
 
 export async function markInvoicePaid(
@@ -373,11 +448,26 @@ export async function markInvoicePaid(
 ): Promise<{ ok: boolean; error?: string }> {
   if (MOCK_MODE) return { ok: true };
   const supabase = await createClient();
-  const { error } = await supabase
+  const { data: row, error } = await supabase
     .from('invoices')
     .update({ status: 'paid', paid_at: new Date().toISOString(), payment_method: paymentMethod })
-    .eq('id', invoiceId);
-  return error ? { ok: false, error: error.message } : { ok: true };
+    .eq('id', invoiceId)
+    .select('client_id, invoice_number')
+    .single();
+
+  if (error) return { ok: false, error: error.message };
+
+  const contact = await getClientContact(row.client_id);
+  if (contact) {
+    await sendPaymentConfirmedEmail({
+      to: contact.email,
+      locale: contact.preferred_language,
+      name: contact.full_name,
+      invoiceNumber: row.invoice_number,
+    });
+  }
+
+  return { ok: true };
 }
 
 /**
@@ -429,7 +519,25 @@ export async function createInvoice(input: {
     .select('*')
     .single();
 
-  return error ? { ok: false, error: error.message } : { ok: true, invoice: row as Invoice };
+  if (error) return { ok: false, error: error.message };
+
+  // Awaited, not fire-and-forget: sendEmail() already swallows its own
+  // errors (never throws), but an un-awaited promise risks the serverless
+  // function terminating before the email actually goes out.
+  const contact = await getClientContact(input.client_id);
+  if (contact) {
+    await sendInvoiceCreatedEmail({
+      to: contact.email,
+      locale: contact.preferred_language,
+      name: contact.full_name,
+      invoiceNumber: row.invoice_number,
+      amount: total_brl,
+      currency: row.currency,
+      dueDate: row.due_date ?? undefined,
+    });
+  }
+
+  return { ok: true, invoice: row as Invoice };
 }
 
 /**
@@ -450,7 +558,7 @@ export async function verifyPaymentProof(
   }
 
   const supabase = await createClient();
-  const { error } = await supabase
+  const { data: row, error } = await supabase
     .from('invoices')
     .update(
       approve
@@ -461,8 +569,24 @@ export async function verifyPaymentProof(
           }
         : { payment_proof_status: 'rejected' },
     )
-    .eq('id', invoiceId);
-  return error ? { ok: false, error: error.message } : { ok: true };
+    .eq('id', invoiceId)
+    .select('client_id, invoice_number')
+    .single();
+
+  if (error) return { ok: false, error: error.message };
+
+  const contact = await getClientContact(row.client_id);
+  if (contact) {
+    const send = approve ? sendPaymentConfirmedEmail : sendPaymentProofRejectedEmail;
+    await send({
+      to: contact.email,
+      locale: contact.preferred_language,
+      name: contact.full_name,
+      invoiceNumber: row.invoice_number,
+    });
+  }
+
+  return { ok: true };
 }
 
 /**
