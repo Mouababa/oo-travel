@@ -482,7 +482,9 @@
       "subtitle": "Toutes les conversations et l'assistant IA.",
       "aiAgent": "Agent IA",
       "aiOn": "IA activée",
-      "aiOff": "IA désactivée"
+      "aiOff": "IA désactivée",
+      "placeholder": "Écrire une réponse...",
+      "sendError": "Échec de l'envoi du message. Réessayez."
     },
     "invoices": {
       "title": "Factures",

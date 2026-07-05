@@ -338,6 +338,22 @@ export async function sendMessage(
   return error ? { ok: false, error: error.message } : { ok: true };
 }
 
+/** Admin-only: reply to a client from the dashboard. RLS (messages_own)
+ * already allows an admin to write any client_id, but is_admin() is checked
+ * here too so the UI can show a clear error instead of a raw DB rejection. */
+export async function sendAdminMessage(
+  clientId: string,
+  content: string,
+): Promise<{ ok: boolean; error?: string }> {
+  if (MOCK_MODE) return { ok: true };
+
+  if (!(await isCurrentUserAdmin())) {
+    return { ok: false, error: 'not authorized' };
+  }
+
+  return sendMessage(clientId, content, 'outbound');
+}
+
 export async function setDocumentReviewStatus(
   documentId: string,
   status: ReviewStatus,

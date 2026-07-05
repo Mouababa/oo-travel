@@ -482,7 +482,9 @@
       "subtitle": "All conversations and the AI assistant.",
       "aiAgent": "AI agent",
       "aiOn": "AI enabled",
-      "aiOff": "AI disabled"
+      "aiOff": "AI disabled",
+      "placeholder": "Type a reply...",
+      "sendError": "Message failed to send. Please try again."
     },
     "invoices": {
       "title": "Invoices",

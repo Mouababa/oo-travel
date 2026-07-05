@@ -1,23 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Send } from 'lucide-react';
 import { WhatsAppLogo } from '@/components/icons/whatsapp';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/lib/use-toast';
+import { sendAdminMessageAction } from '@/lib/actions';
 import { cn } from '@/lib/utils';
 import type { User, Message } from '@/lib/types';
 
 export function AdminMessagesClient({
   clients,
-  messagesByClient,
+  messagesByClient: initialMessagesByClient,
 }: {
   clients: User[];
   messagesByClient: Record<string, Message[]>;
 }) {
   const t = useTranslations('admin.messages');
   const tm = useTranslations('portal.messages');
+  const { toast } = useToast();
 
   // AI agent enabled/disabled per client — UI-only for now; the schema has
   // no column to persist this yet (would need a users.ai_enabled migration).
@@ -25,8 +29,42 @@ export function AdminMessagesClient({
     Object.fromEntries(clients.map((c) => [c.id, true])),
   );
   const [selected, setSelected] = useState(clients[0]?.id ?? '');
+  const [messagesByClient, setMessagesByClient] = useState(initialMessagesByClient);
+  const [input, setInput] = useState('');
+  const [sending, setSending] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const thread = messagesByClient[selected] ?? [];
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  }, [thread.length]);
+
+  async function send(e: React.FormEvent) {
+    e.preventDefault();
+    const text = input.trim();
+    if (!text || !selected) return;
+
+    setSending(true);
+    setInput('');
+
+    const optimistic: Message = {
+      id: `pending_${Date.now()}`,
+      client_id: selected,
+      direction: 'outbound',
+      channel: 'portal',
+      content: text,
+      is_ai_generated: false,
+      created_at: new Date().toISOString(),
+    };
+    setMessagesByClient((m) => ({ ...m, [selected]: [...(m[selected] ?? []), optimistic] }));
+
+    const result = await sendAdminMessageAction(selected, text);
+    setSending(false);
+    if (!result.ok) {
+      toast({ title: t('sendError'), variant: 'danger' });
+    }
+  }
 
   return (
     <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
@@ -81,7 +119,7 @@ export function AdminMessagesClient({
           </button>
         </div>
 
-        <div className="flex-1 space-y-4 p-5">
+        <div ref={scrollRef} className="max-h-[60vh] flex-1 space-y-4 overflow-y-auto p-5">
           {thread.map((m) => {
             const outbound = m.direction === 'outbound';
             return (
@@ -118,6 +156,19 @@ export function AdminMessagesClient({
             );
           })}
         </div>
+
+        <form onSubmit={send} className="flex items-center gap-2 border-t border-border p-3">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={t('placeholder')}
+            disabled={sending || !selected}
+            className="h-10 flex-1 rounded-md border border-border bg-surface px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          />
+          <Button type="submit" size="icon" aria-label="send" disabled={sending || !selected}>
+            <Send className="h-4 w-4 rtl:rotate-180" />
+          </Button>
+        </form>
       </Card>
     </div>
   );

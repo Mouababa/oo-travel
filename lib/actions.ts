@@ -94,6 +94,15 @@ export async function sendMessageAction(content: string) {
   return result;
 }
 
+export async function sendAdminMessageAction(clientId: string, content: string) {
+  const result = await data.sendAdminMessage(clientId, content);
+  if (result.ok) {
+    revalidatePath('/[locale]/admin/messages', 'page');
+    revalidatePath('/[locale]/portal/messages', 'page');
+  }
+  return result;
+}
+
 export async function setDocumentReviewStatusAction(documentId: string, status: ReviewStatus) {
   const result = await data.setDocumentReviewStatus(documentId, status);
   if (result.ok) revalidatePath('/[locale]/admin/documents', 'page');
