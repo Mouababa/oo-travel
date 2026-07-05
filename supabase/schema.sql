@@ -82,8 +82,10 @@ create table if not exists public.bookings (
   id uuid primary key default gen_random_uuid(),
   client_id uuid references public.users(id) on delete cascade,
   -- A single request can cover more than one service (e.g. flight + hotel).
+  -- cardinality(), not array_length() — the latter returns NULL (not 0) for
+  -- an empty array, which a CHECK constraint silently treats as passing.
   service_types text[] not null check (
-    array_length(service_types, 1) > 0
+    cardinality(service_types) > 0
     and service_types <@ array['flight','hotel','tour','visa','cruise','corporate','legal','car_rental']::text[]
   ),
   destination text not null,
