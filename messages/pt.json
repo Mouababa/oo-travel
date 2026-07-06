@@ -446,7 +446,13 @@
       "reject": "Rejeitar",
       "clientApproved": "Cliente aprovado",
       "clientRejected": "Cliente rejeitado",
-      "approvalError": "Não foi possível atualizar o status de aprovação. Tente novamente."
+      "approvalError": "Não foi possível atualizar o status de aprovação. Tente novamente.",
+      "deleteAccount": "Excluir conta",
+      "deleteTitle": "Excluir esta conta?",
+      "deleteWarning": "Isso excluirá permanentemente a conta de {name}, incluindo suas reservas, documentos e mensagens. Esta ação não pode ser desfeita. As faturas serão mantidas para fins contábeis.",
+      "confirmDelete": "Excluir permanentemente",
+      "accountDeleted": "Conta excluída.",
+      "deleteError": "Não foi possível excluir a conta. Tente novamente."
     },
     "bookings": {
       "title": "Todas as reservas",

@@ -44,6 +44,9 @@
 --  14. Added users.terms_accepted_at — the signup form now requires
 --      checking a box linking to Terms of Use + Booking & Refunds before
 --      account creation; the timestamp comes from client-side metadata.
+--  15. invoices.client_id: RESTRICT (the implicit default) replaced with
+--      SET NULL, so an admin deleting an account isn't blocked by — or
+--      forced to destroy — that client's invoice/financial history.
 -- ════════════════════════════════════════════════════════════════
 
 -- ─── Tables ─────────────────────────────────────────────────────
@@ -119,7 +122,11 @@ create table if not exists public.documents (
 create table if not exists public.invoices (
   id uuid primary key default gen_random_uuid(),
   booking_id uuid references public.bookings(id),
-  client_id uuid references public.users(id),
+  -- SET NULL (not CASCADE) — invoices are financial/tax records that must
+  -- survive an admin deleting the account; only the link to the now-gone
+  -- user is cleared. bookings/documents/messages cascade-delete instead,
+  -- since those are personal-data records, not accounting ones.
+  client_id uuid references public.users(id) on delete set null,
   invoice_number text unique not null,
   line_items jsonb not null,
   total_brl numeric(10,2) not null,

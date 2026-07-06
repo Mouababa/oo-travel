@@ -10,6 +10,7 @@
 
 import { getTranslations } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import {
   mockUser,
   mockClients,
@@ -610,6 +611,34 @@ export async function approveClient(
     .from('users')
     .update({ approval_status: approve ? 'approved' : 'rejected' })
     .eq('id', clientId);
+  return error ? { ok: false, error: error.message } : { ok: true };
+}
+
+/**
+ * Admin-only: permanently deletes a user's auth account. Requires the
+ * service-role client (lib/supabase/admin.ts) — the regular RLS-scoped
+ * client has no permission to touch auth.users regardless of role, since
+ * that's a Supabase platform table, not one RLS policies govern. Deleting
+ * the auth user cascades to public.users (and from there to their
+ * bookings/documents/messages — on delete cascade); their invoices are
+ * preserved with client_id set to null (see migration 0012) rather than
+ * destroyed, since those are financial/tax records.
+ */
+export async function deleteUserAccount(
+  userId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  if (MOCK_MODE) return { ok: true };
+
+  const currentUser = await getCurrentUser();
+  if (!currentUser || currentUser.role !== 'admin') {
+    return { ok: false, error: 'not authorized' };
+  }
+  if (currentUser.id === userId) {
+    return { ok: false, error: 'cannot delete your own account' };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin.auth.admin.deleteUser(userId);
   return error ? { ok: false, error: error.message } : { ok: true };
 }
 

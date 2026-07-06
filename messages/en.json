@@ -446,7 +446,13 @@
       "reject": "Reject",
       "clientApproved": "Client approved",
       "clientRejected": "Client rejected",
-      "approvalError": "Couldn't update approval status. Please try again."
+      "approvalError": "Couldn't update approval status. Please try again.",
+      "deleteAccount": "Delete account",
+      "deleteTitle": "Delete this account?",
+      "deleteWarning": "This will permanently delete {name}'s account, including their bookings, documents and messages. This cannot be undone. Their invoices will be kept for accounting records.",
+      "confirmDelete": "Delete permanently",
+      "accountDeleted": "Account deleted.",
+      "deleteError": "Couldn't delete the account. Please try again."
     },
     "bookings": {
       "title": "All bookings",

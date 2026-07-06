@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { Check, X, UserCheck, Users } from 'lucide-react';
+import { Check, X, UserCheck, Users, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/table';
 import { ApprovalStatusBadge } from '@/components/status-badge';
 import { EmptyState } from '@/components/empty-state';
+import { DeleteAccountModal } from '@/components/admin/delete-account-modal';
 import { useToast } from '@/lib/use-toast';
 import { approveClientAction } from '@/lib/actions';
 import { formatDate, intlLocale } from '@/lib/utils';
@@ -105,15 +106,27 @@ export function AdminClientsClient({
   const locale = useLocale();
 
   const [clients, setClients] = useState<User[]>(initialClients);
+  const [deleteTarget, setDeleteTarget] = useState<User | null>(null);
 
   function onResolved(id: string, status: 'approved' | 'rejected') {
     setClients((list) => list.map((c) => (c.id === id ? { ...c, approval_status: status } : c)));
+  }
+
+  function onDeleted(id: string) {
+    setClients((list) => list.filter((c) => c.id !== id));
   }
 
   const pending = clients.filter((c) => c.approval_status === 'pending');
 
   return (
     <>
+      <DeleteAccountModal
+        client={deleteTarget}
+        open={deleteTarget !== null}
+        onClose={() => setDeleteTarget(null)}
+        onDeleted={onDeleted}
+      />
+
       {pending.length > 0 && (
         <Card className="mb-6 border-warning/30">
           <CardHeader>
@@ -157,6 +170,7 @@ export function AdminClientsClient({
                   <TableHead>{t('language')}</TableHead>
                   <TableHead>{tc('status')}</TableHead>
                   <TableHead className="text-end">{t('bookings')}</TableHead>
+                  <TableHead className="text-end">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -180,6 +194,17 @@ export function AdminClientsClient({
                     </TableCell>
                     <TableCell className="text-end font-medium">
                       {bookingCounts[c.id] ?? 0}
+                    </TableCell>
+                    <TableCell className="text-end">
+                      <button
+                        type="button"
+                        onClick={() => setDeleteTarget(c)}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-text-muted transition-colors hover:bg-danger/10 hover:text-danger"
+                        aria-label={t('deleteAccount')}
+                        title={t('deleteAccount')}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </TableCell>
                   </TableRow>
                 ))}

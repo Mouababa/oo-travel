@@ -255,3 +255,9 @@ export async function approveClientAction(clientId: string, approve: boolean) {
   if (result.ok) revalidatePath('/[locale]/admin/clients', 'page');
   return result;
 }
+
+export async function deleteUserAccountAction(userId: string) {
+  const result = await data.deleteUserAccount(userId);
+  if (result.ok) revalidatePath('/[locale]/admin/clients', 'page');
+  return result;
+}

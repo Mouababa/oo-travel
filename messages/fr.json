@@ -446,7 +446,13 @@
       "reject": "Rejeter",
       "clientApproved": "Client approuvé",
       "clientRejected": "Client rejeté",
-      "approvalError": "Impossible de mettre à jour le statut d'approbation. Veuillez réessayer."
+      "approvalError": "Impossible de mettre à jour le statut d'approbation. Veuillez réessayer.",
+      "deleteAccount": "Supprimer le compte",
+      "deleteTitle": "Supprimer ce compte ?",
+      "deleteWarning": "Cela supprimera définitivement le compte de {name}, y compris ses réservations, documents et messages. Cette action est irréversible. Ses factures seront conservées à des fins comptables.",
+      "confirmDelete": "Supprimer définitivement",
+      "accountDeleted": "Compte supprimé.",
+      "deleteError": "Impossible de supprimer le compte. Réessayez."
     },
     "bookings": {
       "title": "Toutes les réservations",
