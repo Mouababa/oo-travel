@@ -19,6 +19,12 @@ export const SERVICE_TYPES: ServiceType[] = [
   'car_rental',
 ];
 
+export const SOCIAL_LINKS = {
+  facebook: 'https://www.facebook.com/share/1Rvh5Qn9gV/?mibextid=wwXIfr',
+  instagram: 'https://www.instagram.com/ootravel.oficial?igsh=aTFhMW51Zjc2eGM3&utm_source=qr',
+  youtube: 'https://youtube.com/@ootraveloficial?si=_BYYgAXvRkGjrPby',
+};
+
 export const CIH_BANK_DETAILS = {
   bankName: 'CIH Bank',
   accountHolder: 'KHALID OUKHIRA',

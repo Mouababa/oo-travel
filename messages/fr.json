@@ -579,7 +579,12 @@
     "terms": "Conditions d'utilisation",
     "bookingTerms": "Réservation et remboursements",
     "rights": "Tous droits réservés.",
-    "mei": "63.588.045 OMAR OUKHIRA — CNPJ 63.588.045/0001-49"
+    "mei": "63.588.045 OMAR OUKHIRA — CNPJ 63.588.045/0001-49",
+    "social": {
+      "facebook": "Suivez OO Travel sur Facebook",
+      "instagram": "Suivez OO Travel sur Instagram",
+      "youtube": "Abonnez-vous à OO Travel sur YouTube"
+    }
   },
   "email": {
     "invoiceCreated": {

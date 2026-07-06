@@ -1,9 +1,9 @@
 import { useTranslations } from 'next-intl';
-import { MapPin, Mail } from 'lucide-react';
+import { MapPin, Mail, Facebook, Instagram, Youtube } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { BrandMark } from '@/components/brand-mark';
 import { WhatsAppLogo } from '@/components/icons/whatsapp';
-import { whatsappLink } from '@/lib/constants';
+import { whatsappLink, SOCIAL_LINKS } from '@/lib/constants';
 
 export function Footer() {
   const t = useTranslations();
@@ -15,6 +15,35 @@ export function Footer() {
         <div className="space-y-3">
           <BrandMark />
           <p className="text-sm text-text-secondary">{t('common.tagline')}</p>
+          <div className="flex items-center gap-3 pt-1">
+            <a
+              href={SOCIAL_LINKS.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('footer.social.facebook')}
+              className="text-text-secondary transition-colors hover:text-accent"
+            >
+              <Facebook className="h-5 w-5" />
+            </a>
+            <a
+              href={SOCIAL_LINKS.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('footer.social.instagram')}
+              className="text-text-secondary transition-colors hover:text-accent"
+            >
+              <Instagram className="h-5 w-5" />
+            </a>
+            <a
+              href={SOCIAL_LINKS.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('footer.social.youtube')}
+              className="text-text-secondary transition-colors hover:text-accent"
+            >
+              <Youtube className="h-5 w-5" />
+            </a>
+          </div>
         </div>
 
         <div>
