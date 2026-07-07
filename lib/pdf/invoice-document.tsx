@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { Document, Page, View, Text, Image, StyleSheet } from '@react-pdf/renderer';
 import { CONTACT, SITE_NAME } from '@/lib/seo';
-import { CIH_BANK_DETAILS } from '@/lib/constants';
+import { bankDetailsForCurrency } from '@/lib/constants';
 import type { Invoice } from '@/lib/types';
 
 // Server-only module — rendered by app/api/invoices/[id]/pdf/route.ts (Node
@@ -161,27 +161,55 @@ export function InvoiceDocument({
           <Text style={styles.totalValue}>{formatMoney(invoice.total_brl, currency)}</Text>
         </View>
 
-        {invoice.suggested_payment_method === 'cih_transfer' && (
-          <View style={styles.bankBox}>
-            <Text style={styles.bankTitle}>Bank transfer details (CIH Bank)</Text>
-            <View style={styles.bankRow}>
-              <Text style={styles.bankLabel}>Account holder</Text>
-              <Text style={styles.bankValue}>{CIH_BANK_DETAILS.accountHolder}</Text>
-            </View>
-            <View style={styles.bankRow}>
-              <Text style={styles.bankLabel}>IBAN</Text>
-              <Text style={styles.bankValue}>{CIH_BANK_DETAILS.iban}</Text>
-            </View>
-            <View style={styles.bankRow}>
-              <Text style={styles.bankLabel}>SWIFT/BIC</Text>
-              <Text style={styles.bankValue}>{CIH_BANK_DETAILS.swift}</Text>
-            </View>
-            <View style={styles.bankRow}>
-              <Text style={styles.bankLabel}>Reference</Text>
-              <Text style={styles.bankValue}>{invoice.invoice_number}</Text>
-            </View>
-          </View>
-        )}
+        {invoice.suggested_payment_method === 'cih_transfer' &&
+          (() => {
+            const bank = bankDetailsForCurrency(currency);
+            return (
+              <View style={styles.bankBox}>
+                <Text style={styles.bankTitle}>Bank transfer details</Text>
+                <View style={styles.bankRow}>
+                  <Text style={styles.bankLabel}>Bank</Text>
+                  <Text style={styles.bankValue}>{bank.bankName}</Text>
+                </View>
+                {bank.bankAddress && (
+                  <View style={styles.bankRow}>
+                    <Text style={styles.bankLabel}>Bank address</Text>
+                    <Text style={styles.bankValue}>{bank.bankAddress}</Text>
+                  </View>
+                )}
+                <View style={styles.bankRow}>
+                  <Text style={styles.bankLabel}>Account holder</Text>
+                  <Text style={styles.bankValue}>{bank.accountHolder}</Text>
+                </View>
+                {bank.accountNumber && (
+                  <View style={styles.bankRow}>
+                    <Text style={styles.bankLabel}>Account number</Text>
+                    <Text style={styles.bankValue}>{bank.accountNumber}</Text>
+                  </View>
+                )}
+                {bank.iban && (
+                  <View style={styles.bankRow}>
+                    <Text style={styles.bankLabel}>IBAN</Text>
+                    <Text style={styles.bankValue}>{bank.iban}</Text>
+                  </View>
+                )}
+                {bank.rib && (
+                  <View style={styles.bankRow}>
+                    <Text style={styles.bankLabel}>RIB</Text>
+                    <Text style={styles.bankValue}>{bank.rib}</Text>
+                  </View>
+                )}
+                <View style={styles.bankRow}>
+                  <Text style={styles.bankLabel}>SWIFT/BIC</Text>
+                  <Text style={styles.bankValue}>{bank.swift}</Text>
+                </View>
+                <View style={styles.bankRow}>
+                  <Text style={styles.bankLabel}>Reference</Text>
+                  <Text style={styles.bankValue}>{invoice.invoice_number}</Text>
+                </View>
+              </View>
+            );
+          })()}
 
         <Text style={styles.footer}>
           {SITE_NAME} — {CONTACT.founder} — {CONTACT.legalName} — CNPJ {CONTACT.cnpj}

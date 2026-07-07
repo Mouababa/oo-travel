@@ -8,7 +8,7 @@ import { Dialog } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/lib/use-toast';
 import { uploadPaymentProofAction } from '@/lib/actions';
-import { CIH_BANK_DETAILS } from '@/lib/constants';
+import { bankDetailsForCurrency } from '@/lib/constants';
 import { formatCurrency, intlLocale, cn } from '@/lib/utils';
 import type { Invoice } from '@/lib/types';
 
@@ -59,6 +59,7 @@ export function CihTransferModal({
   const locale = useLocale();
   const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
+  const details = bankDetailsForCurrency(invoice?.currency ?? 'BRL');
 
   const onDrop = useCallback(
     async (accepted: File[]) => {
@@ -100,11 +101,17 @@ export function CihTransferModal({
         <p className="text-center text-sm text-text-secondary">{t('cihInstructions')}</p>
 
         <div className="space-y-2">
-          <CopyRow label={t('cihBankName')} value={CIH_BANK_DETAILS.bankName} />
-          <CopyRow label={t('cihAccountHolder')} value={CIH_BANK_DETAILS.accountHolder} />
-          <CopyRow label={t('cihIban')} value={CIH_BANK_DETAILS.iban} />
-          <CopyRow label={t('cihRib')} value={CIH_BANK_DETAILS.rib} />
-          <CopyRow label={t('cihSwift')} value={CIH_BANK_DETAILS.swift} />
+          <CopyRow label={t('cihBankName')} value={details.bankName} />
+          {details.bankAddress && (
+            <CopyRow label={t('cihBankAddress')} value={details.bankAddress} />
+          )}
+          <CopyRow label={t('cihAccountHolder')} value={details.accountHolder} />
+          {details.accountNumber && (
+            <CopyRow label={t('cihAccountNumber')} value={details.accountNumber} />
+          )}
+          {details.iban && <CopyRow label={t('cihIban')} value={details.iban} />}
+          {details.rib && <CopyRow label={t('cihRib')} value={details.rib} />}
+          <CopyRow label={t('cihSwift')} value={details.swift} />
           <CopyRow label={t('cihReference')} value={invoice?.invoice_number ?? ''} />
         </div>
 
