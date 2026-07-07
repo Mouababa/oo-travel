@@ -20,12 +20,23 @@ const STAMP_BUFFER = fs.readFileSync(
 );
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#18181b' },
-  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  logo: { width: 40, height: 40 },
-  brand: { fontSize: 16, fontWeight: 700, marginTop: 6 },
-  invoiceTitle: { fontSize: 20, fontWeight: 700, textAlign: 'right' },
-  invoiceNumber: { fontSize: 11, color: '#71717a', textAlign: 'right', marginTop: 2 },
+  page: { fontSize: 10, fontFamily: 'Helvetica', color: '#18181b' },
+  // Full-bleed dark band, same colour as the email header — logo left,
+  // INVOICE + number right, both in white so they read against the black.
+  headerBand: {
+    backgroundColor: '#0b0b12',
+    paddingHorizontal: 40,
+    paddingVertical: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  // The logo PNG is a 726x344 wordmark (ratio ~2.11) — sized to preserve
+  // that ratio rather than the old 40x40 square, which squashed it.
+  logo: { width: 120, height: 57 },
+  invoiceTitle: { fontSize: 20, fontWeight: 700, textAlign: 'right', color: '#ffffff' },
+  invoiceNumber: { fontSize: 11, color: '#ffffff', textAlign: 'right', marginTop: 2 },
+  body: { padding: 40, paddingTop: 24 },
   divider: { borderBottomWidth: 1, borderBottomColor: '#e4e4e7', marginVertical: 20 },
   columns: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 },
   column: { width: '48%' },
@@ -110,124 +121,123 @@ export function InvoiceDocument({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.headerRow}>
-          <View>
-            {/* eslint-disable-next-line jsx-a11y/alt-text -- react-pdf's
-                Image renders into a PDF, not the DOM; there's no alt prop. */}
-            <Image src={LOGO_BUFFER} style={styles.logo} />
-            <Text style={styles.brand}>{SITE_NAME}</Text>
-          </View>
+        <View style={styles.headerBand}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text -- react-pdf's
+              Image renders into a PDF, not the DOM; there's no alt prop. */}
+          <Image src={LOGO_BUFFER} style={styles.logo} />
           <View>
             <Text style={styles.invoiceTitle}>INVOICE</Text>
             <Text style={styles.invoiceNumber}>{invoice.invoice_number}</Text>
           </View>
         </View>
 
-        <View style={styles.divider} />
+        <View style={styles.body}>
+          <View style={styles.divider} />
 
-        <View style={styles.columns}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Billed to</Text>
-            <Text style={styles.value}>{clientName}</Text>
-            <Text style={styles.value}>{clientEmail}</Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.label}>From</Text>
-            <Text style={styles.value}>{CONTACT.founder}</Text>
-            <Text style={styles.value}>{CONTACT.legalName}</Text>
-            <Text style={styles.value}>CNPJ {CONTACT.cnpj}</Text>
-            <Text style={styles.value}>
-              {CONTACT.city}, {CONTACT.region} — {CONTACT.country}
-            </Text>
-            <Text style={styles.value}>{CONTACT.generalEmail}</Text>
-            <Text style={styles.value}>{CONTACT.email}</Text>
-          </View>
-        </View>
-
-        <View style={styles.columns}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Issue date</Text>
-            <Text style={styles.value}>
-              {new Date(invoice.created_at).toLocaleDateString('en-GB')}
-            </Text>
-          </View>
-          <View style={styles.column}>
-            <Text style={styles.label}>Due date</Text>
-            <Text style={styles.value}>
-              {invoice.due_date
-                ? new Date(invoice.due_date).toLocaleDateString('en-GB')
-                : '—'}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.table}>
-          <View style={styles.tableHeaderRow}>
-            <Text style={[styles.colDescription, styles.tableHeaderText]}>Description</Text>
-            <Text style={[styles.colAmount, styles.tableHeaderText]}>Amount</Text>
-          </View>
-          {invoice.line_items.map((item, i) => (
-            <View key={i} style={styles.tableRow}>
-              <Text style={styles.colDescription}>{item.label}</Text>
-              <Text style={styles.colAmount}>{formatMoney(item.amount_brl, currency)}</Text>
+          <View style={styles.columns}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Billed to</Text>
+              <Text style={styles.value}>{clientName}</Text>
+              <Text style={styles.value}>{clientEmail}</Text>
             </View>
-          ))}
-        </View>
+            <View style={styles.column}>
+              <Text style={styles.label}>From</Text>
+              <Text style={styles.value}>{CONTACT.founder}</Text>
+              <Text style={styles.value}>{CONTACT.legalName}</Text>
+              <Text style={styles.value}>CNPJ {CONTACT.cnpj}</Text>
+              <Text style={styles.value}>
+                {CONTACT.city}, {CONTACT.region} — {CONTACT.country}
+              </Text>
+              <Text style={styles.value}>{CONTACT.generalEmail}</Text>
+              <Text style={styles.value}>{CONTACT.email}</Text>
+            </View>
+          </View>
 
-        <View style={styles.totalRow}>
-          <Text style={styles.totalLabel}>Total</Text>
-          <Text style={styles.totalValue}>{formatMoney(invoice.total_brl, currency)}</Text>
-        </View>
+          <View style={styles.columns}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Issue date</Text>
+              <Text style={styles.value}>
+                {new Date(invoice.created_at).toLocaleDateString('en-GB')}
+              </Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.label}>Due date</Text>
+              <Text style={styles.value}>
+                {invoice.due_date
+                  ? new Date(invoice.due_date).toLocaleDateString('en-GB')
+                  : '—'}
+              </Text>
+            </View>
+          </View>
 
-        {invoice.suggested_payment_method === 'cih_transfer' &&
-          (() => {
-            const bank = bankDetailsForCurrency(currency);
-            return (
-              <View style={styles.bankBox}>
-                <Text style={styles.bankTitle}>Bank transfer details</Text>
-                <View style={styles.bankRow}>
-                  <Text style={styles.bankLabel}>Bank</Text>
-                  <Text style={styles.bankValue}>{bank.bankName}</Text>
-                </View>
-                {bank.bankAddress && (
-                  <View style={styles.bankRow}>
-                    <Text style={styles.bankLabel}>Bank address</Text>
-                    <Text style={styles.bankValue}>{bank.bankAddress}</Text>
-                  </View>
-                )}
-                <View style={styles.bankRow}>
-                  <Text style={styles.bankLabel}>Account holder</Text>
-                  <Text style={styles.bankValue}>{bank.accountHolder}</Text>
-                </View>
-                {bank.accountNumber && (
-                  <View style={styles.bankRow}>
-                    <Text style={styles.bankLabel}>Account number</Text>
-                    <Text style={styles.bankValue}>{bank.accountNumber}</Text>
-                  </View>
-                )}
-                {bank.iban && (
-                  <View style={styles.bankRow}>
-                    <Text style={styles.bankLabel}>IBAN</Text>
-                    <Text style={styles.bankValue}>{bank.iban}</Text>
-                  </View>
-                )}
-                {bank.rib && (
-                  <View style={styles.bankRow}>
-                    <Text style={styles.bankLabel}>RIB</Text>
-                    <Text style={styles.bankValue}>{bank.rib}</Text>
-                  </View>
-                )}
-                <View style={styles.bankRow}>
-                  <Text style={styles.bankLabel}>SWIFT/BIC</Text>
-                  <Text style={styles.bankValue}>{bank.swift}</Text>
-                </View>
-                <View style={styles.bankRow}>
-                  <Text style={styles.bankLabel}>Reference</Text>
-                  <Text style={styles.bankValue}>{invoice.invoice_number}</Text>
-                </View>
+          <View style={styles.table}>
+            <View style={styles.tableHeaderRow}>
+              <Text style={[styles.colDescription, styles.tableHeaderText]}>Description</Text>
+              <Text style={[styles.colAmount, styles.tableHeaderText]}>Amount</Text>
+            </View>
+            {invoice.line_items.map((item, i) => (
+              <View key={i} style={styles.tableRow}>
+                <Text style={styles.colDescription}>{item.label}</Text>
+                <Text style={styles.colAmount}>{formatMoney(item.amount_brl, currency)}</Text>
               </View>
-            );
-          })()}
+            ))}
+          </View>
+
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total</Text>
+            <Text style={styles.totalValue}>{formatMoney(invoice.total_brl, currency)}</Text>
+          </View>
+
+          {invoice.suggested_payment_method === 'cih_transfer' &&
+            (() => {
+              const bank = bankDetailsForCurrency(currency);
+              return (
+                <View style={styles.bankBox}>
+                  <Text style={styles.bankTitle}>Bank transfer details</Text>
+                  <View style={styles.bankRow}>
+                    <Text style={styles.bankLabel}>Bank</Text>
+                    <Text style={styles.bankValue}>{bank.bankName}</Text>
+                  </View>
+                  {bank.bankAddress && (
+                    <View style={styles.bankRow}>
+                      <Text style={styles.bankLabel}>Bank address</Text>
+                      <Text style={styles.bankValue}>{bank.bankAddress}</Text>
+                    </View>
+                  )}
+                  <View style={styles.bankRow}>
+                    <Text style={styles.bankLabel}>Account holder</Text>
+                    <Text style={styles.bankValue}>{bank.accountHolder}</Text>
+                  </View>
+                  {bank.accountNumber && (
+                    <View style={styles.bankRow}>
+                      <Text style={styles.bankLabel}>Account number</Text>
+                      <Text style={styles.bankValue}>{bank.accountNumber}</Text>
+                    </View>
+                  )}
+                  {bank.iban && (
+                    <View style={styles.bankRow}>
+                      <Text style={styles.bankLabel}>IBAN</Text>
+                      <Text style={styles.bankValue}>{bank.iban}</Text>
+                    </View>
+                  )}
+                  {bank.rib && (
+                    <View style={styles.bankRow}>
+                      <Text style={styles.bankLabel}>RIB</Text>
+                      <Text style={styles.bankValue}>{bank.rib}</Text>
+                    </View>
+                  )}
+                  <View style={styles.bankRow}>
+                    <Text style={styles.bankLabel}>SWIFT/BIC</Text>
+                    <Text style={styles.bankValue}>{bank.swift}</Text>
+                  </View>
+                  <View style={styles.bankRow}>
+                    <Text style={styles.bankLabel}>Reference</Text>
+                    <Text style={styles.bankValue}>{invoice.invoice_number}</Text>
+                  </View>
+                </View>
+              );
+            })()}
+        </View>
 
         {/* eslint-disable-next-line jsx-a11y/alt-text -- see note on the logo Image above */}
         <Image src={STAMP_BUFFER} style={styles.stamp} />
