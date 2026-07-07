@@ -36,6 +36,13 @@ const styles = StyleSheet.create({
   logo: { width: 120, height: 57 },
   invoiceTitle: { fontSize: 20, fontWeight: 700, textAlign: 'right', color: '#ffffff' },
   invoiceNumber: { fontSize: 11, color: '#ffffff', textAlign: 'right', marginTop: 2 },
+  invoiceStatus: {
+    fontSize: 11,
+    fontWeight: 700,
+    textAlign: 'right',
+    marginTop: 6,
+    letterSpacing: 1,
+  },
   body: { padding: 40, paddingTop: 24 },
   divider: { borderBottomWidth: 1, borderBottomColor: '#e4e4e7', marginVertical: 20 },
   columns: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 },
@@ -183,6 +190,14 @@ function amountToWords(amount: number, currency: string): string {
   return `${capitalize(integerToWords(whole))} ${currencyName} and ${centsStr} cents`;
 }
 
+// Same palette as the app's status badges (components/status-badge.tsx /
+// app/globals.css --color-success/warning/danger) for consistency.
+const STATUS_COLORS: Record<string, string> = {
+  unpaid: '#f59e0b',
+  paid: '#10b981',
+  overdue: '#ef4444',
+};
+
 export function InvoiceDocument({
   invoice,
   clientName,
@@ -204,6 +219,14 @@ export function InvoiceDocument({
           <View>
             <Text style={styles.invoiceTitle}>INVOICE</Text>
             <Text style={styles.invoiceNumber}>{invoice.invoice_number}</Text>
+            <Text
+              style={[
+                styles.invoiceStatus,
+                { color: STATUS_COLORS[invoice.status] ?? '#ffffff' },
+              ]}
+            >
+              {invoice.status.toUpperCase()}
+            </Text>
           </View>
         </View>
 
