@@ -69,6 +69,17 @@ const styles = StyleSheet.create({
   },
   totalLabel: { fontSize: 12, fontWeight: 700 },
   totalValue: { fontSize: 14, fontWeight: 700 },
+  amountInWords: {
+    fontSize: 8.5,
+    fontStyle: 'italic',
+    color: '#71717a',
+    marginTop: 6,
+    textAlign: 'right',
+  },
+  // paddingRight clears the stamp (100pt wide, sits bottom-right) so wrapped
+  // lines never run underneath it.
+  legalNotes: { marginTop: 20, paddingRight: 130 },
+  legalNote: { fontSize: 7.5, color: '#a1a1aa', marginBottom: 3, lineHeight: 1.4 },
   bankBox: {
     marginTop: 24,
     padding: 12,
@@ -105,6 +116,71 @@ const styles = StyleSheet.create({
 
 function formatMoney(amount: number, currency: string): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount);
+}
+
+const ONES = [
+  '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+  'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen',
+  'seventeen', 'eighteen', 'nineteen',
+];
+const TENS = [
+  '', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety',
+];
+
+// Converts 0-999 to words (the repeating "chunk" unit for thousands/millions).
+function chunkToWords(n: number): string {
+  const parts: string[] = [];
+  if (n >= 100) {
+    parts.push(`${ONES[Math.floor(n / 100)]} hundred`);
+    n %= 100;
+  }
+  if (n >= 20) {
+    parts.push(TENS[Math.floor(n / 10)] + (n % 10 ? `-${ONES[n % 10]}` : ''));
+  } else if (n > 0) {
+    parts.push(ONES[n]);
+  }
+  return parts.join(' ');
+}
+
+function integerToWords(n: number): string {
+  if (n === 0) return 'zero';
+  const scales: [number, string][] = [
+    [1_000_000_000, 'billion'],
+    [1_000_000, 'million'],
+    [1_000, 'thousand'],
+  ];
+  const parts: string[] = [];
+  for (const [value, name] of scales) {
+    if (n >= value) {
+      parts.push(`${chunkToWords(Math.floor(n / value))} ${name}`);
+      n %= value;
+    }
+  }
+  if (n > 0) parts.push(chunkToWords(n));
+  return parts.join(' ').replace(/\s+/g, ' ').trim();
+}
+
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+const CURRENCY_NAMES: Record<string, [singular: string, plural: string]> = {
+  BRL: ['Brazilian Real', 'Brazilian Reais'],
+  USD: ['US Dollar', 'US Dollars'],
+  EUR: ['Euro', 'Euros'],
+  CAD: ['Canadian Dollar', 'Canadian Dollars'],
+  MAD: ['Moroccan Dirham', 'Moroccan Dirhams'],
+};
+
+/** Spells out an amount for the formal "amount in words" line invoices
+ * conventionally carry, e.g. "One thousand two hundred US Dollars and 00/100". */
+function amountToWords(amount: number, currency: string): string {
+  const whole = Math.floor(amount);
+  const cents = Math.round((amount - whole) * 100);
+  const [singular, plural] = CURRENCY_NAMES[currency] ?? [currency, currency];
+  const currencyName = whole === 1 ? singular : plural;
+  const centsStr = String(cents).padStart(2, '0');
+  return `${capitalize(integerToWords(whole))} ${currencyName} and ${centsStr}/100`;
 }
 
 export function InvoiceDocument({
@@ -187,6 +263,9 @@ export function InvoiceDocument({
             <Text style={styles.totalLabel}>Total</Text>
             <Text style={styles.totalValue}>{formatMoney(invoice.total_brl, currency)}</Text>
           </View>
+          <Text style={styles.amountInWords}>
+            Amount in words: {amountToWords(invoice.total_brl, currency)}
+          </Text>
 
           {invoice.suggested_payment_method === 'cih_transfer' &&
             (() => {
@@ -237,6 +316,22 @@ export function InvoiceDocument({
                 </View>
               );
             })()}
+
+          <View style={styles.legalNotes}>
+            <Text style={styles.legalNote}>
+              This invoice is valid until the due date shown above; prices reflect
+              availability and exchange rates at the time of issue and may change if
+              payment is not received by then.
+            </Text>
+            <Text style={styles.legalNote}>
+              This document is not a receipt until the invoice status is marked Paid.
+            </Text>
+            <Text style={styles.legalNote}>
+              Refunds follow our Booking & Refunds Policy (ootravel.com.br/legal/booking-terms)
+              — supplier cancellation rules may apply and our service fee is non-refundable
+              once work has begun.
+            </Text>
+          </View>
         </View>
 
         {/* eslint-disable-next-line jsx-a11y/alt-text -- see note on the logo Image above */}
