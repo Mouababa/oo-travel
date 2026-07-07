@@ -3,6 +3,7 @@ import { MapPin, Mail, Facebook, Instagram, Youtube } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { BrandMark } from '@/components/brand-mark';
 import { WhatsAppLogo } from '@/components/icons/whatsapp';
+import { TikTokIcon } from '@/components/icons/tiktok';
 import { whatsappLink, SOCIAL_LINKS } from '@/lib/constants';
 
 export function Footer() {
@@ -43,6 +44,17 @@ export function Footer() {
             >
               <Youtube className="h-5 w-5" />
             </a>
+            {SOCIAL_LINKS.tiktok && (
+              <a
+                href={SOCIAL_LINKS.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t('footer.social.tiktok')}
+                className="text-text-secondary transition-colors hover:text-accent"
+              >
+                <TikTokIcon className="h-5 w-5" />
+              </a>
+            )}
           </div>
         </div>
 
