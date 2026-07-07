@@ -264,7 +264,8 @@ export function InvoiceDocument({
             <Text style={styles.totalValue}>{formatMoney(invoice.total_brl, currency)}</Text>
           </View>
           <Text style={styles.amountInWords}>
-            Amount in words: {amountToWords(invoice.total_brl, currency)}
+            {invoice.status === 'paid' ? 'Amount paid' : 'Total due amount'}:{' '}
+            {amountToWords(invoice.total_brl, currency)}
           </Text>
 
           {invoice.suggested_payment_method === 'cih_transfer' &&
