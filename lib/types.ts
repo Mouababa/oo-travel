@@ -18,8 +18,9 @@ export type DocType = 'passport' | 'residence' | 'bank_statement' | 'photo_id' |
 export type ReviewStatus = 'pending' | 'under_review' | 'approved' | 'rejected';
 export type InvoiceStatus = 'unpaid' | 'paid' | 'overdue';
 export type PaymentMethod = 'pix' | 'card' | 'cih_transfer';
-/** Main customers are Moroccan and Brazilian, then the rest of the world. */
-export type Currency = 'BRL' | 'USD' | 'MAD';
+/** Main customers are Moroccan and Brazilian, then the rest of the world.
+ * USD/EUR/CAD all settle into the same Revolut account (lib/constants.ts). */
+export type Currency = 'BRL' | 'USD' | 'EUR' | 'CAD' | 'MAD';
 /** Payment methods an admin may suggest at invoice creation — PIX only ever
  * settles in BRL, so it's excluded when currency isn't BRL (see lib/data.ts). */
 export type SuggestedPaymentMethod = 'pix' | 'cih_transfer';

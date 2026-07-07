@@ -21,7 +21,7 @@ import type {
 } from '@/lib/types';
 
 const EMPTY_ITEM: InvoiceLineItem = { label: '', amount_brl: 0 };
-const CURRENCIES: Currency[] = ['BRL', 'USD', 'MAD'];
+const CURRENCIES: Currency[] = ['BRL', 'USD', 'EUR', 'CAD', 'MAD'];
 
 export function CreateInvoiceModal({
   open,

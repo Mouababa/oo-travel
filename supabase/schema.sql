@@ -47,6 +47,8 @@
 --  15. invoices.client_id: RESTRICT (the implicit default) replaced with
 --      SET NULL, so an admin deleting an account isn't blocked by — or
 --      forced to destroy — that client's invoice/financial history.
+--  16. invoices.currency gained EUR and CAD (was BRL/USD/MAD) — same
+--      Revolut account (lib/constants.ts) receives all three.
 -- ════════════════════════════════════════════════════════════════
 
 -- ─── Tables ─────────────────────────────────────────────────────
@@ -145,7 +147,8 @@ create table if not exists public.invoices (
   -- total_brl keeps its legacy name (renaming touches the not-yet-live
   -- PIX/webhook code too) but holds the amount in whatever `currency` is —
   -- main customers are Moroccan and Brazilian, then the rest of the world.
-  currency text default 'BRL' check (currency in ('BRL','USD','MAD')),
+  -- USD/EUR/CAD all settle into the same Revolut account.
+  currency text default 'BRL' check (currency in ('BRL','USD','EUR','CAD','MAD')),
   -- Admin can suggest a specific method at invoice creation, or leave this
   -- null to let the client pick from whatever's valid for the currency.
   -- PIX only ever settles in BRL — enforced below, not just in app code.

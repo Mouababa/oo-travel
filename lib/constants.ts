@@ -45,7 +45,9 @@ export const CIH_BANK_DETAILS: BankDetails = {
   swift: 'CIHMMAMC',
 };
 
-export const USD_BANK_DETAILS: BankDetails = {
+// Same Revolut account receives USD, EUR and CAD — Revolut settles all
+// three into one multi-currency account, no separate IBAN per currency.
+export const REVOLUT_BANK_DETAILS: BankDetails = {
   bankName: 'Revolut Technologies Singapore Pte. Ltd',
   bankAddress: '6 Battery Road, Floor 6-01, 049909, Singapore, Singapore',
   accountHolder: 'Omar Oukhira',
@@ -53,8 +55,10 @@ export const USD_BANK_DETAILS: BankDetails = {
   swift: 'REVOSGS2',
 };
 
-/** Bank transfer only ever settles in MAD (CIH) or USD (Revolut) — BRL
- * invoices use PIX instead, so this is just the fallback for that case. */
+const REVOLUT_CURRENCIES: Currency[] = ['USD', 'EUR', 'CAD'];
+
+/** Bank transfer settles in MAD (CIH) or USD/EUR/CAD (Revolut) — BRL
+ * invoices use PIX instead, so CIH is just the fallback for that case. */
 export function bankDetailsForCurrency(currency: Currency): BankDetails {
-  return currency === 'USD' ? USD_BANK_DETAILS : CIH_BANK_DETAILS;
+  return REVOLUT_CURRENCIES.includes(currency) ? REVOLUT_BANK_DETAILS : CIH_BANK_DETAILS;
 }
