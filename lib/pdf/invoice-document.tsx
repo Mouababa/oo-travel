@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { Document, Page, View, Text, Image, StyleSheet } from '@react-pdf/renderer';
 import { CONTACT, SITE_NAME } from '@/lib/seo';
@@ -5,9 +6,18 @@ import { bankDetailsForCurrency } from '@/lib/constants';
 import type { Invoice } from '@/lib/types';
 
 // Server-only module — rendered by app/api/invoices/[id]/pdf/route.ts (Node
-// runtime). @react-pdf/renderer's Image accepts a local file path in Node,
-// so the logo is read straight off disk rather than fetched over HTTP.
-const LOGO_PATH = path.join(process.cwd(), 'public', 'brand', 'oo-travel-logo.png');
+// runtime). Read as a Buffer rather than passed as a path string: on Windows,
+// @react-pdf/image's local-path check runs the path through url.parse(),
+// which misreads a drive letter ("C:\...") as a URL protocol and falls
+// through to a remote fetch() that silently fails — the logo/stamp just
+// don't render, no error surfaced. A Buffer skips that resolution entirely.
+const LOGO_BUFFER = fs.readFileSync(
+  path.join(process.cwd(), 'public', 'brand', 'oo-travel-logo.png'),
+);
+// Official seal — invoices only, never emails (see lib/email/shell.ts).
+const STAMP_BUFFER = fs.readFileSync(
+  path.join(process.cwd(), 'public', 'brand', 'oo-travel-stamp.png'),
+);
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: '#18181b' },
@@ -72,6 +82,14 @@ const styles = StyleSheet.create({
     color: '#a1a1aa',
     textAlign: 'center',
   },
+  stamp: {
+    position: 'absolute',
+    bottom: 80,
+    right: 40,
+    width: 100,
+    height: 100,
+    opacity: 0.9,
+  },
 });
 
 function formatMoney(amount: number, currency: string): string {
@@ -96,7 +114,7 @@ export function InvoiceDocument({
           <View>
             {/* eslint-disable-next-line jsx-a11y/alt-text -- react-pdf's
                 Image renders into a PDF, not the DOM; there's no alt prop. */}
-            <Image src={LOGO_PATH} style={styles.logo} />
+            <Image src={LOGO_BUFFER} style={styles.logo} />
             <Text style={styles.brand}>{SITE_NAME}</Text>
           </View>
           <View>
@@ -210,6 +228,9 @@ export function InvoiceDocument({
               </View>
             );
           })()}
+
+        {/* eslint-disable-next-line jsx-a11y/alt-text -- see note on the logo Image above */}
+        <Image src={STAMP_BUFFER} style={styles.stamp} />
 
         <Text style={styles.footer}>
           {SITE_NAME} — {CONTACT.founder} — {CONTACT.legalName} — CNPJ {CONTACT.cnpj}

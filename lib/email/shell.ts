@@ -1,4 +1,4 @@
-import { CONTACT, SITE_NAME } from '@/lib/seo';
+import { CONTACT, SITE_NAME, SITE_URL, LOGO_PATH } from '@/lib/seo';
 
 /**
  * Shared branded wrapper for every transactional email — same visual
@@ -24,7 +24,7 @@ export function renderEmailShell({
       <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
         <tr>
           <td style="background-color:#0b0b12;padding:28px 32px;text-align:center;">
-            <span style="font-family:Georgia,'Times New Roman',serif;font-size:22px;font-weight:600;color:#ffffff;letter-spacing:0.5px;">${SITE_NAME}</span>
+            <img src="${SITE_URL}${LOGO_PATH}" alt="${SITE_NAME}" width="200" height="95" style="display:block;margin:0 auto;border:0;" />
           </td>
         </tr>
         <tr>
