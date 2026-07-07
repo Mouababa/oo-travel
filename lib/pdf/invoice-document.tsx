@@ -173,14 +173,14 @@ const CURRENCY_NAMES: Record<string, [singular: string, plural: string]> = {
 };
 
 /** Spells out an amount for the formal "amount in words" line invoices
- * conventionally carry, e.g. "One thousand two hundred US Dollars and 00/100". */
+ * conventionally carry, e.g. "One thousand two hundred US Dollars and 00 cents". */
 function amountToWords(amount: number, currency: string): string {
   const whole = Math.floor(amount);
   const cents = Math.round((amount - whole) * 100);
   const [singular, plural] = CURRENCY_NAMES[currency] ?? [currency, currency];
   const currencyName = whole === 1 ? singular : plural;
   const centsStr = String(cents).padStart(2, '0');
-  return `${capitalize(integerToWords(whole))} ${currencyName} and ${centsStr}/100`;
+  return `${capitalize(integerToWords(whole))} ${currencyName} and ${centsStr} cents`;
 }
 
 export function InvoiceDocument({
