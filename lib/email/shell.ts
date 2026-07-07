@@ -50,7 +50,7 @@ export function renderEmailShell({
             <p style="margin:0 0 4px;font-size:12px;color:#a1a1aa;">${SITE_NAME} — ${CONTACT.founder}, independent travel agent</p>
             <p style="margin:0 0 4px;font-size:12px;color:#a1a1aa;">${CONTACT.city}, Brazil · MEI ${CONTACT.cnpj}</p>
             <p style="margin:0;font-size:12px;color:#a1a1aa;">
-              <a href="mailto:${CONTACT.email}" style="color:#a1a1aa;">${CONTACT.email}</a>
+              <a href="mailto:${CONTACT.generalEmail}" style="color:#a1a1aa;">${CONTACT.generalEmail}</a>
             </p>
           </td>
         </tr>

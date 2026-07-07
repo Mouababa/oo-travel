@@ -19,7 +19,9 @@
     "status": "Statut",
     "whatsapp": "WhatsApp",
     "talkOnWhatsapp": "Discuter sur WhatsApp",
-    "optional": "facultatif"
+    "optional": "facultatif",
+    "generalInquiries": "Demandes générales",
+    "directContact": "Contact direct"
   },
   "nav": {
     "home": "Accueil",

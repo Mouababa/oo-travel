@@ -19,7 +19,9 @@
     "status": "الحالة",
     "whatsapp": "واتساب",
     "talkOnWhatsapp": "تحدث عبر واتساب",
-    "optional": "اختياري"
+    "optional": "اختياري",
+    "generalInquiries": "الاستفسارات العامة",
+    "directContact": "تواصل مباشر"
   },
   "nav": {
     "home": "الرئيسية",

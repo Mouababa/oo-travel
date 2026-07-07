@@ -88,8 +88,18 @@ export function Footer() {
               {t('contact.location')}
             </li>
             <li className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-accent" />
-              omar@ootravel.com.br
+              <Mail className="h-4 w-4 shrink-0 text-accent" />
+              <span>
+                <span className="text-text-muted">{t('common.generalInquiries')}: </span>
+                contact@ootravel.com.br
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <Mail className="h-4 w-4 shrink-0 text-accent" />
+              <span>
+                <span className="text-text-muted">{t('common.directContact')}: </span>
+                omar@ootravel.com.br
+              </span>
             </li>
             <li>
               <a

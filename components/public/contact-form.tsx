@@ -86,8 +86,18 @@ export function ContactContent() {
                 {t('location')}
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-primary" />
-                omar@ootravel.com.br
+                <Mail className="h-5 w-5 shrink-0 text-primary" />
+                <span>
+                  <span className="text-text-muted">{tc('generalInquiries')}: </span>
+                  contact@ootravel.com.br
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Mail className="h-5 w-5 shrink-0 text-primary" />
+                <span>
+                  <span className="text-text-muted">{tc('directContact')}: </span>
+                  omar@ootravel.com.br
+                </span>
               </div>
             </CardContent>
           </Card>

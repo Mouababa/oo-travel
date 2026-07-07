@@ -19,7 +19,9 @@
     "status": "Status",
     "whatsapp": "WhatsApp",
     "talkOnWhatsapp": "Falar no WhatsApp",
-    "optional": "opcional"
+    "optional": "opcional",
+    "generalInquiries": "Atendimento geral",
+    "directContact": "Contato direto"
   },
   "nav": {
     "home": "Início",

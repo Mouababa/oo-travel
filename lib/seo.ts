@@ -14,6 +14,9 @@ export const LOGO_PATH = '/brand/oo-travel-logo.png';
 
 export const CONTACT = {
   email: 'omar@ootravel.com.br',
+  // General inbox — matches the reply-to address on transactional emails
+  // (lib/email/client.ts) and the address shown as the main public contact.
+  generalEmail: 'contact@ootravel.com.br',
   phone: '+5511933210241',
   whatsapp: 'https://wa.me/5511933210241',
   city: 'São Paulo',
@@ -311,7 +314,7 @@ export function organizationLd(locale: Locale, serviceNames: string[] = []) {
     logo: `${SITE_URL}${LOGO_PATH}`,
     image: `${SITE_URL}${OG_IMAGE}`,
     description: SEO[locale].pages.home.description,
-    email: CONTACT.email,
+    email: [CONTACT.generalEmail, CONTACT.email],
     telephone: CONTACT.phone,
     priceRange: '$$',
     taxID: CONTACT.cnpj,

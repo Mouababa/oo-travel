@@ -121,6 +121,7 @@ export function InvoiceDocument({
             <Text style={styles.value}>
               {CONTACT.city}, {CONTACT.region} — {CONTACT.country}
             </Text>
+            <Text style={styles.value}>{CONTACT.generalEmail}</Text>
             <Text style={styles.value}>{CONTACT.email}</Text>
           </View>
         </View>
@@ -185,7 +186,7 @@ export function InvoiceDocument({
         <Text style={styles.footer}>
           {SITE_NAME} — {CONTACT.founder} — {CONTACT.legalName} — CNPJ {CONTACT.cnpj}
           {'\n'}
-          {CONTACT.city}, {CONTACT.region}, {CONTACT.country} · {CONTACT.email} ·{' '}
+          {CONTACT.city}, {CONTACT.region}, {CONTACT.country} · {CONTACT.generalEmail} ·{' '}
           {CONTACT.phone}
         </Text>
       </Page>

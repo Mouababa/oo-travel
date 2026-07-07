@@ -19,7 +19,9 @@
     "status": "Status",
     "whatsapp": "WhatsApp",
     "talkOnWhatsapp": "Chat on WhatsApp",
-    "optional": "optional"
+    "optional": "optional",
+    "generalInquiries": "General inquiries",
+    "directContact": "Direct"
   },
   "nav": {
     "home": "Home",
