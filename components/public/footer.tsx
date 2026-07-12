@@ -4,7 +4,8 @@ import { Link } from '@/i18n/routing';
 import { BrandMark } from '@/components/brand-mark';
 import { WhatsAppLogo } from '@/components/icons/whatsapp';
 import { TikTokIcon } from '@/components/icons/tiktok';
-import { whatsappLink, SOCIAL_LINKS } from '@/lib/constants';
+import { WhatsAppLink } from '@/components/public/whatsapp-link';
+import { SOCIAL_LINKS } from '@/lib/constants';
 
 export function Footer() {
   const t = useTranslations();
@@ -102,15 +103,10 @@ export function Footer() {
               </span>
             </li>
             <li>
-              <a
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 hover:text-accent"
-              >
+              <WhatsAppLink className="flex items-center gap-2 hover:text-accent">
                 <WhatsAppLogo className="h-4 w-4" />
                 {t('common.talkOnWhatsapp')}
-              </a>
+              </WhatsAppLink>
             </li>
           </ul>
         </div>

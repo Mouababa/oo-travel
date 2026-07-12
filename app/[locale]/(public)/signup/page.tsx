@@ -11,6 +11,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/lib/use-toast';
 import { createClient } from '@/lib/supabase/client';
 import { SITE_URL } from '@/lib/seo';
+import { hasAnalyticsConsent } from '@/lib/analytics';
+import { trackCompleteRegistrationAction } from '@/lib/actions';
 
 const MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_MODE === 'true';
 
@@ -49,6 +51,7 @@ export default function SignupPage() {
     if (MOCK_MODE) {
       setLoading(false);
       setSubmitted(true);
+      trackSignupConversion(email);
       return;
     }
 
@@ -76,6 +79,20 @@ export default function SignupPage() {
       return;
     }
     setSubmitted(true);
+    trackSignupConversion(email);
+  }
+
+  function trackSignupConversion(userEmail: string) {
+    if (!hasAnalyticsConsent()) return;
+    const eventId = crypto.randomUUID();
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'CompleteRegistration', {}, { eventID: eventId });
+    }
+    trackCompleteRegistrationAction({
+      eventId,
+      eventSourceUrl: window.location.href,
+      email: userEmail,
+    });
   }
 
   if (submitted) {

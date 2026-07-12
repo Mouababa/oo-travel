@@ -11,7 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { ServiceIcon } from '@/components/service-icon';
 import { useToast } from '@/lib/use-toast';
 import { SERVICE_TYPES, whatsappLink } from '@/lib/constants';
-import { submitLeadAction } from '@/lib/actions';
+import { submitLeadAction, trackLeadConversionAction } from '@/lib/actions';
+import { hasAnalyticsConsent, trackWhatsAppClick } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 import type { ServiceType } from '@/lib/types';
 
@@ -38,10 +39,13 @@ export function HomeRequestForm() {
     const fd = new FormData(form);
     setSubmitting(true);
 
+    const email = String(fd.get('email') ?? '');
+    const whatsapp = String(fd.get('whatsapp') ?? '') || undefined;
+
     const result = await submitLeadAction({
       full_name: String(fd.get('name') ?? ''),
-      email: String(fd.get('email') ?? ''),
-      whatsapp: String(fd.get('whatsapp') ?? '') || undefined,
+      email,
+      whatsapp,
       service_types: services,
       destination: String(fd.get('destination') ?? '') || undefined,
       message: String(fd.get('message') ?? '') || undefined,
@@ -52,6 +56,19 @@ export function HomeRequestForm() {
       toast({ title: tf('sent'), variant: 'success' });
       form.reset();
       setServices([]);
+
+      if (hasAnalyticsConsent()) {
+        const eventId = crypto.randomUUID();
+        if (typeof window.fbq === 'function') {
+          window.fbq('track', 'Lead', {}, { eventID: eventId });
+        }
+        trackLeadConversionAction({
+          eventId,
+          eventSourceUrl: window.location.href,
+          email,
+          phone: whatsapp,
+        });
+      }
     } else {
       toast({ title: tf('error'), variant: 'danger' });
     }
@@ -137,6 +154,7 @@ export function HomeRequestForm() {
           href={whatsappLink()}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={trackWhatsAppClick}
           className="inline-flex items-center gap-1.5 font-medium text-whatsapp hover:underline"
         >
           <WhatsAppLogo className="h-4 w-4" />

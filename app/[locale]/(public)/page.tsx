@@ -13,7 +13,8 @@ import { TrustStats } from '@/components/public/trust-stats';
 import { EditorialTestimonials } from '@/components/public/editorial-testimonials';
 import { ExperienceGallery } from '@/components/public/experience-gallery';
 import { RemoteImage } from '@/components/remote-image';
-import { SERVICE_TYPES, whatsappLink } from '@/lib/constants';
+import { WhatsAppLink } from '@/components/public/whatsapp-link';
+import { SERVICE_TYPES } from '@/lib/constants';
 import { scenePhoto, type Scene } from '@/lib/images';
 
 export async function generateMetadata({
@@ -117,12 +118,12 @@ export default async function HomePage({
                   <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                 </Button>
               </a>
-              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+              <WhatsAppLink>
                 <Button size="lg" variant="whatsapp" className="gap-2">
                   <WhatsAppIcon className="h-5 w-5" />
                   {t('ctaSecondary')}
                 </Button>
-              </a>
+              </WhatsAppLink>
             </div>
 
             <p className="mt-4 text-sm text-text-muted">

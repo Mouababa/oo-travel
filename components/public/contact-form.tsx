@@ -11,7 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/lib/use-toast';
 import { whatsappLink } from '@/lib/constants';
-import { submitLeadAction } from '@/lib/actions';
+import { submitLeadAction, trackLeadConversionAction } from '@/lib/actions';
+import { hasAnalyticsConsent, trackWhatsAppClick } from '@/lib/analytics';
 
 export function ContactContent() {
   const t = useTranslations('contact');
@@ -25,10 +26,13 @@ export function ContactContent() {
     const fd = new FormData(form);
     setSubmitting(true);
 
+    const email = String(fd.get('email') ?? '');
+    const phone = String(fd.get('phone') ?? '') || undefined;
+
     const result = await submitLeadAction({
       full_name: String(fd.get('name') ?? ''),
-      email: String(fd.get('email') ?? ''),
-      whatsapp: String(fd.get('phone') ?? '') || undefined,
+      email,
+      whatsapp: phone,
       message: String(fd.get('message') ?? '') || undefined,
     });
 
@@ -36,6 +40,19 @@ export function ContactContent() {
     if (result.ok) {
       toast({ title: t('sent'), variant: 'success' });
       form.reset();
+
+      if (hasAnalyticsConsent()) {
+        const eventId = crypto.randomUUID();
+        if (typeof window.fbq === 'function') {
+          window.fbq('track', 'Lead', {}, { eventID: eventId });
+        }
+        trackLeadConversionAction({
+          eventId,
+          eventSourceUrl: window.location.href,
+          email,
+          phone,
+        });
+      }
     } else {
       toast({ title: t('error'), variant: 'danger' });
     }
@@ -101,7 +118,7 @@ export function ContactContent() {
               </div>
             </CardContent>
           </Card>
-          <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+          <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" onClick={trackWhatsAppClick}>
             <Button variant="whatsapp" className="w-full gap-2">
               <WhatsAppIcon className="h-5 w-5" />
               {tc('talkOnWhatsapp')}

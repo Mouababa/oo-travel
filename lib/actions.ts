@@ -13,6 +13,7 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import * as data from '@/lib/data';
+import { sendMetaCapiEvent } from '@/lib/meta-capi';
 import type {
   ServiceType,
   ReviewStatus,
@@ -34,6 +35,38 @@ export async function submitLeadAction(input: {
   message?: string;
 }) {
   return data.createLead(input);
+}
+
+// Called separately from submitLeadAction — lead creation must succeed or
+// fail on its own; a Meta API hiccup should never affect it. The caller
+// only invokes this once consent === 'all' (components read that from
+// localStorage, which isn't available in a server action).
+export async function trackLeadConversionAction(input: {
+  eventId: string;
+  eventSourceUrl: string;
+  email: string;
+  phone?: string;
+}) {
+  await sendMetaCapiEvent({
+    eventName: 'Lead',
+    eventId: input.eventId,
+    eventSourceUrl: input.eventSourceUrl,
+    email: input.email,
+    phone: input.phone,
+  });
+}
+
+export async function trackCompleteRegistrationAction(input: {
+  eventId: string;
+  eventSourceUrl: string;
+  email: string;
+}) {
+  await sendMetaCapiEvent({
+    eventName: 'CompleteRegistration',
+    eventId: input.eventId,
+    eventSourceUrl: input.eventSourceUrl,
+    email: input.email,
+  });
 }
 
 export async function createBookingAction(input: {
