@@ -2,6 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { WhatsAppFab } from '@/components/public/whatsapp-fab';
 import { CookieConsent } from '@/components/public/cookie-consent';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
+import { MetaPixel } from '@/components/analytics/meta-pixel';
 import { Navbar } from '@/components/public/navbar';
 import { Footer } from '@/components/public/footer';
 
@@ -23,6 +24,7 @@ export default async function PublicLayout({
       <WhatsAppFab />
       <CookieConsent />
       <GoogleAnalytics />
+      <MetaPixel />
     </div>
   );
 }
