@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Cookie } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { Button } from '@/components/ui/button';
+import { CONSENT_CHANGED_EVENT } from '@/lib/analytics';
 
 const STORAGE_KEY = 'oo-cookie-consent';
 
@@ -31,7 +32,9 @@ export function CookieConsent() {
     } catch {
       /* ignore */
     }
-    // Pixels would be initialized here when choice === 'all'.
+    // Lets GoogleAnalytics (components/analytics/google-analytics.tsx) load
+    // immediately on 'all' without needing a page reload.
+    window.dispatchEvent(new Event(CONSENT_CHANGED_EVENT));
     setVisible(false);
   }
 
